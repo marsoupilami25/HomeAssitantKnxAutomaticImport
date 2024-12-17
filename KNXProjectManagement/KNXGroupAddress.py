@@ -1,24 +1,23 @@
 from unidecode import unidecode
-from xknxproject.models import GroupAddress
+from xknxproject.models import GroupAddress, DPTType
 
-class KNXGroupAddress:
-    _group_address: GroupAddress
+from KNXProjectManagement.KNXDPTType import KNXDPTType
+from Utils.FromDict import FromDict
 
-    def __init__(self, ga: GroupAddress):
-        self._group_address = ga
+
+class KNXGroupAddress(FromDict):
+    _class_ref = GroupAddress
+
+    _name : str
 
     @property
     def name(self):
-        return unidecode(self._group_address["name"])
+        return self._name
+
+    @name.setter
+    def name(self, string: str):
+        self._name = unidecode(string)
 
     @property
     def flat_name(self):
-        return self.name.lower()
-
-    @property
-    def address(self):
-        return self._group_address["address"]
-
-    @property
-    def dpt(self):
-        return self._group_address["dpt"]
+        return self._name.lower()

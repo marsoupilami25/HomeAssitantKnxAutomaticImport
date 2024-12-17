@@ -1,7 +1,6 @@
 import logging
 
 import yaml
-from yaml import serialize
 
 from HAKNXObjectCreator.HAKNXFactory import HAKNXFactory
 from HAKNXObjectCreator.HAKNXObject import HAKNXObject
