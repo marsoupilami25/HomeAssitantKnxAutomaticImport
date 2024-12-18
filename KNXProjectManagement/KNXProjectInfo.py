@@ -1,10 +1,10 @@
 from unidecode import unidecode
 from xknxproject.models import ProjectInfo
 
-from Utils.FromDict import FromDict
+from Utils.ClassFromTypedDict import ClassFromTypedDict
 
 
-class KNXProjectInfo(FromDict):
+class KNXProjectInfo(ClassFromTypedDict):
     _class_ref = ProjectInfo
 
     _name : str

@@ -1,9 +1,9 @@
 from xknxproject.models import DPTType
 
-from Utils.FromDict import FromDict
+from Utils.ClassFromTypedDict import ClassFromTypedDict
 
 
-class KNXDPTType(FromDict):
+class KNXDPTType(ClassFromTypedDict):
 
     _class_ref = DPTType
 

@@ -8,10 +8,10 @@ from KNXProjectManagement.KNXFunctionsList import KNXFunctionsList
 from KNXProjectManagement.KNXGroupAddressList import KNXGroupAddressList
 from KNXProjectManagement.KNXProjectInfo import KNXProjectInfo
 from KNXProjectManagement.KNXSpacesList import KNXSpacesList
-from Utils.FromDict import FromDict
+from Utils.ClassFromTypedDict import ClassFromTypedDict
 
 
-class KNXProjectManager(FromDict):
+class KNXProjectManager(ClassFromTypedDict):
     _class_ref = KNXProject
 
     info: KNXProjectInfo

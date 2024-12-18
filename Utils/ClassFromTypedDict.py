@@ -6,7 +6,7 @@ from pydantic.typing import is_union
 from typing import TypedDict
 
 
-class FromDict:
+class ClassFromTypedDict:
 
     _class_ref: TypedDict
     _typeddict_class_association = {}
@@ -42,7 +42,7 @@ class FromDict:
     def __analyze_data(self, data, data_type, expected_data_type, field) -> object:
         origin_type = get_origin(expected_data_type)
         if origin_type is None:
-            result : FromDict._Result = self.__check_data(data, data_type, expected_data_type)
+            result : ClassFromTypedDict._Result = self.__check_data(data, data_type, expected_data_type)
             if result.found:
                 return result.data
             else:
@@ -50,7 +50,7 @@ class FromDict:
         elif is_union(origin_type):
             types = get_args(expected_data_type)
             for type_elem in types:
-                result : FromDict._Result = self.__check_data(data, data_type, type_elem)
+                result : ClassFromTypedDict._Result = self.__check_data(data, data_type, type_elem)
                 if result.found:
                     return result.data
             raise TypeError(f"Analyzing field '{field}', unexpected type {data_type}, waiting {expected_data_type} in ")
