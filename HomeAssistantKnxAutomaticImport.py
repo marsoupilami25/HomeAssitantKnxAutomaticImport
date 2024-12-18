@@ -3,7 +3,7 @@ import typer
 
 from KNXFunctionAnalyzer.HAKNXLocationsRepository import ha_knx_locations_repository
 from KNXFunctionAnalyzer.KNXFunctionAnalyzer import knx_function_analyzer
-from KNXProjectManagement.KNXProjectManager import knx_project_manager
+from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 from Utils.FromDict import FromDict
 
 # Create Typer application instance
@@ -34,11 +34,12 @@ def main(file: str,
          )):
     setup_logging(log_level)
     logging.info(f"Opening {file}")
-    knx_project_manager.init(file)
-    knx_project_manager.print_knx_project_properties()
     FromDict.set_typeddict_class_association({
-        'DPTType' : 'KNXProjectManagement.KNXDPTType.KNXDPTType'
+        'DPTType' : 'KNXProjectManagement.KNXDPTType.KNXDPTType',
+        'ProjectInfo' : "KNXProjectManagement.KNXProjectInfo.KNXProjectInfo"
     })
+    my_project = KNXProjectManager.init(file)
+    my_project.print_knx_project_properties()
     knx_function_analyzer.star_analysis()
     logging.info("Start locations analysis")
     ha_knx_locations_repository.init()

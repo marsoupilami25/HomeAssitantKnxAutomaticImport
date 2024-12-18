@@ -2,7 +2,7 @@ import logging
 
 from KNXFunctionAnalyzer.KNXSpacesRepository import KNXSpacesRepository, knx_spaces_repository
 from KNXProjectManagement.KNXSpacesList import KNXSpacesList
-from KNXProjectManagement.KNXProjectManager import KNXProjectManager, knx_project_manager
+from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 
 
 class KNXFunctionAnalyzer:
@@ -37,4 +37,5 @@ class KNXFunctionAnalyzer:
     def __next__(self):
         return self._spaces_repository.__next__()
 
-knx_function_analyzer = KNXFunctionAnalyzer(knx_project_manager)
+# knx_function_analyzer = KNXFunctionAnalyzer(knx_project_manager)
+knx_function_analyzer = KNXFunctionAnalyzer(None)

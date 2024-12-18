@@ -2,10 +2,7 @@ import logging
 
 import yaml
 
-from HAKNXObjectCreator.HAKNXFactory import HAKNXFactory
 from HAKNXObjectCreator.HAKNXObject import HAKNXObject
-from KNXProjectManagement.KNXFunction import KNXFunction
-from KNXProjectManagement.KNXProjectManager import knx_project_manager
 from KNXProjectManagement.KNXSpace import KNXSpace
 from Utils.Serializable import Serializable
 
@@ -20,8 +17,9 @@ class HAKNXLocation(Serializable):
         self._objects = {}
         logging.info(f"Create location {self._name}")
         for element in location.functions:
-            function: KNXFunction = knx_project_manager.functions.get_knx_function(element)
-            knx_object = HAKNXFactory.search_associated_class(function)
+            # function: KNXFunction = knx_project_manager.functions.get_knx_function(element)
+            # knx_object = HAKNXFactory.search_associated_class(function)
+            knx_object = None
             if knx_object is None:
                 logging.warning(f"No class found for function {function.name}")
             else:

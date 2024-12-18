@@ -1,12 +1,11 @@
 from unidecode import unidecode
-from xknxproject.models import GroupAddress, DPTType
+from xknxproject.models import ProjectInfo
 
-from KNXProjectManagement.KNXDPTType import KNXDPTType
 from Utils.FromDict import FromDict
 
 
-class KNXGroupAddress(FromDict):
-    _class_ref = GroupAddress
+class KNXProjectInfo(FromDict):
+    _class_ref = ProjectInfo
 
     _name : str
 

@@ -2,7 +2,6 @@ import logging
 
 from KNXProjectManagement.KNXFunction import KNXFunction
 from KNXProjectManagement.KNXGroupAddress import KNXGroupAddress
-from KNXProjectManagement.KNXProjectManager import knx_project_manager
 from Utils.Serializable import Serializable
 
 
@@ -31,7 +30,7 @@ class HAKNXObject(Serializable):
             logging.info(f"Search for parameter {param}")
             keyword_found = False
             for ga_ref in gas.keys():
-                ga : KNXGroupAddress = knx_project_manager.group_addresses.get_knx_group_address(ga_ref)
+                # ga : KNXGroupAddress = knx_project_manager.group_addresses.get_knx_group_address(ga_ref)
                 name = ga.flat_name
                 for key in cls.parameters.get(param):
                     if key in name:
