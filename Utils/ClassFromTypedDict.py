@@ -1,23 +1,35 @@
 import importlib
+import inspect
 from typing import get_type_hints, get_origin, get_args, _TypedDictMeta, Optional, NamedTuple
 
-from click.testing import Result
 from pydantic.typing import is_union
 from typing import TypedDict
-
 
 class ClassFromTypedDict:
 
     _class_ref: TypedDict
     _typeddict_class_association = {}
 
+
     class _Result(NamedTuple):
         found: bool
         data: Optional[object]
 
+
+    # @classmethod
+    # def set_typeddict_class_association(cls, association: dict):
+    #     cls._typeddict_class_association=association
+
     @classmethod
-    def set_typeddict_class_association(cls, association: dict):
-        cls._typeddict_class_association=association
+    def import_package(cls, package):
+        for module in inspect.getmembers(package, inspect.ismodule):
+            module_classes = inspect.getmembers(module[1], inspect.isclass)
+            for module_class_tuple in module_classes:
+                module_class = module_class_tuple[1]
+                if issubclass(module_class, ClassFromTypedDict) and module_class != ClassFromTypedDict:
+                    typeddict_class = module_class._class_ref
+                    cls._typeddict_class_association[typeddict_class] = [ module, module_class ]
+            pass
 
     # Dynamic creation of the class
     def __init__(self, data: dict):
@@ -83,11 +95,11 @@ class ClassFromTypedDict:
                 return self._Result(found=False, data=None)
 
     def __convert_dict_to_class(self, field_type, data) -> object:
-        field_type_name = field_type.__name__
-        if field_type_name in self._typeddict_class_association:
-            module_name, class_name = self._typeddict_class_association[field_type_name].rsplit(".", 1)
-            module = importlib.import_module(module_name)
-            cls = getattr(module, class_name)
+        if field_type in self._typeddict_class_association.keys():
+            # module = self._typeddict_class_association[field_type][0][1]
+            cls = self._typeddict_class_association[field_type][1]
+            # module = importlib.import_module(module_tuple.__name__)
+            # cls = getattr(module, class_.__name__)
             new_data = cls(data)
             return new_data
         else:

@@ -1,5 +1,6 @@
 import logging
 import typer
+import KNXProjectManagement
 
 from KNXFunctionAnalyzer.HAKNXLocationsRepository import ha_knx_locations_repository
 from KNXFunctionAnalyzer.KNXFunctionAnalyzer import knx_function_analyzer
@@ -34,10 +35,11 @@ def main(file: str,
          )):
     setup_logging(log_level)
     logging.info(f"Opening {file}")
-    ClassFromTypedDict.set_typeddict_class_association({
-        'DPTType' : 'KNXProjectManagement.KNXDPTType.KNXDPTType',
-        'ProjectInfo' : "KNXProjectManagement.KNXProjectInfo.KNXProjectInfo"
-    })
+    # ClassFromTypedDict.set_typeddict_class_association({
+    #     'DPTType' : 'KNXProjectManagement.KNXDPTType.KNXDPTType',
+    #     'ProjectInfo' : "KNXProjectManagement.KNXProjectInfo.KNXProjectInfo"
+    # })
+    ClassFromTypedDict.import_package(KNXProjectManagement)
     my_project = KNXProjectManager.init(file)
     my_project.print_knx_project_properties()
     knx_function_analyzer.star_analysis()
