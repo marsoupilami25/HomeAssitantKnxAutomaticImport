@@ -1,19 +1,22 @@
 from unidecode import unidecode
 from xknxproject.models import Function
 
-class KNXFunction:
-    _knx_function: Function
+from Utils.ClassFromTypedDict import ClassFromTypedDict
 
-    def __init__(self, function:Function):
-        self._knx_function = function
 
-    @property
-    def name(self) -> str:
-        return unidecode(self._knx_function["name"])
+class KNXFunction(ClassFromTypedDict):
+    _class_ref = Function
+
+    _name : str
 
     @property
-    def flat_name(self) -> str:
-        return self.name.lower()
+    def name(self):
+        return unidecode(self._name)
 
-    def group_addresses(self):
-        return self._knx_function["group_addresses"]
+    @name.setter
+    def name(self, string: str):
+        self._name = string
+
+    @property
+    def flat_name(self):
+        return self._name.lower()

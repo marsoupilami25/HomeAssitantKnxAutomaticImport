@@ -16,7 +16,6 @@ class KNXProjectManager(ClassFromTypedDict):
 
     info: KNXProjectInfo
     _functions_list: KNXFunctionsList
-    _spaces_list: KNXSpacesList
     _ga_list: KNXGroupAddressList
 
     @classmethod
@@ -46,19 +45,3 @@ class KNXProjectManager(ClassFromTypedDict):
         for attr, value in self.info.__dict__.items():
             if not attr.startswith('_'):  # Exclude special methods
                 print(f"{attr} = {value}")
-
-    # @property
-    # def name(self) -> str:
-    #     return self._project["info"]["name"]
-    #
-    # @property
-    # def functions(self) -> KNXFunctionsList:
-    #     return self._functions_list
-    #
-    # @property
-    # def spaces(self) -> KNXSpacesList:
-    #     return self._spaces_list
-    #
-    # @property
-    # def group_addresses(self) -> KNXGroupAddressList:
-    #     return self._ga_list
