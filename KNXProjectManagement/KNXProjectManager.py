@@ -1,7 +1,6 @@
 import logging
 import os
 import sys
-from typing import NewType
 
 from xknxproject import XKNXProj
 from xknxproject.models import KNXProject
@@ -10,7 +9,7 @@ from KNXProjectManagement.KNXFunction import KNXFunction
 from KNXProjectManagement.KNXGroupAddress import KNXGroupAddress
 from KNXProjectManagement.KNXProjectInfo import KNXProjectInfo
 from KNXProjectManagement.KNXSpace import KNXSpace
-from Utils.ClassFromTypedDict import ClassFromTypedDict
+from ClassFromTypedDict import ClassFromTypedDict
 
 class KNXProjectManager(ClassFromTypedDict):
     _class_ref = KNXProject

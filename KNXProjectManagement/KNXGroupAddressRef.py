@@ -1,7 +1,7 @@
 from unidecode import unidecode
 from xknxproject.models import GroupAddressRef
 
-from Utils.ClassFromTypedDict import ClassFromTypedDict
+from ClassFromTypedDict import ClassFromTypedDict
 
 
 class KNXGroupAddressRef(ClassFromTypedDict):

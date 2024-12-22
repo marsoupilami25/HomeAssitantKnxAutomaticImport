@@ -1,8 +1,6 @@
+from ClassFromTypedDict import ClassFromTypedDict
 from unidecode import unidecode
-from xknxproject.models import GroupAddress, DPTType
-
-from KNXProjectManagement.KNXDPTType import KNXDPTType
-from Utils.ClassFromTypedDict import ClassFromTypedDict
+from xknxproject.models import GroupAddress
 
 
 class KNXGroupAddress(ClassFromTypedDict):

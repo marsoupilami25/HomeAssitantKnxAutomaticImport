@@ -5,7 +5,7 @@ import KNXProjectManagement
 from KNXFunctionAnalyzer.HAKNXLocationsRepository import HAKNXLocationsRepository
 from KNXFunctionAnalyzer.KNXFunctionAnalyzer import KNXFunctionAnalyzer
 from KNXProjectManagement.KNXProjectManager import KNXProjectManager
-from Utils.ClassFromTypedDict import ClassFromTypedDict
+from ClassFromTypedDict import ClassFromTypedDict
 
 # Create Typer application instance
 app = typer.Typer()

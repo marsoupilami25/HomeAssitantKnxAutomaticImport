@@ -2,7 +2,7 @@ from unidecode import unidecode
 from xknxproject.models import Function
 
 from KNXProjectManagement.KNXGroupAddressRef import KNXGroupAddressRef
-from Utils.ClassFromTypedDict import ClassFromTypedDict
+from ClassFromTypedDict import ClassFromTypedDict
 
 
 class KNXFunction(ClassFromTypedDict):

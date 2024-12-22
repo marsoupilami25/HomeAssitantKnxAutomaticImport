@@ -1,7 +1,7 @@
 from unidecode import unidecode
 from xknxproject.models import ProjectInfo
 
-from Utils.ClassFromTypedDict import ClassFromTypedDict
+from ClassFromTypedDict import ClassFromTypedDict
 
 
 class KNXProjectInfo(ClassFromTypedDict):
