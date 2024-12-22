@@ -1,13 +1,14 @@
 from unidecode import unidecode
-from xknxproject.models import ProjectInfo
+from xknxproject.models import GroupAddressRef
 
 from Utils.ClassFromTypedDict import ClassFromTypedDict
 
 
-class KNXProjectInfo(ClassFromTypedDict):
-    _class_ref = ProjectInfo
+class KNXGroupAddressRef(ClassFromTypedDict):
+    _class_ref = GroupAddressRef
 
     _name : str
+    address : str
 
     @property
     def name(self):

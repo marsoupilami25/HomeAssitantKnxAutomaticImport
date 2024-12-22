@@ -1,14 +1,20 @@
+from __future__ import annotations  # Enables forward references in type hints
+
+from typing import NewType
+
 from unidecode import unidecode
 
 from xknxproject.models import Space
 
 from Utils.ClassFromTypedDict import ClassFromTypedDict
 
-
 class KNXSpace(ClassFromTypedDict):
     _class_ref = Space
 
     _name : str
+
+    spaces : dict[str, KNXSpace]
+    functions : list[str]
 
     @property
     def name(self):
@@ -20,4 +26,4 @@ class KNXSpace(ClassFromTypedDict):
 
     @property
     def flat_name(self):
-        return self._name.lower()
+        return self.name.lower()

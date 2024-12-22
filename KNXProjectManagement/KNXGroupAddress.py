@@ -20,4 +20,4 @@ class KNXGroupAddress(ClassFromTypedDict):
 
     @property
     def flat_name(self):
-        return self._name.lower()
+        return self.name.lower()

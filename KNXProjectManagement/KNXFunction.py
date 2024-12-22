@@ -1,6 +1,7 @@
 from unidecode import unidecode
 from xknxproject.models import Function
 
+from KNXProjectManagement.KNXGroupAddressRef import KNXGroupAddressRef
 from Utils.ClassFromTypedDict import ClassFromTypedDict
 
 
@@ -8,6 +9,7 @@ class KNXFunction(ClassFromTypedDict):
     _class_ref = Function
 
     _name : str
+    group_addresses: dict[str, KNXGroupAddressRef]
 
     @property
     def name(self):
@@ -19,4 +21,4 @@ class KNXFunction(ClassFromTypedDict):
 
     @property
     def flat_name(self):
-        return self._name.lower()
+        return self.name.lower()

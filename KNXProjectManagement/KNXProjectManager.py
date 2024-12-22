@@ -1,22 +1,23 @@
 import logging
 import os
 import sys
+from typing import NewType
+
 from xknxproject import XKNXProj
 from xknxproject.models import KNXProject
 
-from KNXProjectManagement.KNXFunctionsList import KNXFunctionsList
-from KNXProjectManagement.KNXGroupAddressList import KNXGroupAddressList
+from KNXProjectManagement.KNXFunction import KNXFunction
+from KNXProjectManagement.KNXGroupAddress import KNXGroupAddress
 from KNXProjectManagement.KNXProjectInfo import KNXProjectInfo
-from KNXProjectManagement.KNXSpacesList import KNXSpacesList
+from KNXProjectManagement.KNXSpace import KNXSpace
 from Utils.ClassFromTypedDict import ClassFromTypedDict
-
 
 class KNXProjectManager(ClassFromTypedDict):
     _class_ref = KNXProject
-
     info: KNXProjectInfo
-    _functions_list: KNXFunctionsList
-    _ga_list: KNXGroupAddressList
+    functions: dict[str, KNXFunction]
+    group_addresses: dict[str, KNXGroupAddress]
+    locations: dict[str, KNXSpace]
 
     @classmethod
     def init(cls, file: str):
@@ -45,3 +46,20 @@ class KNXProjectManager(ClassFromTypedDict):
         for attr, value in self.info.__dict__.items():
             if not attr.startswith('_'):  # Exclude special methods
                 print(f"{attr} = {value}")
+
+    def get_knx_function(self, name: str) -> KNXFunction:
+        if name in self.functions:
+            function = self.functions.get(name)
+            logging.info(f"Function '{function.name}' found")
+            return function
+        else:
+            logging.warning(f"Function {name} not found")
+            return None
+
+    def get_knx_group_address(self, ref: str) -> KNXGroupAddress:
+        if ref in self.group_addresses.keys():
+            ga = self.group_addresses[ref]
+            return ga
+        else:
+            logging.error(f"Group Address ref {ref} not found")
+            return None

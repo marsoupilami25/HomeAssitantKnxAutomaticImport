@@ -2,8 +2,8 @@ import logging
 import typer
 import KNXProjectManagement
 
-from KNXFunctionAnalyzer.HAKNXLocationsRepository import ha_knx_locations_repository
-from KNXFunctionAnalyzer.KNXFunctionAnalyzer import knx_function_analyzer
+from KNXFunctionAnalyzer.HAKNXLocationsRepository import HAKNXLocationsRepository
+from KNXFunctionAnalyzer.KNXFunctionAnalyzer import KNXFunctionAnalyzer
 from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 from Utils.ClassFromTypedDict import ClassFromTypedDict
 
@@ -42,10 +42,11 @@ def main(file: str,
     ClassFromTypedDict.import_package(KNXProjectManagement)
     my_project = KNXProjectManager.init(file)
     my_project.print_knx_project_properties()
-    knx_function_analyzer.star_analysis()
+    my_analyzer = KNXFunctionAnalyzer(my_project)
+    my_analyzer.star_analysis()
     logging.info("Start locations analysis")
-    ha_knx_locations_repository.init()
-    ha_knx_locations_repository.dump()
+    my_repository = HAKNXLocationsRepository(my_analyzer.locations, my_project)
+    my_repository.dump()
 
 
 if __name__ == "__main__":

@@ -2,7 +2,8 @@ import yaml
 from yaml import Dumper
 
 from HAKNXObjectCreator.HAKNXLocation import HAKNXLocation
-from KNXFunctionAnalyzer.KNXSpacesRepository import knx_spaces_repository
+from KNXFunctionAnalyzer.KNXSpacesRepository import KNXSpacesRepository
+from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 from Utils.Serializable import quoted
 
 
@@ -17,14 +18,13 @@ class HAKNXLocationsRepository:
             return dumper.represent_scalar('tag:yaml.org,2002:str', value, style='"')
         return dumper.represent_data(value)
 
-    def __init__(self):
+    def __init__(self, knx_spaces_repository: KNXSpacesRepository, knx_project_manager: KNXProjectManager):
         self._locations_list = []
         # Add the custom representer to the PyYAML instance
         yaml.add_representer(quoted, self.__custom_representer)
-
-    def init(self):
-        for element in knx_spaces_repository:
-            location = HAKNXLocation(element)
+        for name, element in knx_spaces_repository:
+            location = HAKNXLocation(element, knx_project_manager)
+            location._name = name
             if not location.is_empty():
                 self.add_location(location)
 
@@ -45,4 +45,3 @@ class HAKNXLocationsRepository:
         for element in self._locations_list:
             print(element.dump())
 
-ha_knx_locations_repository = HAKNXLocationsRepository()
