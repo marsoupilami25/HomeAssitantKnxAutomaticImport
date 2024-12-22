@@ -9,6 +9,15 @@ class KNXDPTType(ClassFromTypedDict):
 
     @classmethod
     def constructor_from_ints(cls,main: int, sub: int):
+        """
+
+        :param main:
+        :type main:
+        :param sub:
+        :type sub:
+        :return:
+        :rtype:
+        """
         dpt: DPTType = { "main" : main,
                          "sub" : sub}
         instance = cls(dpt)
