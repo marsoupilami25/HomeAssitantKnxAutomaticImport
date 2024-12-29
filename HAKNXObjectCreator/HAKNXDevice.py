@@ -1,6 +1,7 @@
 import logging
 from typing import TypedDict
 
+from KNXProjectManagement.KNXDPTType import KNXDPTType
 from KNXProjectManagement.KNXFunction import KNXFunction
 from KNXProjectManagement.KNXGroupAddress import KNXGroupAddress
 from KNXProjectManagement.KNXProjectManager import KNXProjectManager
@@ -11,10 +12,12 @@ class KNXDeviceParameter(TypedDict):
     Configuration of one KNX device parameter
     :attr name: name of the parameter
     :attr required: indicate if the parameter is mandatory or optional
+    :attr dpts: type of authorized dpt. Should be empty if no constraints
     :attr keywords: list of keywords to identify the group address attached to the parameter
     """
     name : str
     required: bool
+    dpts: list[KNXDPTType]
     keywords: list[str]
 
 class HAKNXDevice(Serializable):
@@ -72,9 +75,19 @@ class HAKNXDevice(Serializable):
                         break
                 if keyword_found: #if keyword found
                     logging.info(f"Parameter {param["name"]} found in GA '{ga.name}'")
-                    setattr(instance, param["name"], ga.address) # set the attribute
-                    param_found = True
-                    break #stop group address search
+                    #check DPT Type
+                    if not param["dpts"]:
+                        setattr(instance, param["name"], ga.address) # set the attribute
+                        param_found = True
+                        break  # stop group address search
+                    elif ga.dpt in param["dpts"]:
+                        setattr(instance, param["name"], ga.address) # set the attribute
+                        param_found = True
+                        break  # stop group address search
+                    else:
+                        logging.warning(f"Incompatible DPT type for parameter {param["name"]} found in GA '{ga.name}'. Have {ga.dpt} but expect {param["dpts"]}")
+                        param_found = False
+                        break  # stop group address search
             if param_found is False: #if parameter has not been found
                 if param["required"]:
                     logging.warning(f"Parameter {param["name"]} not found in function {function.name}")
