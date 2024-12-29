@@ -4,7 +4,7 @@ from yaml import Dumper
 from HAKNXObjectCreator.HAKNXLocation import HAKNXLocation
 from KNXFunctionAnalyzer.KNXSpacesRepository import KNXSpacesRepository
 from KNXProjectManagement.KNXProjectManager import KNXProjectManager
-from Utils.Serializable import quoted
+from Utils.Serializable import Quoted
 
 
 
@@ -21,7 +21,7 @@ class HAKNXLocationsRepository:
     def __init__(self, knx_spaces_repository: KNXSpacesRepository, knx_project_manager: KNXProjectManager):
         self._locations_list = []
         # Add the custom representer to the PyYAML instance
-        yaml.add_representer(quoted, self.__custom_representer)
+        yaml.add_representer(Quoted, self.__custom_representer)
         for name, element in knx_spaces_repository:
             location = HAKNXLocation(element, knx_project_manager)
             location._name = name

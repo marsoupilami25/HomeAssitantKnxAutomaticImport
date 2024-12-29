@@ -44,9 +44,9 @@ class KNXProjectManager(ClassFromTypedDict):
         logging.info(f"Project {name} opened")
         for attr, value in self.info.__dict__.items():
             if not attr.startswith('_'):  # Exclude special methods
-                print(f"{attr} = {value}")
+                logging.info(f"{attr} = {value}")
 
-    def get_knx_function(self, name: str) -> KNXFunction:
+    def get_knx_function(self, name: str) -> KNXFunction | None:
         if name in self.functions:
             function = self.functions.get(name)
             logging.info(f"Function '{function.name}' found")
@@ -55,7 +55,7 @@ class KNXProjectManager(ClassFromTypedDict):
             logging.warning(f"Function {name} not found")
             return None
 
-    def get_knx_group_address(self, ref: str) -> KNXGroupAddress:
+    def get_knx_group_address(self, ref: str) -> KNXGroupAddress | None:
         if ref in self.group_addresses.keys():
             ga = self.group_addresses[ref]
             return ga

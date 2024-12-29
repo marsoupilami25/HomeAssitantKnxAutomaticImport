@@ -1,6 +1,4 @@
-from typing_extensions import overload
-
-class quoted(str):
+class Quoted(str):
     pass
 
 class Serializable:
@@ -41,7 +39,7 @@ class Serializable:
                 result[k] = Serializable.convert_to_dict(v)
             return result
         elif isinstance(obj, str):
-            return quoted(obj)
+            return Quoted(obj)
         else:
             # For simple types, just add the value
             return obj

@@ -3,7 +3,7 @@ import logging
 import yaml
 
 from HAKNXObjectCreator.HAKNXFactory import HAKNXFactory
-from HAKNXObjectCreator.HAKNXObject import HAKNXObject
+from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice
 from KNXProjectManagement.KNXFunction import KNXFunction
 from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 from KNXProjectManagement.KNXSpace import KNXSpace
@@ -13,7 +13,7 @@ from Utils.Serializable import Serializable
 class HAKNXLocation(Serializable):
 
     _name: str # private attribute not to be serialized
-    _objects: dict[str, list[HAKNXObject]]
+    _objects: dict[str, list[HAKNXDevice]]
 
     def __init__(self, location: KNXSpace, knx_project_manager: KNXProjectManager):
         self._name = location.name
@@ -21,11 +21,11 @@ class HAKNXLocation(Serializable):
         logging.info(f"Create location {self._name}")
         for element in location.functions:
             function: KNXFunction = knx_project_manager.get_knx_function(element)
-            knx_object = HAKNXFactory.search_associated_class(function, knx_project_manager)
+            knx_object: HAKNXDevice = HAKNXFactory.search_associated_class(function, knx_project_manager)
             if knx_object is None:
                 logging.warning(f"No class found for function {function.name}")
             else:
-                class_type = knx_object.__class__.__name__
+                class_type = knx_object.get_device_type_name()
                 if class_type in self._objects:
                     self._objects[class_type].append(knx_object)
                 else:

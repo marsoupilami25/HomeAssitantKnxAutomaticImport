@@ -2,11 +2,15 @@ from ClassFromTypedDict import ClassFromTypedDict
 from unidecode import unidecode
 from xknxproject.models import GroupAddress
 
+from KNXProjectManagement.KNXDPTType import KNXDPTType
+
 
 class KNXGroupAddress(ClassFromTypedDict):
     _class_ref = GroupAddress
 
     _name : str
+    address : str
+    dpt : KNXDPTType
 
     @property
     def name(self):
