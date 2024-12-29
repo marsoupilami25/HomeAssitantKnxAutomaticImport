@@ -94,7 +94,7 @@ class HAKNXDevice(Serializable):
                     return None
                 else:
                     logging.info(f"Parameter {param["name"]} not found in function {function.name}")
-                    setattr(instance, param["name"], "")
+                    setattr(instance, param["name"], None)
         return instance
 
     @classmethod

@@ -8,9 +8,9 @@ class HAKNXLight(HAKNXDevice):
     parameters = [
         {
             'name': 'address',
-            'required': True,
+            'required': False,
             'dpts': [
-                KNXDPTType.constructor_from_ints(1,1)
+                KNXDPTType.constructor_from_ints(1,2)
             ],
             'keywords': ['on', 'off', 'switch']
         },
