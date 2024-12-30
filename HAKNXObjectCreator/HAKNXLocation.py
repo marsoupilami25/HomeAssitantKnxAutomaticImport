@@ -60,6 +60,9 @@ class HAKNXLocation(Serializable):
         with open(file, 'r') as yaml_file:
             logging.info(f"Read file {file}")
             imported_dict: dict = yaml.safe_load(yaml_file)
+            if not imported_dict:
+                logging.info(f"No data found in file {yaml_file}")
+                return
             for key in imported_dict.keys():
                 objects_to_import = imported_dict[key]
                 list_of_objects = []
@@ -85,6 +88,13 @@ class HAKNXLocation(Serializable):
     def to_dict(self):
         return Serializable.convert_to_dict(self._objects)
 
-    def dump(self):
+    def dump(self, ha_mode : bool = False):
         dico = self.to_dict()
-        return yaml.dump(dico, sort_keys=False, default_style=None)
+        new_dico : dict = {}
+        # new_new_dico : dict = {}
+        if ha_mode:
+            new_dico["knx"] = dico
+            # new_new_dico[self.get_name()] = new_dico
+        else:
+            new_dico = dico
+        return yaml.dump(new_dico, sort_keys=False, default_style=None)

@@ -2,6 +2,7 @@ import logging
 import os
 
 import yaml
+from typing_extensions import final
 from yaml import Dumper
 
 from HAKNXObjectCreator.HAKNXLocation import HAKNXLocation
@@ -79,5 +80,6 @@ class HAKNXLocationsRepository:
                 raise PermissionError(f"File '{file_path}' already exists.")
             else:
                 with open(file_path, "w") as file:
-                    file.write(element.dump())
+                    initial_dump = element.dump(ha_mode=True)
+                    file.write(initial_dump)
 
