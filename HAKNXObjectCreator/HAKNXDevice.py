@@ -44,13 +44,6 @@ class HAKNXDevice(Serializable):
         self.name = ""
         self._extra = {}
 
-    @classmethod
-    def constructor_with_init(cls, name: str, **kwargs):
-        instance = cls()
-        instance.name = name
-        instance._extra = kwargs
-        return instance
-
     def set_from_function(self, function: KNXFunction, knx_project_manager: KNXProjectManager):
         """
         Constructor of the class based on a function.
@@ -66,10 +59,11 @@ class HAKNXDevice(Serializable):
         for param in self.parameters: #go through all expected parameters in the class
             logging.info(f"Search for parameter {param["name"]}")
             param_found = False
-            keyword_found = False
+            param_value = None
             for ga_ref in gas.keys(): #go through all group address name
                 ga : KNXGroupAddress = knx_project_manager.get_knx_group_address(ga_ref) # get the detail group address
                 name = ga.flat_name # get the flat name of the GA
+                keyword_found = False
                 for key in param["keywords"]: #search it in the keywords list
                     if key in name:
                         keyword_found = True
@@ -78,24 +72,26 @@ class HAKNXDevice(Serializable):
                     logging.info(f"Parameter {param["name"]} found in GA '{ga.name}'")
                     #check DPT Type
                     if not param["dpts"]:
-                        setattr(self, param["name"], ga.address) # set the attribute
                         param_found = True
+                        param_value = ga.address
                         break  # stop group address search
                     elif ga.dpt in param["dpts"]:
-                        setattr(self, param["name"], ga.address) # set the attribute
                         param_found = True
+                        param_value = ga.address
                         break  # stop group address search
                     else:
                         logging.warning(f"Incompatible DPT type for parameter {param["name"]} found in GA '{ga.name}'. Have {ga.dpt} but expect {param["dpts"]}")
-                        param_found = False
                         break  # stop group address search
-            if param_found is False: #if parameter has not been found
+            if param_found: #if parameter has not been found
+                setattr(self, param["name"], param_value)  # set the attribute
+            else:
                 if param["required"]:
                     logging.warning(f"Parameter {param["name"]} not found in function {function.name}")
                     return None
                 else:
                     logging.info(f"Parameter {param["name"]} not found in function {function.name}")
-                    setattr(self, param["name"], None)
+                    if not hasattr(self, param["name"]):
+                        setattr(self, param["name"], None)
 
     def set_from_dict(self, params: dict):
         self.from_dict(params)
