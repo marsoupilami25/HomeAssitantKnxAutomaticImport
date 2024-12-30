@@ -37,10 +37,11 @@ class HAKNXLocation(Serializable):
         logging.info(f"Create location {self._name}")
         for element in location.functions:
             function: KNXFunction = knx_project_manager.get_knx_function(element)
-            knx_object: HAKNXDevice = HAKNXFactory.search_associated_class_from_function(function, knx_project_manager)
+            knx_object: HAKNXDevice = HAKNXFactory.search_associated_class_from_function(function)
             if knx_object is None:
                 logging.warning(f"No class found for function {function.name}")
             else:
+                knx_object.set_from_function(function, knx_project_manager)
                 class_type = knx_object.get_device_type_name()
                 if class_type in self._objects:
                     self._objects[class_type].append(knx_object)
@@ -55,11 +56,13 @@ class HAKNXLocation(Serializable):
                 objects_to_import = imported_dict[key]
                 list_of_objects = []
                 for element in objects_to_import:
-                    ha_knx_object = HAKNXFactory.search_associated_class_from_key_name(key, element)
-                    list_of_objects.append(ha_knx_object)
+                    ha_knx_object = HAKNXFactory.search_associated_class_from_key_name(key)
+                    if ha_knx_object is None:
+                        logging.warning(f"No class found for key {key}")
+                    else:
+                        ha_knx_object.set_from_dict(element)
+                        list_of_objects.append(ha_knx_object)
                 self._objects[key] = list_of_objects
-
-
 
     def get_name(self):
         return self._name
