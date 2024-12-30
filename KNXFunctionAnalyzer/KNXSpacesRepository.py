@@ -8,7 +8,7 @@ class KNXSpacesRepository:
         self._spaces_dict = {}
 
     def add_space(self, name: str, space: KNXSpace):
-        self._spaces_dict[name] = space
+        self._spaces_dict[name.lower()] = space
 
     @property
     def list(self):
