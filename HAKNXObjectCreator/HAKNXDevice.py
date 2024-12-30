@@ -40,6 +40,10 @@ class HAKNXDevice(Serializable):
     def get_device_type_name(cls):
         return cls.keyname
 
+    def __init__(self):
+        self.name = ""
+        self._extra = {}
+
     @classmethod
     def constructor_with_init(cls, name: str, **kwargs):
         instance = cls()
@@ -47,8 +51,7 @@ class HAKNXDevice(Serializable):
         instance._extra = kwargs
         return instance
 
-    @classmethod
-    def constructor_with_function(cls, function: KNXFunction, knx_project_manager: KNXProjectManager):
+    def set_from_function(self, function: KNXFunction, knx_project_manager: KNXProjectManager):
         """
         Constructor of the class based on a function.
         :param function: function to create
@@ -58,11 +61,9 @@ class HAKNXDevice(Serializable):
         :return: instance of the class
         :rtype: subclass of HAKNXDevice
         """
-        instance = cls() #create the class
-        instance.name = function.name #the name of the device is the name of the KNX function
-        instance._extra = {}
+        self.name = function.name #the name of the device is the name of the KNX function
         gas = function.group_addresses #get group addresses from the function
-        for param in cls.parameters: #go through all expected parameters in the class
+        for param in self.parameters: #go through all expected parameters in the class
             logging.info(f"Search for parameter {param["name"]}")
             param_found = False
             keyword_found = False
@@ -77,11 +78,11 @@ class HAKNXDevice(Serializable):
                     logging.info(f"Parameter {param["name"]} found in GA '{ga.name}'")
                     #check DPT Type
                     if not param["dpts"]:
-                        setattr(instance, param["name"], ga.address) # set the attribute
+                        setattr(self, param["name"], ga.address) # set the attribute
                         param_found = True
                         break  # stop group address search
                     elif ga.dpt in param["dpts"]:
-                        setattr(instance, param["name"], ga.address) # set the attribute
+                        setattr(self, param["name"], ga.address) # set the attribute
                         param_found = True
                         break  # stop group address search
                     else:
@@ -94,14 +95,10 @@ class HAKNXDevice(Serializable):
                     return None
                 else:
                     logging.info(f"Parameter {param["name"]} not found in function {function.name}")
-                    setattr(instance, param["name"], None)
-        return instance
+                    setattr(self, param["name"], None)
 
-    @classmethod
-    def constructor_with_dict(cls, params: dict):
-        instance = cls() #create the class
-        instance.from_dict(params)
-        return instance
+    def set_from_dict(self, params: dict):
+        self.from_dict(params)
 
     @classmethod
     def is_this_type_from_function(cls, function: KNXFunction):
