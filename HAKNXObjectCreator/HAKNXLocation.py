@@ -33,20 +33,28 @@ class HAKNXLocation(Serializable):
 
     def import_knx_space(self, location: KNXSpace, knx_project_manager: KNXProjectManager):
         self._name = location.name
-        self._objects = {}
-        logging.info(f"Create location {self._name}")
+        logging.info(f"Update location {self._name}")
         for element in location.functions:
             function: KNXFunction = knx_project_manager.get_knx_function(element)
-            knx_object: HAKNXDevice = HAKNXFactory.search_associated_class_from_function(function)
-            if knx_object is None:
-                logging.warning(f"No class found for function {function.name}")
-            else:
-                knx_object.set_from_function(function, knx_project_manager)
-                class_type = knx_object.get_device_type_name()
-                if class_type in self._objects:
-                    self._objects[class_type].append(knx_object)
+            #search if function already converted in device in _objects
+            flat_list = [item for sublist in self._objects.values() for item in sublist]
+            existing_devices: list[HAKNXDevice] = list(filter(lambda obj: function.name == obj.name, flat_list))
+            if len(existing_devices) == 0:
+                ha_knx_object_type = HAKNXFactory.search_associated_class_from_function(function)
+                if ha_knx_object_type is None:
+                    logging.warning(f"No class found for function {function.name}")
                 else:
-                    self._objects[class_type] = [knx_object]
+                    ha_knx_object: HAKNXDevice = ha_knx_object_type()
+                    ha_knx_object.set_from_function(function, knx_project_manager)
+                    class_type = ha_knx_object.get_device_type_name()
+                    if class_type in self._objects:
+                        self._objects[class_type].append(ha_knx_object)
+                    else:
+                        self._objects[class_type] = [ha_knx_object]
+            elif len(existing_devices) == 1:
+                existing_devices[0].set_from_function(function, knx_project_manager)
+            else:
+                raise ValueError(f"Several existing functions with name {function.name} in location {self._name}")
 
     def import_from_file(self, file: str):
         with open(file, 'r') as yaml_file:
@@ -56,7 +64,8 @@ class HAKNXLocation(Serializable):
                 objects_to_import = imported_dict[key]
                 list_of_objects = []
                 for element in objects_to_import:
-                    ha_knx_object = HAKNXFactory.search_associated_class_from_key_name(key)
+                    ha_knx_object_type = HAKNXFactory.search_associated_class_from_key_name(key)
+                    ha_knx_object = ha_knx_object_type()
                     if ha_knx_object is None:
                         logging.warning(f"No class found for key {key}")
                     else:
@@ -66,6 +75,9 @@ class HAKNXLocation(Serializable):
 
     def get_name(self):
         return self._name
+
+    def set_name(self, name: str):
+        self._name = name
 
     def is_empty(self):
         return len(self._objects) == 0

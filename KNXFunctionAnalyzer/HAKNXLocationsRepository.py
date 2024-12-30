@@ -28,10 +28,19 @@ class HAKNXLocationsRepository:
 
     def import_from_knx_spaces_repository(self, knx_spaces_repository: KNXSpacesRepository, knx_project_manager: KNXProjectManager):
         for name, element in knx_spaces_repository:
-            location = HAKNXLocation.constructor_from_knx_space(element, knx_project_manager)
-            location._name = name
-            if not location.is_empty():
-                self.add_location(location)
+            existing_locations: list[HAKNXLocation] = list(filter(lambda obj: name == obj.get_name(), self._locations_list))
+            if len(existing_locations) == 0:
+                location = HAKNXLocation.constructor_from_knx_space(element, knx_project_manager)
+                #force the name to a complete structured name to avoid duplication and limit confusion
+                location.set_name(name)
+                if not location.is_empty():
+                    self.add_location(location)
+            elif len(existing_locations) == 1:
+                existing_locations[0].import_knx_space(element, knx_project_manager)
+                #force the name to a complete structured name to avoid duplication and limit confusion
+                existing_locations[0].set_name(name)
+            else:
+                raise ValueError(f"Several existing locations with name {name}")
 
     def import_from_path(self, import_path):
         for file in os.listdir(import_path):
