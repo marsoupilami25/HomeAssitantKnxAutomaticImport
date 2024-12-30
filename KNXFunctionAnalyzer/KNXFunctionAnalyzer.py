@@ -4,6 +4,7 @@ from KNXFunctionAnalyzer.KNXSpacesRepository import KNXSpacesRepository
 from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 from KNXProjectManagement.KNXSpace import KNXSpace
 
+separator: str ="_"
 
 class KNXFunctionAnalyzer:
     _knx_project: KNXProjectManager
@@ -21,7 +22,7 @@ class KNXFunctionAnalyzer:
         logging.info(f"{nb_elem} level location has been found at level {level} in {name}")
         space: KNXSpace
         for space in spaces.values():
-            new_name = name + '.' + space.name
+            new_name = name + separator + space.name
             new_level=level+1
             logging.info(f"Starting analysis at level {new_level} of {new_name}")
             self._spaces_repository.add_space(new_name,space)
