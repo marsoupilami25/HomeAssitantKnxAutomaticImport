@@ -63,8 +63,15 @@ class HAKNXLocation(Serializable):
             if not imported_dict:
                 logging.info(f"No data found in file {yaml_file}")
                 return
-            for key in imported_dict.keys():
-                objects_to_import = imported_dict[key]
+            final_dict: dict = {}
+            #detect if it is a ha yaml file and remove useless values
+            key_list = list(imported_dict.keys())
+            if (len(key_list) == 1) and (key_list[0] == "knx"):
+                final_dict = imported_dict["knx"]
+            else:
+                final_dict = imported_dict
+            for key in final_dict.keys():
+                objects_to_import = final_dict[key]
                 list_of_objects = []
                 for element in objects_to_import:
                     ha_knx_object_type = HAKNXFactory.search_associated_class_from_key_name(key)
