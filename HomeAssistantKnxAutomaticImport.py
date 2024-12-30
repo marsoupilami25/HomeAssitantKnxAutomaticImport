@@ -37,8 +37,9 @@ def main(file: str,
              callback=validate_log_level )] = "WARNING"
          ):
     setup_logging(log_level)
+    my_locations_repository = HAKNXLocationsRepository()
     target_path = os.path.join(output_path, "knx") #path where files are stored
-    #if the path exists, existign files are loaded
+    #if the path exists, existing files are loaded
     if os.path.exists(target_path):
         logging.info(f"Path {target_path} already exists, try to open existing yaml files")
         for file_name in os.listdir(target_path):
@@ -58,12 +59,12 @@ def main(file: str,
     my_analyzer = KNXFunctionAnalyzer(my_project)
     my_analyzer.star_analysis()
     logging.info("Start locations analysis")
-    my_repository = HAKNXLocationsRepository(my_analyzer.locations, my_project)
+    my_locations_repository.import_from_knx_spaces_repository(my_analyzer.locations, my_project)
     if not os.path.exists(target_path):
         os.makedirs(target_path, exist_ok=True)
     if not os.path.isdir(target_path):
-        raise ValueError(f"Output path '{target_path}' is not a directory.")
-    my_repository.dump(target_path, True)
+        raise NotADirectoryError(f"Output path '{target_path}' is not a directory.")
+    my_locations_repository.dump(target_path, create_output_path=True, overwrite=True)
 
 
 if __name__ == "__main__":
