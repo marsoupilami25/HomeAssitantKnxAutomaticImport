@@ -1,3 +1,4 @@
+import logging
 import os
 
 import yaml
@@ -27,13 +28,20 @@ class HAKNXLocationsRepository:
 
     def import_from_knx_spaces_repository(self, knx_spaces_repository: KNXSpacesRepository, knx_project_manager: KNXProjectManager):
         for name, element in knx_spaces_repository:
-            location = HAKNXLocation(element, knx_project_manager)
+            location = HAKNXLocation.constructor_from_knx_space(element, knx_project_manager)
             location._name = name
             if not location.is_empty():
                 self.add_location(location)
 
-    def import_from_file(self):
-        pass
+    def import_from_path(self, import_path):
+        for file in os.listdir(import_path):
+            if file.endswith(".yaml"):
+                file_name = os.path.splitext(file)[0]
+                file_path = os.path.join(import_path, file)
+                location = HAKNXLocation.constructor_from_file(file_path)
+                location._name = file_name
+                if not location.is_empty():
+                    self.add_location(location)
 
     def add_location(self, location: HAKNXLocation):
         self._locations_list.append(location)

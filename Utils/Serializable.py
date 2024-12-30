@@ -17,9 +17,9 @@ class Serializable:
                 result[key] = Serializable.convert_to_dict(value)
         return result
 
-    @classmethod
-    def from_dict(cls, dict_obj):
-        return cls(**dict_obj)
+    def from_dict(self, dict_obj: dict):
+        for key, value in dict_obj.items():
+            setattr(self, key, value)
 
     @staticmethod
     def convert_to_dict(obj: object):

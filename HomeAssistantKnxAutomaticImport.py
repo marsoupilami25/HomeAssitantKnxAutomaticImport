@@ -42,12 +42,7 @@ def main(file: str,
     #if the path exists, existing files are loaded
     if os.path.exists(target_path):
         logging.info(f"Path {target_path} already exists, try to open existing yaml files")
-        for file_name in os.listdir(target_path):
-            if file_name.endswith(".yaml"):
-                file_path = os.path.join(target_path, file_name)
-                with open(file_path, 'r') as yaml_file:
-                    logging.info(f"Read file {file_path}")
-                    pass
+        my_locations_repository.import_from_path(target_path)
     logging.info(f"Opening {file}")
     # ClassFromTypedDict.set_typeddict_class_association({
     #     'DPTType' : 'KNXProjectManagement.KNXDPTType.KNXDPTType',
