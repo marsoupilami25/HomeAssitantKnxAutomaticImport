@@ -98,10 +98,20 @@ class HAKNXDevice(Serializable):
         return instance
 
     @classmethod
-    def is_this_type(cls, function: KNXFunction):
+    def constructor_with_dict(cls, params: dict):
+        instance = cls() #create the class
+        instance.from_dict(params)
+        return instance
+
+    @classmethod
+    def is_this_type_from_function(cls, function: KNXFunction):
         name = function.flat_name
         keyword_found = False
         for key in cls.keywords:
             if key in name:
                 keyword_found = True
         return keyword_found
+
+    @classmethod
+    def is_this_type_from_key_name(cls, key_name : str):
+        return key_name == cls.keyname
