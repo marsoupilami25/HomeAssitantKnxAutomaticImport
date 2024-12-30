@@ -8,7 +8,10 @@ class KNXSpacesRepository:
         self._spaces_dict = {}
 
     def add_space(self, name: str, space: KNXSpace):
-        self._spaces_dict[name.lower()] = space
+        #name for yaml in HA has sevral constraints:
+        #   . no space
+        #   . lower case
+        self._spaces_dict[name.lower().replace(" ","")] = space
 
     @property
     def list(self):
