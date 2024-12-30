@@ -1,4 +1,7 @@
 import logging
+import os
+from typing import Annotated
+
 import typer
 import KNXProjectManagement
 
@@ -26,14 +29,24 @@ def validate_log_level(value: str):
     return value.upper()
 
 def main(file: str,
-         log_level: str = typer.Option(
-             "WARNING",
+         output_path: Annotated[str, typer.Option("--output-path","-o")] = os.getcwd(),
+         log_level: Annotated[str, typer.Option("--log-level","-l",
              help="Logs level (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
              metavar="[DEBUG|INFO|WARNING|ERROR|CRITICAL]",
              show_default=True,
-             callback=validate_log_level
-         )):
+             callback=validate_log_level )] = "WARNING"
+         ):
     setup_logging(log_level)
+    target_path = os.path.join(output_path, "knx") #path where files are stored
+    #if the path exists, existign files are loaded
+    if os.path.exists(target_path):
+        logging.info(f"Path {target_path} already exists, try to open existing yaml files")
+        for file_name in os.listdir(target_path):
+            if file_name.endswith(".yaml"):
+                file_path = os.path.join(target_path, file_name)
+                with open(file_path, 'r') as yaml_file:
+                    logging.info(f"Read file {file_path}")
+                    pass
     logging.info(f"Opening {file}")
     # ClassFromTypedDict.set_typeddict_class_association({
     #     'DPTType' : 'KNXProjectManagement.KNXDPTType.KNXDPTType',
@@ -46,7 +59,11 @@ def main(file: str,
     my_analyzer.star_analysis()
     logging.info("Start locations analysis")
     my_repository = HAKNXLocationsRepository(my_analyzer.locations, my_project)
-    my_repository.dump()
+    if not os.path.exists(target_path):
+        os.makedirs(target_path, exist_ok=True)
+    if not os.path.isdir(target_path):
+        raise ValueError(f"Output path '{target_path}' is not a directory.")
+    my_repository.dump(target_path, True)
 
 
 if __name__ == "__main__":

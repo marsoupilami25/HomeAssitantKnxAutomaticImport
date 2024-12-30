@@ -1,3 +1,5 @@
+import os
+
 import yaml
 from yaml import Dumper
 
@@ -41,7 +43,16 @@ class HAKNXLocationsRepository:
     def __next__(self):
         return self._locations_list.__iter__().__next__()
 
-    def dump(self):
+    def dump(self, output_path, create_output_path):
+        if not os.path.exists(output_path):
+            if create_output_path:
+                os.makedirs(output_path, exist_ok=True)
+            else:
+                raise ValueError(f"Output path '{output_path}' does not exist.")
+        if not os.path.isdir(output_path):
+            raise ValueError(f"Output path '{output_path}' is not a directory.")
         for element in self._locations_list:
-            print(element.dump())
+            file_path = os.path.join(output_path, f"{element.get_name()}.yaml")
+            with open(file_path, "w") as file:
+                file.write(element.dump())
 

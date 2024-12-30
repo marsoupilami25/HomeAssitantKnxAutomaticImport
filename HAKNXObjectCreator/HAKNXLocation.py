@@ -31,6 +31,9 @@ class HAKNXLocation(Serializable):
                 else:
                     self._objects[class_type] = [knx_object]
 
+    def get_name(self):
+        return self._name
+
     def is_empty(self):
         return len(self._objects) == 0
 
