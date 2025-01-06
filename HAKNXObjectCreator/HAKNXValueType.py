@@ -168,34 +168,41 @@ class HAKNXValueType:
         'reactive_energy_8byte': KNXDPTType.constructor_from_ints(29, 12),
     }
 
-    type: str | None
+    _type: str | None
 
     @property
     def dpt(self) -> KNXDPTType | None:
-        if type is None:
+        if self._type is None:
             return None
         else:
-            return self._value_types[self.type]
+            return self._value_types[self._type]
 
     @dpt.setter
     def dpt(self, dpt: KNXDPTType | None):
         if dpt is None:
-            self.type = None
+            self._type = None
             return
         dpt_found = False
         for key, value in self._value_types.items():
             if (value.main == dpt.main) and (value.sub == dpt.sub):
-                self.type = key
+                self._type = key
                 dpt_found = True
         if not dpt_found:
-            self.type = None
+            self._type = None
+
+    @property
+    def type(self):
+        return self._type
 
     @type.setter
     def type(self, value_type: str | None):
         if value_type is None:
-            self.type = None
+            self._type = None
             return
         if value_type in self._value_types.keys():
-            self.type = value_type
+            self._type = value_type
         else:
-            self.type = None
+            self._type = None
+
+    def __str__(self):
+        return self._type
