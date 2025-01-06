@@ -11,7 +11,7 @@ class KNXDPTType(ClassFromTypedDict):
     sub: int | None
 
     @classmethod
-    def constructor_from_ints(cls,main: int, sub: int):
+    def constructor_from_ints(cls,main: int, sub: int | None):
         """
 
         :param main:
