@@ -1,11 +1,23 @@
 import logging
-from typing import TypedDict
+from enum import Enum
+from typing import TypedDict, NamedTuple, Optional
 
 from KNXProjectManagement.KNXDPTType import KNXDPTType
 from KNXProjectManagement.KNXFunction import KNXFunction
 from KNXProjectManagement.KNXGroupAddress import KNXGroupAddress
 from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 from Utils.Serializable import Serializable
+
+class KNXDeviceParameterType(Enum):
+    GA = 1  # Group Adress parameter type
+    RtR = 2 # Response to Read Parameter type
+
+class KNXDeviceParameterGA(TypedDict):
+    dpts: list[KNXDPTType]
+    keywords: list[str]
+
+class KNXDeviceParameterRtR(TypedDict):
+    param_for_address: str
 
 class KNXDeviceParameter(TypedDict):
     """
@@ -17,8 +29,8 @@ class KNXDeviceParameter(TypedDict):
     """
     name : str
     required: bool
-    dpts: list[KNXDPTType]
-    keywords: list[str]
+    type: KNXDeviceParameterType
+    configuration: KNXDeviceParameterGA | KNXDeviceParameterRtR
 
 class HAKNXDevice(Serializable):
     """
@@ -36,6 +48,13 @@ class HAKNXDevice(Serializable):
     name: str
     _extra: dict
 
+    class _Result(NamedTuple):
+        """
+        internal class to return a result able to make difference between None and nothing found
+        """
+        found: bool
+        data: Optional[object]
+
     @classmethod
     def get_device_type_name(cls):
         return cls.keyname
@@ -43,6 +62,51 @@ class HAKNXDevice(Serializable):
     def __init__(self):
         self.name = ""
         self._extra = {}
+
+    @staticmethod
+    def _get_param_for_ga(param_name:str, config: KNXDeviceParameterGA, function: KNXFunction, knx_project_manager: KNXProjectManager) -> _Result:
+        param_found = False
+        param_value = None
+        gas = function.group_addresses #get group addresses from the function
+        for ga_ref in gas.keys():  # go through all group address name
+            ga: KNXGroupAddress = knx_project_manager.get_knx_group_address(ga_ref)  # get the detail group address
+            name = ga.flat_name  # get the flat name of the GA
+            keyword_found = False
+            for key in config["keywords"]:  # search it in the keywords list
+                if key in name:
+                    keyword_found = True
+                    break
+            if keyword_found:  # if keyword found
+                logging.info(f"Parameter {param_name} found in GA '{ga.name}'")
+                # check DPT Type
+                if not config["dpts"]:
+                    param_found = True
+                    param_value = ga.address
+                    break  # stop group address search
+                elif ga.dpt in config["dpts"]:
+                    param_found = True
+                    param_value = ga.address
+                    break  # stop group address search
+                else:
+                    logging.warning(
+                        f"Incompatible DPT type for parameter {param_name} found in GA '{ga.name}'. Have {ga.dpt} but expect {config["dpts"]}")
+                    break  # stop group address search
+        return HAKNXDevice._Result(param_found, param_value)
+
+    def _get_param_for_rtr(self, param_name:str, config: KNXDeviceParameterRtR, function: KNXFunction, knx_project_manager: KNXProjectManager) -> _Result:
+        param_found = False
+        param_value = None
+        if (hasattr(self,config["param_for_address"])) and (getattr(self, config["param_for_address"]) is not None):
+            ga_ref = getattr(self,config["param_for_address"])
+            ga: KNXGroupAddress = knx_project_manager.get_knx_group_address(ga_ref)  # get the detail group address
+            for com_obj in ga.communication_object_ids:
+                co = knx_project_manager.get_com_object(com_obj)
+                if co.is_readable():
+                    param_found = True
+                    param_value = True
+        else:
+            logging.warning(f"No address parameter '{config["param_for_address"]}' found for parameter '{param_name}'")
+        return HAKNXDevice._Result(param_found, param_value)
 
     def set_from_function(self, function: KNXFunction, knx_project_manager: KNXProjectManager):
         """
@@ -55,33 +119,17 @@ class HAKNXDevice(Serializable):
         :rtype: subclass of HAKNXDevice
         """
         self.name = function.name #the name of the device is the name of the KNX function
-        gas = function.group_addresses #get group addresses from the function
         for param in self.parameters: #go through all expected parameters in the class
             logging.info(f"Search for parameter {param["name"]}")
-            param_found = False
-            param_value = None
-            for ga_ref in gas.keys(): #go through all group address name
-                ga : KNXGroupAddress = knx_project_manager.get_knx_group_address(ga_ref) # get the detail group address
-                name = ga.flat_name # get the flat name of the GA
-                keyword_found = False
-                for key in param["keywords"]: #search it in the keywords list
-                    if key in name:
-                        keyword_found = True
-                        break
-                if keyword_found: #if keyword found
-                    logging.info(f"Parameter {param["name"]} found in GA '{ga.name}'")
-                    #check DPT Type
-                    if not param["dpts"]:
-                        param_found = True
-                        param_value = ga.address
-                        break  # stop group address search
-                    elif ga.dpt in param["dpts"]:
-                        param_found = True
-                        param_value = ga.address
-                        break  # stop group address search
-                    else:
-                        logging.warning(f"Incompatible DPT type for parameter {param["name"]} found in GA '{ga.name}'. Have {ga.dpt} but expect {param["dpts"]}")
-                        break  # stop group address search
+            result: HAKNXDevice._Result = HAKNXDevice._Result(False, None)
+            if param["type"] == KNXDeviceParameterType.GA:
+                result = self._get_param_for_ga(param["name"], param["configuration"], function, knx_project_manager)
+            elif param["type"] == KNXDeviceParameterType.RtR:
+                result = self._get_param_for_rtr(param["name"], param["configuration"], function, knx_project_manager)
+            else:
+                raise ValueError(f"Unexpected Parameter Type {param["type"]}")
+            param_found = result.found
+            param_value = result.data
             if param_found: #if parameter has not been found
                 setattr(self, param["name"], param_value)  # set the attribute
             else:

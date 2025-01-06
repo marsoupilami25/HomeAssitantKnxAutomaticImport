@@ -2,9 +2,9 @@ from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
 from KNXProjectManagement.KNXDPTType import KNXDPTType
 
 
-class HAKNXLight(HAKNXDevice):
-    keyname = 'light'
-    keywords = ['light', 'lumiere']
+class HAKNXSwitch(HAKNXDevice):
+    keyname = 'switch'
+    keywords = ['switch', 'commutateur', 'prise', 'interrupteur', 'socket']
     parameters = [
         {
             'name': 'address',
@@ -12,7 +12,7 @@ class HAKNXLight(HAKNXDevice):
             'type': KNXDeviceParameterType.GA,
             'configuration': {
                 'dpts': [
-                KNXDPTType.constructor_from_ints(1,1)
+                KNXDPTType.constructor_from_ints(1,0)
                 ],
                 'keywords': ['on', 'off', 'switch']
             }
@@ -23,13 +23,22 @@ class HAKNXLight(HAKNXDevice):
             'type': KNXDeviceParameterType.GA,
             'configuration': {
                 'dpts': [
-                KNXDPTType.constructor_from_ints(1,1)
+                KNXDPTType.constructor_from_ints(1,0)
                 ],
                 'keywords': ['etat', 'state']
+            }
+        },
+        {
+            'name': 'respond_to_read',
+            'required': False,
+            'type': KNXDeviceParameterType.RtR,
+            'configuration': {
+                'param_for_address': 'address'
             }
         }
     ]
 
     address: str
     state_address: str
+    respond_to_read: bool
 

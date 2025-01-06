@@ -11,6 +11,7 @@ class KNXGroupAddress(ClassFromTypedDict):
     _name : str
     address : str
     dpt : KNXDPTType
+    communication_object_ids: list[str]
 
     @property
     def name(self):

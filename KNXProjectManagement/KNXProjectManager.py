@@ -5,6 +5,7 @@ import sys
 from xknxproject import XKNXProj
 from xknxproject.models import KNXProject
 
+from KNXProjectManagement.KNXComObject import KNXComObject
 from KNXProjectManagement.KNXFunction import KNXFunction
 from KNXProjectManagement.KNXGroupAddress import KNXGroupAddress
 from KNXProjectManagement.KNXProjectInfo import KNXProjectInfo
@@ -17,6 +18,7 @@ class KNXProjectManager(ClassFromTypedDict):
     functions: dict[str, KNXFunction]
     group_addresses: dict[str, KNXGroupAddress]
     locations: dict[str, KNXSpace]
+    communication_objects: dict[str, KNXComObject]
 
     @classmethod
     def init(cls, file: str):
@@ -62,3 +64,12 @@ class KNXProjectManager(ClassFromTypedDict):
         else:
             logging.error(f"Group Address ref {ref} not found")
             return None
+
+    def get_com_object(self, ref: str) -> KNXComObject | None:
+        if ref in self.communication_objects.keys():
+            co = self.communication_objects[ref]
+            return co
+        else:
+            logging.error(f"Communication Object ref {ref} not found")
+            return None
+
