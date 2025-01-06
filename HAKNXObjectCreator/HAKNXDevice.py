@@ -97,12 +97,13 @@ class HAKNXDevice(Serializable):
         param_found = False
         param_value = None
         if (hasattr(self,config["param_for_address"])) and (getattr(self, config["param_for_address"]) is not None):
+            param_found = True
+            param_value = False
             ga_ref = getattr(self,config["param_for_address"])
             ga: KNXGroupAddress = knx_project_manager.get_knx_group_address(ga_ref)  # get the detail group address
             for com_obj in ga.communication_object_ids:
                 co = knx_project_manager.get_com_object(com_obj)
                 if co.is_readable():
-                    param_found = True
                     param_value = True
         else:
             logging.warning(f"No address parameter '{config["param_for_address"]}' found for parameter '{param_name}'")

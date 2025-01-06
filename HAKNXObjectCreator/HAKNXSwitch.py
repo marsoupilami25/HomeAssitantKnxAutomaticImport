@@ -12,7 +12,7 @@ class HAKNXSwitch(HAKNXDevice):
             'type': KNXDeviceParameterType.GA,
             'configuration': {
                 'dpts': [
-                KNXDPTType.constructor_from_ints(1,0)
+                KNXDPTType.constructor_from_ints(1,None)
                 ],
                 'keywords': ['on', 'off', 'switch']
             }
@@ -23,7 +23,7 @@ class HAKNXSwitch(HAKNXDevice):
             'type': KNXDeviceParameterType.GA,
             'configuration': {
                 'dpts': [
-                KNXDPTType.constructor_from_ints(1,0)
+                KNXDPTType.constructor_from_ints(1,None)
                 ],
                 'keywords': ['etat', 'state']
             }
