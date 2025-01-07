@@ -31,7 +31,9 @@ class KNXDPTType(ClassFromTypedDict):
             return False
         # two DPT are equal if they have the same main and sub or if thay have the same main but one of the sub is 0
         # when sub is 0, it covers all possible value of the sub
-        return (self.main == other.main) and ((self.sub is None) or (other.sub is None) or (self.sub == other.sub))
+        if (self.sub is None) or (other.sub is None):
+            return self.main == other.main
+        return (self.main == other.main) and (self.sub == other.sub)
 
     def strict_eq(self, other):
         if not isinstance(other, KNXDPTType):

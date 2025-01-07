@@ -63,25 +63,7 @@ class HAKNXLocation(Serializable):
             if not imported_dict:
                 logging.info(f"No data found in file {yaml_file}")
                 return
-            final_dict: dict = {}
-            #detect if it is a ha yaml file and remove useless values
-            key_list = list(imported_dict.keys())
-            if (len(key_list) == 1) and (key_list[0] == "knx"):
-                final_dict = imported_dict["knx"]
-            else:
-                final_dict = imported_dict
-            for key in final_dict.keys():
-                objects_to_import = final_dict[key]
-                list_of_objects = []
-                for element in objects_to_import:
-                    ha_knx_object_type = HAKNXFactory.search_associated_class_from_key_name(key)
-                    ha_knx_object = ha_knx_object_type()
-                    if ha_knx_object is None:
-                        logging.warning(f"No class found for key {key}")
-                    else:
-                        ha_knx_object.set_from_dict(element)
-                        list_of_objects.append(ha_knx_object)
-                self._objects[key] = list_of_objects
+            self.from_dict(imported_dict)
 
     def get_name(self):
         return self._name
@@ -94,6 +76,26 @@ class HAKNXLocation(Serializable):
 
     def to_dict(self):
         return Serializable.convert_to_dict(self._objects)
+
+    def from_dict(self, dict_obj: dict):
+        # detect if it is a ha yaml file and remove useless values
+        key_list = list(dict_obj.keys())
+        if (len(key_list) == 1) and (key_list[0] == "knx"):
+            final_dict = dict_obj["knx"]
+        else:
+            final_dict = dict_obj
+        for key in final_dict.keys():
+            ha_knx_object_type = HAKNXFactory.search_associated_class_from_key_name(key)
+            objects_to_import = final_dict[key]
+            list_of_objects = []
+            for element in objects_to_import:
+                ha_knx_object = ha_knx_object_type()
+                if ha_knx_object is None:
+                    logging.warning(f"No class found for key {key}")
+                else:
+                    ha_knx_object.from_dict(element)
+                    list_of_objects.append(ha_knx_object)
+            self._objects[key] = list_of_objects
 
     def dump(self, ha_mode : bool = False):
         dico = self.to_dict()

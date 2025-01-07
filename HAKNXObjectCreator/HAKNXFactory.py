@@ -1,11 +1,12 @@
 from HAKNXObjectCreator.HAKNXLight import HAKNXLight
+from HAKNXObjectCreator.HAKNXSensor import HAKNXSensor
 from HAKNXObjectCreator.HAKNXSwitch import HAKNXSwitch
 from KNXProjectManagement.KNXFunction import KNXFunction
 
 
 class HAKNXFactory:
 
-    _ha_knx_objects_list = [HAKNXLight, HAKNXSwitch]
+    _ha_knx_objects_list = [HAKNXLight, HAKNXSwitch, HAKNXSensor]
 
     @classmethod
     def search_associated_class_from_function(cls, function: KNXFunction) -> type | None :

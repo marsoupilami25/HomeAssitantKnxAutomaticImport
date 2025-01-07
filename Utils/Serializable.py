@@ -1,3 +1,6 @@
+import inspect
+
+
 class Quoted(str):
     pass
 
@@ -18,8 +21,22 @@ class Serializable:
         return result
 
     def from_dict(self, dict_obj: dict):
+        type_list = {}
+        for base in inspect.getmro(type(self)):
+            new_list = inspect.get_annotations(base)
+            type_list.update(new_list)
         for key, value in dict_obj.items():
-            setattr(self, key, value)
+            if key in type_list.keys():
+                attr_type = type_list[key]
+                value_type = type(value)
+                if issubclass(attr_type, Serializable):
+                    obj = attr_type()
+                    obj.from_dict(value)
+                    setattr(self, key, obj)
+                else:
+                    setattr(self, key, value)
+            else:
+                setattr(self, key, value)
 
     @staticmethod
     def convert_to_dict(obj: object):

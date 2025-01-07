@@ -1,6 +1,9 @@
-from KNXProjectManagement.KNXDPTType import KNXDPTType
+from typing import cast
 
-class HAKNXValueType:
+from KNXProjectManagement.KNXDPTType import KNXDPTType
+from Utils.Serializable import Serializable
+
+class HAKNXValueType(Serializable):
 
     _value_types: dict[str, KNXDPTType] = {
         '1byte_unsigned':   KNXDPTType.constructor_from_ints(5, None),
@@ -206,3 +209,21 @@ class HAKNXValueType:
 
     def __str__(self):
         return self._type
+
+    def __repr__(self):
+        return self._type
+
+    def __eq__(self, other):
+        if not isinstance(other, HAKNXValueType):
+            return False
+        other = cast(other, HAKNXValueType)
+        return self.type == other.type
+
+    def to_dict(self):
+        return self._type
+
+    def from_dict(self, dict_obj: dict):
+        if type(dict_obj) != str:
+            raise ValueError(f"Unexpected type '{type(dict_obj)}', expecting a string")
+        else:
+            self.type = dict_obj
