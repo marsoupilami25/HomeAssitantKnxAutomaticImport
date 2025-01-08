@@ -1,7 +1,10 @@
+from HAKNXObjectCreator.HAKNXDate import HAKNXDate
 from HAKNXObjectCreator.HAKNXDateTime import HAKNXDateTime
+from HAKNXObjectCreator.HAKNXExpose import HAKNXExpose
 from HAKNXObjectCreator.HAKNXLight import HAKNXLight
 from HAKNXObjectCreator.HAKNXSensor import HAKNXSensor
 from HAKNXObjectCreator.HAKNXSwitch import HAKNXSwitch
+from HAKNXObjectCreator.HAKNXTime import HAKNXTime
 from KNXProjectManagement.KNXFunction import KNXFunction
 
 
@@ -10,7 +13,10 @@ class HAKNXFactory:
     _ha_knx_objects_list = [HAKNXLight,
                             HAKNXSwitch,
                             HAKNXSensor,
-                            HAKNXDateTime
+                            HAKNXDateTime,
+                            HAKNXDate,
+                            HAKNXTime,
+                            HAKNXExpose
                             ]
 
     @classmethod

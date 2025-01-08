@@ -45,12 +45,12 @@ class HAKNXLocation(Serializable):
                     logging.warning(f"No class found for function {function.name}")
                 else:
                     ha_knx_object: HAKNXDevice = ha_knx_object_type()
-                    ha_knx_object.set_from_function(function, knx_project_manager)
-                    class_type = ha_knx_object.get_device_type_name()
-                    if class_type in self._objects:
-                        self._objects[class_type].append(ha_knx_object)
-                    else:
-                        self._objects[class_type] = [ha_knx_object]
+                    if ha_knx_object.set_from_function(function, knx_project_manager):
+                        class_type = ha_knx_object.get_device_type_name()
+                        if class_type in self._objects:
+                            self._objects[class_type].append(ha_knx_object)
+                        else:
+                            self._objects[class_type] = [ha_knx_object]
             elif len(existing_devices) == 1:
                 existing_devices[0].set_from_function(function, knx_project_manager)
             else:
@@ -106,4 +106,4 @@ class HAKNXLocation(Serializable):
             # new_new_dico[self.get_name()] = new_dico
         else:
             new_dico = dico
-        return yaml.dump(new_dico, sort_keys=False, default_style=None)
+        return yaml.dump(new_dico, sort_keys=False, default_style=None, default_flow_style=False)

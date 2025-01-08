@@ -6,6 +6,7 @@ from Utils.Serializable import Serializable
 class HAKNXValueType(Serializable):
 
     _value_types: dict[str, KNXDPTType] = {
+        'binary':           KNXDPTType.constructor_from_ints(1, None),
         '1byte_unsigned':   KNXDPTType.constructor_from_ints(5, None),
         'percent':          KNXDPTType.constructor_from_ints(5, 1),
         'angle':            KNXDPTType.constructor_from_ints(5, 3),
@@ -62,6 +63,8 @@ class HAKNXValueType(Serializable):
         'wind_speed_kmh':   KNXDPTType.constructor_from_ints(9, 28),
         'absolute_humidity': KNXDPTType.constructor_from_ints(9, 29),
         'concentration_ugm3': KNXDPTType.constructor_from_ints(9, 30),
+        'time':             KNXDPTType.constructor_from_ints(10, 1),
+        'date':             KNXDPTType.constructor_from_ints(11, 1),
         '4byte_unsigned':   KNXDPTType.constructor_from_ints(12, None),
         'pulse_4_ucount':   KNXDPTType.constructor_from_ints(12, 1),
         'long_time_period_sec': KNXDPTType.constructor_from_ints(12, 100),
@@ -165,6 +168,7 @@ class HAKNXValueType(Serializable):
         'string':           KNXDPTType.constructor_from_ints(16, 0),
         'latin_1':          KNXDPTType.constructor_from_ints(16, 1),
         'scene_number':     KNXDPTType.constructor_from_ints(17, 1),
+        'datetime':         KNXDPTType.constructor_from_ints(19, 1),
         '8byte_signed':     KNXDPTType.constructor_from_ints(29, None),
         'active_energy_8byte': KNXDPTType.constructor_from_ints(29, 10),
         'apparant_energy_8byte': KNXDPTType.constructor_from_ints(29, 11),
@@ -190,6 +194,11 @@ class HAKNXValueType(Serializable):
             if (value.main == dpt.main) and (value.sub == dpt.sub):
                 self._type = key
                 dpt_found = True
+        if not dpt_found:
+            for key, value in self._value_types.items():
+                if (value.main == dpt.main) and (value.sub is None):
+                    self._type = key
+                    dpt_found = True
         if not dpt_found:
             self._type = None
 

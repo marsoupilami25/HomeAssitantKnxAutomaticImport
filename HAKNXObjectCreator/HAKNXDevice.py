@@ -136,7 +136,7 @@ class HAKNXDevice(Serializable):
             param_value.dpt = ga.dpt
         return HAKNXDevice._Result(param_found, param_value)
 
-    def set_from_function(self, function: KNXFunction, knx_project_manager: KNXProjectManager):
+    def set_from_function(self, function: KNXFunction, knx_project_manager: KNXProjectManager) -> bool:
         """
         Constructor of the class based on a function.
         :param function: function to create
@@ -165,11 +165,12 @@ class HAKNXDevice(Serializable):
             else:
                 if param["required"]:
                     logging.warning(f"Parameter {param["name"]} not found in function {function.name}")
-                    return None
+                    return False
                 else:
                     logging.info(f"Parameter {param["name"]} not found in function {function.name}")
                     if not hasattr(self, param["name"]):
                         setattr(self, param["name"], None)
+        return True
 
     @classmethod
     def is_this_type_from_function(cls, function: KNXFunction):
