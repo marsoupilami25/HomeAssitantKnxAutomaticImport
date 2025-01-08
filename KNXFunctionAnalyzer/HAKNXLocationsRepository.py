@@ -42,6 +42,10 @@ class HAKNXLocationsRepository:
                 existing_locations[0].set_name(name)
             else:
                 raise ValueError(f"Several existing locations with name {name}")
+            location = HAKNXLocation.constructor_from_knx_space(element, knx_project_manager)
+            location._name = name
+            if not location.is_empty():
+                self.add_location(location)
 
     def import_from_path(self, import_path):
         for file in os.listdir(import_path):
