@@ -1,12 +1,12 @@
+import logging
 from typing import cast
 
+from ruamel.yaml import CommentedMap
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
 from HAKNXObjectCreator.HAKNXValueType import HAKNXValueType
 from KNXProjectManagement.KNXDPTType import KNXDPTType
-from Utils.Serializable import Quoted
-
 
 class HAKNXExpose(HAKNXDevice):
     keyname = 'expose'
@@ -50,19 +50,30 @@ class HAKNXExpose(HAKNXDevice):
     address: str
     type: HAKNXValueType
 
-    def to_dict(self):
-        produced_dict = {}
-        produced_dict["type"] = self.type.__str__()
-        # produced_dict["address"] = '\"' + self.address.__str__() + '\" # ' + self.name.__str__()
-        produced_dict["address"] = Quoted(self.address.__str__())
-
-        return produced_dict
-
     @classmethod
     def to_yaml(cls, representer, node):
         node = cast(HAKNXExpose, node)
-        produced_dict: dict = {}
+        if (node.name is None) or (node.name == ''):
+            raise ValueError(f"The object {node} shall have a name")
+        produced_dict = CommentedMap()
         produced_dict["type"] = node.type.__str__()
+        produced_dict.yaml_add_eol_comment(f"{node.name}", key = 'type')
         produced_dict["address"] = DoubleQuotedScalarString(node.address.__str__())
         output_node = representer.represent_mapping('tag:yaml.org,2002:map', produced_dict)
         return output_node
+
+    def from_dict(self, dict_obj: CommentedMap):
+        super().from_dict(dict_obj)
+        comment = dict_obj.ca.items['type']
+        comment_found = False
+        value = None
+        if comment is not None:
+            for element in comment:
+                if element is not None:
+                    comment_found = True
+                    value = element.value
+        if comment_found:
+            self.name = value.replace("# ","").strip()
+        else:
+            logging.warning(f"No name found in a comment for the object {self}. Default name used")
+            self.name = self.__class__.__name__
