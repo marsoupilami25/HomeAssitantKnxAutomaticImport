@@ -5,7 +5,7 @@ from typing import cast
 
 # import yaml
 
-from ruamel.yaml import YAML, yaml_object
+from ruamel.yaml import YAML, yaml_object, CommentedMap
 
 from HAKNXObjectCreator.HAKNXFactory import HAKNXFactory
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice
@@ -72,7 +72,7 @@ class HAKNXLocation(Serializable):
     def import_from_file(self, file: str):
         with (open(file, 'r') as yaml_file):
             logging.info(f"Read file {file}")
-            imported_dict: dict = yaml.load(yaml_file)
+            imported_dict = yaml.load(yaml_file)
             if not imported_dict:
                 logging.info(f"No data found in file {yaml_file}")
                 return
@@ -87,7 +87,7 @@ class HAKNXLocation(Serializable):
     def is_empty(self):
         return len(self._objects) == 0
 
-    def from_dict(self, dict_obj: dict):
+    def from_dict(self, dict_obj: CommentedMap):
         # detect if it is a ha yaml file and remove useless values
         key_list = list(dict_obj.keys())
         if (len(key_list) == 1) and (key_list[0] == "knx"):

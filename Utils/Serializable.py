@@ -1,6 +1,6 @@
 import inspect
 
-from ruamel.yaml import YAML, yaml_object
+from ruamel.yaml import YAML, yaml_object, CommentedMap
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 
 
@@ -27,7 +27,7 @@ class Serializable:
         output_node = representer.represent_mapping('tag:yaml.org,2002:map', state)
         return output_node
 
-    def from_dict(self, dict_obj: dict):
+    def from_dict(self, dict_obj: CommentedMap):
         type_list = {}
         for base in inspect.getmro(type(self)):
             new_list = inspect.get_annotations(base)
