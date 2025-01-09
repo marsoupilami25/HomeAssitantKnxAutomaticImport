@@ -1,8 +1,8 @@
 import logging
 from enum import Enum
-from typing import TypedDict, NamedTuple, Optional, cast
+from typing import TypedDict, NamedTuple, Optional
 
-from ruamel.yaml import YAML, yaml_object
+from ruamel.yaml import YAML
 yaml = YAML()
 
 from HAKNXObjectCreator.HAKNXValueType import HAKNXValueType

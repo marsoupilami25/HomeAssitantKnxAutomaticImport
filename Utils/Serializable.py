@@ -35,7 +35,6 @@ class Serializable:
         for key, value in dict_obj.items():
             if key in type_list.keys():
                 attr_type = type_list[key]
-                value_type = type(value)
                 if issubclass(attr_type, Serializable):
                     obj = attr_type()
                     obj.from_dict(value)
