@@ -1,3 +1,7 @@
+from typing import cast
+
+from ruamel.yaml.scalarstring import DoubleQuotedScalarString
+
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
 from HAKNXObjectCreator.HAKNXValueType import HAKNXValueType
 from KNXProjectManagement.KNXDPTType import KNXDPTType
@@ -53,3 +57,12 @@ class HAKNXExpose(HAKNXDevice):
         produced_dict["address"] = Quoted(self.address.__str__())
 
         return produced_dict
+
+    @classmethod
+    def to_yaml(cls, representer, node):
+        node = cast(HAKNXExpose, node)
+        produced_dict: dict = {}
+        produced_dict["type"] = node.type.__str__()
+        produced_dict["address"] = DoubleQuotedScalarString(node.address.__str__())
+        output_node = representer.represent_mapping('tag:yaml.org,2002:map', produced_dict)
+        return output_node

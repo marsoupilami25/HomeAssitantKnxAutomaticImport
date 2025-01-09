@@ -14,7 +14,6 @@ class Serializable:
 
     @classmethod
     def to_yaml(cls, representer, node):
-        DQ = DoubleQuotedScalarString
         state = node.__dict__.copy()
         for key, value in node.__dict__.items():
             # Skip private attributes (names starting with "_")

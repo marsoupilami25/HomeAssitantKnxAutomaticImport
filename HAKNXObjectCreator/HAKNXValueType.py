@@ -1,8 +1,13 @@
 from typing import cast
 
+from ruamel.yaml import YAML, yaml_object
+
 from KNXProjectManagement.KNXDPTType import KNXDPTType
 from Utils.Serializable import Serializable
 
+yaml = YAML()
+
+@yaml_object(yaml)
 class HAKNXValueType(Serializable):
 
     _value_types: dict[str, KNXDPTType] = {
@@ -236,3 +241,9 @@ class HAKNXValueType(Serializable):
             raise ValueError(f"Unexpected type '{type(dict_obj)}', expecting a string")
         else:
             self.type = dict_obj
+
+    @classmethod
+    def to_yaml(cls, representer, node):
+        node = cast(HAKNXValueType, node)
+        output_node = representer.represent_str(node._type)
+        return output_node
