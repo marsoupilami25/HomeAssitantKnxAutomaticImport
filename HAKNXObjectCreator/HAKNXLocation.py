@@ -1,6 +1,11 @@
 import logging
+import sys
+from io import StringIO
+from typing import cast
 
-import yaml
+# import yaml
+
+from ruamel.yaml import YAML, yaml_object
 
 from HAKNXObjectCreator.HAKNXFactory import HAKNXFactory
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice
@@ -9,15 +14,23 @@ from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 from KNXProjectManagement.KNXSpace import KNXSpace
 from Utils.Serializable import Serializable
 
+yaml = YAML()
+yaml.default_style = None  # Pas de guillemets autour des scalaires
+yaml.default_flow_style = False  # Pas de format JSON pour les collections (listes, dictionnaires)
+yaml.default_tag = None
 
+
+@yaml_object(yaml)
 class HAKNXLocation(Serializable):
 
     _name: str # private attribute not to be serialized
     _objects: dict[str, list[HAKNXDevice]]
+    _ha_mode: bool #indicates if the yaml file should start with 'knx' to be compatible with home assistant
 
     def __init__(self):
         self._name = ""
         self._objects = {}
+        _ha_mode = False
 
     @classmethod
     def constructor_from_knx_space(cls, location: KNXSpace, knx_project_manager: KNXProjectManager):
@@ -57,9 +70,9 @@ class HAKNXLocation(Serializable):
                 raise ValueError(f"Several existing functions with name {function.name} in location {self._name}")
 
     def import_from_file(self, file: str):
-        with open(file, 'r') as yaml_file:
+        with (open(file, 'r') as yaml_file):
             logging.info(f"Read file {file}")
-            imported_dict: dict = yaml.safe_load(yaml_file)
+            imported_dict: dict = yaml.load(yaml_file)
             if not imported_dict:
                 logging.info(f"No data found in file {yaml_file}")
                 return
@@ -73,9 +86,6 @@ class HAKNXLocation(Serializable):
 
     def is_empty(self):
         return len(self._objects) == 0
-
-    def to_dict(self):
-        return Serializable.convert_to_dict(self._objects)
 
     def from_dict(self, dict_obj: dict):
         # detect if it is a ha yaml file and remove useless values
@@ -98,12 +108,16 @@ class HAKNXLocation(Serializable):
             self._objects[key] = list_of_objects
 
     def dump(self, ha_mode : bool = False):
-        dico = self.to_dict()
-        new_dico : dict = {}
-        # new_new_dico : dict = {}
-        if ha_mode:
-            new_dico["knx"] = dico
-            # new_new_dico[self.get_name()] = new_dico
+        self._ha_mode = ha_mode
+        stream = StringIO()
+        yaml.dump(self, stream)
+        return stream.getvalue()
+
+    @classmethod
+    def to_yaml(cls, representer, node):
+        node = cast(HAKNXLocation, node)
+        if node._ha_mode:
+            output_node = representer.represent_mapping('tag:yaml.org,2002:map', { 'knx' : node._objects} )
         else:
-            new_dico = dico
-        return yaml.dump(new_dico, sort_keys=False, default_style=None, default_flow_style=False)
+            output_node = representer.represent_mapping('tag:yaml.org,2002:map', node._objects)
+        return output_node
