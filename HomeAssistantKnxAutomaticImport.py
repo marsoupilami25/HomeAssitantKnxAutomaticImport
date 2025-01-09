@@ -44,10 +44,6 @@ def main(file: str,
         logging.info(f"Path {target_path} already exists, try to open existing yaml files")
         my_locations_repository.import_from_path(target_path)
     logging.info(f"Opening {file}")
-    # ClassFromTypedDict.set_typeddict_class_association({
-    #     'DPTType' : 'KNXProjectManagement.KNXDPTType.KNXDPTType',
-    #     'ProjectInfo' : "KNXProjectManagement.KNXProjectInfo.KNXProjectInfo"
-    # })
     ClassFromTypedDict.import_package(KNXProjectManagement)
     my_project = KNXProjectManager.init(file)
     my_project.print_knx_project_properties()

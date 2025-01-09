@@ -1,9 +1,10 @@
 import logging
 import os
 
-import yaml
+# import yaml
 from typing_extensions import final
-from yaml import Dumper
+# from yaml import Dumper
+from ruamel.yaml import YAML, yaml_object
 
 from HAKNXObjectCreator.HAKNXLocation import HAKNXLocation
 from KNXFunctionAnalyzer.KNXSpacesRepository import KNXSpacesRepository
@@ -11,21 +12,12 @@ from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 from Utils.Serializable import Quoted
 
 
-
 class HAKNXLocationsRepository:
     _locations_list: list[HAKNXLocation]
 
-    # Custom dumper to add quotes only for string values in yaml
-    @staticmethod
-    def __custom_representer(dumper: Dumper, value):
-        if isinstance(value, str):
-            return dumper.represent_scalar('tag:yaml.org,2002:str', value, style='"')
-        return dumper.represent_data(value)
 
     def __init__(self):
         self._locations_list = []
-        # Add the custom representer to the PyYAML instance
-        yaml.add_representer(Quoted, self.__custom_representer)
 
     def import_from_knx_spaces_repository(self, knx_spaces_repository: KNXSpacesRepository, knx_project_manager: KNXProjectManager):
         for name, element in knx_spaces_repository:
@@ -86,4 +78,5 @@ class HAKNXLocationsRepository:
                 with open(file_path, "w") as file:
                     initial_dump = element.dump(ha_mode=True)
                     file.write(initial_dump)
+
 
