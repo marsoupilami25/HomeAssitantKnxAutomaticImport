@@ -1,5 +1,6 @@
 from ruamel.yaml import YAML
 
+from HAKNXObjectCreator.HAKNXCover import HAKNXCover
 from HAKNXObjectCreator.HAKNXDate import HAKNXDate
 from HAKNXObjectCreator.HAKNXDateTime import HAKNXDateTime
 from HAKNXObjectCreator.HAKNXExpose import HAKNXExpose
@@ -17,6 +18,7 @@ class HAKNXFactory:
                            HAKNXDateTime,
                            HAKNXDate,
                            HAKNXTime,
+                           HAKNXCover,
                            HAKNXExpose
                            ]
 

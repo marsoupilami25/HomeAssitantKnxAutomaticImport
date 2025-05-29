@@ -63,7 +63,7 @@ class HAKNXLocationsRepository:
         for element in self._locations_list:
             file_path = os.path.join(output_path, f"{element.get_name()}.yaml")
             if os.path.exists(file_path) and not overwrite:
-                raise PermissionError(f"File '{file_path}' already exists.")
+                raise PermissionError(f"File '{file_path}' already exists. Overwrite not authorized.")
             else:
                 with open(file_path, "w") as file:
                     initial_dump = element.dump(ha_mode=True)
