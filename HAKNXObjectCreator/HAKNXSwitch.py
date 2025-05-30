@@ -14,7 +14,7 @@ class HAKNXSwitch(HAKNXDevice):
                 'dpts': [
                 KNXDPTType.constructor_from_ints(1,None)
                 ],
-                'keywords': ['on', 'off', 'switch']
+                'keywords': ['on', 'off', 'switch', 'commutation']
             }
         },
         {
@@ -25,7 +25,7 @@ class HAKNXSwitch(HAKNXDevice):
                 'dpts': [
                 KNXDPTType.constructor_from_ints(1,None)
                 ],
-                'keywords': ['etat', 'state']
+                'keywords': ['etat', 'state', 'statut']
             }
         },
         {
