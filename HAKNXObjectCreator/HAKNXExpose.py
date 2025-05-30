@@ -2,6 +2,7 @@ import logging
 from typing import cast
 
 from ruamel.yaml import CommentedMap
+from ruamel.yaml.scalarbool import ScalarBoolean
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
@@ -44,11 +45,20 @@ class HAKNXExpose(HAKNXDevice):
             'configuration': {
                 'param_for_state_address': 'address'
             }
+        },
+        {
+            'name': 'respond_to_read',
+            'required': False,
+            'type': KNXDeviceParameterType.RtR,
+            'configuration': {
+                'param_for_address': 'address'
+            }
         }
     ]
 
     address: str
     type: HAKNXValueType
+    respond_to_read: bool
 
     @classmethod
     def to_yaml(cls, representer, node):
@@ -59,6 +69,7 @@ class HAKNXExpose(HAKNXDevice):
         produced_dict["type"] = node.type.__str__()
         produced_dict.yaml_add_eol_comment(f"{node.name}", key = 'type')
         produced_dict["address"] = DoubleQuotedScalarString(node.address.__str__())
+        produced_dict["respond_to_read"] = ScalarBoolean(node.respond_to_read)
         output_node = representer.represent_mapping('tag:yaml.org,2002:map', produced_dict)
         return output_node
 
