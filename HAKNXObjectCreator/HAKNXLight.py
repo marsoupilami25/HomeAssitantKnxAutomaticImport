@@ -1,5 +1,6 @@
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
 from KNXProjectManagement.KNXDPTType import KNXDPTType
+from Utils.Serializable import Quoted
 
 
 class HAKNXLight(HAKNXDevice):
@@ -30,6 +31,6 @@ class HAKNXLight(HAKNXDevice):
         }
     ]
 
-    address: str
-    state_address: str
+    address: Quoted
+    state_address: Quoted
 

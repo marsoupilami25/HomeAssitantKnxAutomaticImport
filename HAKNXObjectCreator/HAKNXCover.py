@@ -1,5 +1,6 @@
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
 from KNXProjectManagement.KNXDPTType import KNXDPTType
+from Utils.Serializable import Quoted
 
 
 class HAKNXCover(HAKNXDevice):
@@ -63,9 +64,9 @@ class HAKNXCover(HAKNXDevice):
         }
     ]
 
-    move_long_address: str
-    move_short_address: str
-    stop_address: str
-    position_address: str
-    position_state_address: str
+    move_long_address: Quoted
+    move_short_address: Quoted
+    stop_address: Quoted
+    position_address: Quoted
+    position_state_address: Quoted
 

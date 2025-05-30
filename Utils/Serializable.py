@@ -1,4 +1,5 @@
 import inspect
+from typing import cast
 
 from ruamel.yaml import YAML, yaml_object, CommentedMap
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString
@@ -13,7 +14,7 @@ yaml = YAML()
 class Serializable:
 
     @classmethod
-    def to_yaml(cls, representer, node):
+    def pre_convert(cls, node):
         state = node.__dict__.copy()
         for key, value in node.__dict__.items():
             # Skip private attributes (names starting with "_")
@@ -22,8 +23,13 @@ class Serializable:
             # Skip attributes with value of None
             if value is None:
                 state.pop(key)
-            if isinstance(value,str):
+            if isinstance(value, Quoted):
                 state[key] = DoubleQuotedScalarString(value)
+        return state
+
+    @classmethod
+    def to_yaml(cls, representer, node):
+        state = cls.pre_convert(node)
         output_node = representer.represent_mapping('tag:yaml.org,2002:map', state)
         return output_node
 
@@ -40,6 +46,10 @@ class Serializable:
                     obj.from_dict(value)
                     setattr(self, key, obj)
                 else:
+                    try:
+                        final_value = attr_type(value)
+                    except:
+                        final_value = value
                     setattr(self, key, value)
             else:
                 setattr(self, key, value)
