@@ -1,5 +1,6 @@
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
 from KNXProjectManagement.KNXDPTType import KNXDPTType
+from Utils.Serializable import Quoted
 
 
 class HAKNXDate(HAKNXDevice):
@@ -38,7 +39,7 @@ class HAKNXDate(HAKNXDevice):
         }
     ]
 
-    address: str
-    state_address: str
+    address: Quoted
+    state_address: Quoted
     respond_to_read: bool
 

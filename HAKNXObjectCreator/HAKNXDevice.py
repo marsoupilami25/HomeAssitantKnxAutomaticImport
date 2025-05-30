@@ -1,3 +1,4 @@
+import inspect
 import logging
 from enum import Enum
 from typing import TypedDict, NamedTuple, Optional
@@ -10,7 +11,8 @@ from KNXProjectManagement.KNXDPTType import KNXDPTType
 from KNXProjectManagement.KNXFunction import KNXFunction
 from KNXProjectManagement.KNXGroupAddress import KNXGroupAddress
 from KNXProjectManagement.KNXProjectManager import KNXProjectManager
-from Utils.Serializable import Serializable
+from Utils.Serializable import Serializable, Quoted
+
 
 class KNXDeviceParameterType(Enum):
     GA = 1  # Group Adress parameter type
@@ -53,7 +55,7 @@ class HAKNXDevice(Serializable):
     keywords: list[str]
     parameters: list[KNXDeviceParameter]
 
-    name: str
+    name: Quoted
     _extra: dict
 
     class _Result(NamedTuple):
@@ -68,7 +70,7 @@ class HAKNXDevice(Serializable):
         return cls.keyname
 
     def __init__(self):
-        self.name = ""
+        self.name = Quoted("")
         self._extra = {}
 
     @staticmethod
@@ -149,7 +151,7 @@ class HAKNXDevice(Serializable):
         :return: instance of the class
         :rtype: subclass of HAKNXDevice
         """
-        self.name = function.name #the name of the device is the name of the KNX function
+        self.name = Quoted(function.name) #the name of the device is the name of the KNX function
         for param in self.parameters: #go through all expected parameters in the class
             logging.info(f"Search for parameter {param["name"]}")
             result: HAKNXDevice._Result = HAKNXDevice._Result(False, None)
@@ -164,15 +166,25 @@ class HAKNXDevice(Serializable):
             param_found = result.found
             param_value = result.data
             if param_found: #if parameter has not been found
-                setattr(self, param["name"], param_value)  # set the attribute
+                type_list = {}
+                for base in inspect.getmro(type(self)):
+                    new_list = inspect.get_annotations(base)
+                    type_list.update(new_list)
+                if param["name"] in type_list.keys():
+                    attr_type = type_list[param["name"]]
+                    try:
+                        final_value=attr_type(param_value)
+                    except:
+                        final_value=param_value
+                else:
+                    final_value = param_value
+                setattr(self, param["name"], final_value)  # set the attribute
             else:
                 if param["required"]:
                     logging.warning(f"Parameter {param["name"]} not found in function {function.name}")
                     return False
                 else:
                     logging.info(f"Parameter {param["name"]} not found in function {function.name}")
-                    if not hasattr(self, param["name"]):
-                        setattr(self, param["name"], None)
         return True
 
     @classmethod

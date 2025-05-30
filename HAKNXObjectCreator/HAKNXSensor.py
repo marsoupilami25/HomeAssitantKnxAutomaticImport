@@ -1,6 +1,7 @@
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
 from HAKNXObjectCreator.HAKNXValueType import HAKNXValueType
 from KNXProjectManagement.KNXDPTType import KNXDPTType
+from Utils.Serializable import Quoted
 
 
 class HAKNXSensor(HAKNXDevice):
@@ -38,6 +39,6 @@ class HAKNXSensor(HAKNXDevice):
         }
     ]
 
-    state_address: str
+    state_address: Quoted
     type: HAKNXValueType
 

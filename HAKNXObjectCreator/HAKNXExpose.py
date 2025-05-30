@@ -1,13 +1,16 @@
 import logging
+from copyreg import constructor
 from typing import cast
 
-from ruamel.yaml import CommentedMap
+from ruamel.yaml import CommentedMap, SafeConstructor
 from ruamel.yaml.scalarbool import ScalarBoolean
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
 from HAKNXObjectCreator.HAKNXValueType import HAKNXValueType
 from KNXProjectManagement.KNXDPTType import KNXDPTType
+from Utils.Serializable import Quoted
+
 
 class HAKNXExpose(HAKNXDevice):
     keyname = 'expose'
@@ -56,7 +59,7 @@ class HAKNXExpose(HAKNXDevice):
         }
     ]
 
-    address: str
+    address: Quoted
     type: HAKNXValueType
     respond_to_read: bool
 
@@ -65,11 +68,10 @@ class HAKNXExpose(HAKNXDevice):
         node = cast(HAKNXExpose, node)
         if (node.name is None) or (node.name == ''):
             raise ValueError(f"The object {node} shall have a name")
-        produced_dict = CommentedMap()
-        produced_dict["type"] = node.type.__str__()
+        intermediate_mapping = cls.pre_convert(node)
+        intermediate_mapping.pop('name')
+        produced_dict=CommentedMap(intermediate_mapping)
         produced_dict.yaml_add_eol_comment(f"{node.name}", key = 'type')
-        produced_dict["address"] = DoubleQuotedScalarString(node.address.__str__())
-        produced_dict["respond_to_read"] = ScalarBoolean(node.respond_to_read)
         output_node = representer.represent_mapping('tag:yaml.org,2002:map', produced_dict)
         return output_node
 

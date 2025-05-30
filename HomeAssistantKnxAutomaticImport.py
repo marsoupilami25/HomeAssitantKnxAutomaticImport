@@ -56,8 +56,9 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
         logging.info("RoundTrip activated")
         target_path = os.path.join(input_path, "knx")  #path where files are read
         #if the path exists, existing files are loaded
-        if os.path.exists(target_path):
-            logging.info(f"Path {target_path} already exists, try to open existing yaml files")
+        if not os.path.exists(target_path):
+            logging.warning(f"Path {target_path} does not exists, roundtrip is skipped.")
+        else:
             my_locations_repository.import_from_path(target_path)
     logging.info(f"Opening {file}")
     ClassFromTypedDict.import_package(KNXProjectManagement)
