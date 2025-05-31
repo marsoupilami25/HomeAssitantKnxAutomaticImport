@@ -70,13 +70,14 @@ class HAKNXExpose(HAKNXDevice):
             raise ValueError(f"The object {node} shall have a name")
         intermediate_mapping = cls.pre_convert(node)
         intermediate_mapping.pop('name')
-        produced_dict=CommentedMap(intermediate_mapping)
-        produced_dict.yaml_add_eol_comment(f"{node.name}", key = 'type')
-        output_node = representer.represent_mapping('tag:yaml.org,2002:map', produced_dict)
+        key='type'
+        if key in intermediate_mapping.ca.items:
+            intermediate_mapping.ca.items.pop(key)
+        intermediate_mapping.yaml_add_eol_comment(f"{node.name}", key = key)
+        output_node = representer.represent_mapping('tag:yaml.org,2002:map', intermediate_mapping)
         return output_node
 
     def from_dict(self, dict_obj: CommentedMap):
-        super().from_dict(dict_obj)
         comment = dict_obj.ca.items['type']
         comment_found = False
         value = None
@@ -86,7 +87,8 @@ class HAKNXExpose(HAKNXDevice):
                     comment_found = True
                     value = element.value
         if comment_found:
-            self.name = value.replace("# ","").strip()
+            dict_obj['name'] = value.replace("# ","").strip()
         else:
             logging.warning(f"No name found in a comment for the object {self}. Default name used")
-            self.name = self.__class__.__name__
+            dict_obj['name'] = self.__class__.__name__
+        super().from_dict(dict_obj)
