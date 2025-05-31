@@ -10,37 +10,29 @@ class Quoted(str):
 
 yaml = YAML()
 
-@yaml_object(yaml)
 class Serializable:
 
-    _comments = {}
+    def __init__(self):
+        self._comments = {}
 
-    @classmethod
-    def pre_convert(cls, obj):
-        commented_node = CommentedMap(obj.__dict__.copy())
-        for key, value in obj.__dict__.items():
+    def pre_convert(self):
+        commented_map = CommentedMap(self.__dict__.copy())
+        for key, value in self.__dict__.items():
             # Skip private attributes (names starting with "_")
             if key.startswith('_'):
-                commented_node.pop(key)
+                commented_map.pop(key)
             else:
                 # Skip attributes with value of None
                 if value is None:
-                    commented_node.pop(key)
+                    commented_map.pop(key)
                 else:
                     if isinstance(value, Quoted):
-                        commented_node[key] = DoubleQuotedScalarString(value)
-                    if key in cls._comments[commented_node['name']]:
-                        commented_node.ca.items[key] = cls._comments[commented_node['name']][key]
-        return commented_node
-
-    @classmethod
-    def to_yaml(cls, representer, node):
-        state = cls.pre_convert(node)
-        output_node = representer.represent_mapping('tag:yaml.org,2002:map', state)
-        return output_node
+                        commented_map[key] = DoubleQuotedScalarString(value)
+                    if key in self._comments.keys():
+                        commented_map.ca.items[key] = self._comments[key]
+        return commented_map
 
     def from_dict(self, dict_obj: CommentedMap):
-        self.__class__._comments[dict_obj['name']] = {}
         type_list = {}
         for base in inspect.getmro(type(self)):
             new_list = inspect.get_annotations(base)
@@ -62,5 +54,12 @@ class Serializable:
                 setattr(self, key, value)
             comment_pre = dict_obj.ca.items.get(key)
             if comment_pre:
-                self._comments[dict_obj['name']][key] = comment_pre
+                self._comments[key] = comment_pre
 
+    def to_yaml(self, representer):
+        commented_map = self.pre_convert()
+        output_node = representer.represent_mapping('tag:yaml.org,2002:map', commented_map)
+        return output_node
+
+def serializable_to_yaml(representer, obj: Serializable):
+    return obj.to_yaml(representer)
