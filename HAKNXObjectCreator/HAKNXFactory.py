@@ -9,6 +9,8 @@ from HAKNXObjectCreator.HAKNXSensor import HAKNXSensor
 from HAKNXObjectCreator.HAKNXSwitch import HAKNXSwitch
 from HAKNXObjectCreator.HAKNXTime import HAKNXTime
 from KNXProjectManagement.KNXFunction import KNXFunction
+from Utils.Serializable import serializable_to_yaml
+
 
 class HAKNXFactory:
 
@@ -38,3 +40,4 @@ class HAKNXFactory:
 yaml=YAML()
 for cls in HAKNXFactory.ha_knx_objects_list:
     yaml.register_class(cls)
+    yaml.representer.add_representer(cls, serializable_to_yaml)

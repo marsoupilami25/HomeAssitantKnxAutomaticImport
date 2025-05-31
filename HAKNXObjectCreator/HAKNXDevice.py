@@ -70,6 +70,7 @@ class HAKNXDevice(Serializable):
         return cls.keyname
 
     def __init__(self):
+        super().__init__()
         self.name = Quoted("")
         self._extra = {}
 

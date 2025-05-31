@@ -63,17 +63,15 @@ class HAKNXExpose(HAKNXDevice):
     type: HAKNXValueType
     respond_to_read: bool
 
-    @classmethod
-    def to_yaml(cls, representer, node):
-        node = cast(HAKNXExpose, node)
-        if (node.name is None) or (node.name == ''):
-            raise ValueError(f"The object {node} shall have a name")
-        intermediate_mapping = cls.pre_convert(node)
+    def to_yaml(self, representer):
+        if (self.name is None) or (self.name == ''):
+            raise ValueError(f"The object {self} shall have a name")
+        intermediate_mapping = self.pre_convert()
         intermediate_mapping.pop('name')
         key='type'
         if key in intermediate_mapping.ca.items:
             intermediate_mapping.ca.items.pop(key)
-        intermediate_mapping.yaml_add_eol_comment(f"{node.name}", key = key)
+        intermediate_mapping.yaml_add_eol_comment(f"{self.name}", key = key)
         output_node = representer.represent_mapping('tag:yaml.org,2002:map', intermediate_mapping)
         return output_node
 
