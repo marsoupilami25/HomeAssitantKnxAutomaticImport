@@ -13,19 +13,25 @@ yaml = YAML()
 @yaml_object(yaml)
 class Serializable:
 
+    _comments = {}
+
     @classmethod
-    def pre_convert(cls, node):
-        state = node.__dict__.copy()
-        for key, value in node.__dict__.items():
+    def pre_convert(cls, obj):
+        commented_node = CommentedMap(obj.__dict__.copy())
+        for key, value in obj.__dict__.items():
             # Skip private attributes (names starting with "_")
             if key.startswith('_'):
-                state.pop(key)
-            # Skip attributes with value of None
-            if value is None:
-                state.pop(key)
-            if isinstance(value, Quoted):
-                state[key] = DoubleQuotedScalarString(value)
-        return state
+                commented_node.pop(key)
+            else:
+                # Skip attributes with value of None
+                if value is None:
+                    commented_node.pop(key)
+                else:
+                    if isinstance(value, Quoted):
+                        commented_node[key] = DoubleQuotedScalarString(value)
+                    if key in cls._comments[commented_node['name']]:
+                        commented_node.ca.items[key] = cls._comments[commented_node['name']][key]
+        return commented_node
 
     @classmethod
     def to_yaml(cls, representer, node):
@@ -34,6 +40,7 @@ class Serializable:
         return output_node
 
     def from_dict(self, dict_obj: CommentedMap):
+        self.__class__._comments[dict_obj['name']] = {}
         type_list = {}
         for base in inspect.getmro(type(self)):
             new_list = inspect.get_annotations(base)
@@ -53,4 +60,7 @@ class Serializable:
                     setattr(self, key, value)
             else:
                 setattr(self, key, value)
+            comment_pre = dict_obj.ca.items.get(key)
+            if comment_pre:
+                self._comments[dict_obj['name']][key] = comment_pre
 
