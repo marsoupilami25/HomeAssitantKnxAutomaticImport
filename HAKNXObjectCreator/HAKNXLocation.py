@@ -4,14 +4,14 @@ from typing import cast
 
 # import yaml
 
-from ruamel.yaml import YAML, yaml_object, CommentedMap
+from ruamel.yaml import YAML, yaml_object, CommentedMap, CommentedSeq
 
 from HAKNXObjectCreator.HAKNXFactory import HAKNXFactory
 from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice
 from KNXProjectManagement.KNXFunction import KNXFunction
 from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 from KNXProjectManagement.KNXSpace import KNXSpace
-from Utils.Serializable import Serializable
+from Utils.Serializable import Serializable, serializable_to_yaml
 
 yaml = YAML()
 yaml.default_style = None  # Pas de guillemets autour des scalaires
@@ -19,7 +19,6 @@ yaml.default_flow_style = False  # Pas de format JSON pour les collections (list
 yaml.default_tag = None
 
 
-@yaml_object(yaml)
 class HAKNXLocation(Serializable):
 
     _name: str # private attribute not to be serialized
@@ -27,6 +26,7 @@ class HAKNXLocation(Serializable):
     _ha_mode: bool #indicates if the yaml file should start with 'knx' to be compatible with home assistant
 
     def __init__(self):
+        super().__init__()
         self._name = ""
         self._objects = {}
         _ha_mode = False
@@ -88,12 +88,22 @@ class HAKNXLocation(Serializable):
 
     def from_dict(self, dict_obj: CommentedMap):
         # detect if it is a ha yaml file and remove useless values
+        comment_pre = dict_obj.ca.comment
+        if comment_pre:
+            self._comments['HAKNXLocation'] = comment_pre
         key_list = list(dict_obj.keys())
-        if (len(key_list) == 1) and (key_list[0] == "knx"):
-            final_dict = dict_obj["knx"]
+        key='knx'
+        if (len(key_list) == 1) and (key_list[0] == key):
+            final_dict = dict_obj[key]
+            comment_pre = dict_obj.ca.items.get(key)
+            if comment_pre:
+                self._comments[key] = comment_pre
         else:
             final_dict = dict_obj
         for key in final_dict.keys():
+            comment_pre = final_dict.ca.items.get(key)
+            if comment_pre:
+                self._comments[key] = comment_pre
             ha_knx_object_type = HAKNXFactory.search_associated_class_from_key_name(key)
             objects_to_import = final_dict[key]
             list_of_objects = []
@@ -112,11 +122,22 @@ class HAKNXLocation(Serializable):
         yaml.dump(self, stream)
         return stream.getvalue()
 
-    @classmethod
-    def to_yaml(cls, representer, node):
-        node = cast(HAKNXLocation, node)
-        if node._ha_mode:
-            output_node = representer.represent_mapping('tag:yaml.org,2002:map', { 'knx' : node._objects} )
-        else:
-            output_node = representer.represent_mapping('tag:yaml.org,2002:map', node._objects)
+    def to_yaml(self, representer):
+        commented_map = CommentedMap(self._objects)
+        for key in self._objects.keys():
+            if key in self._comments.keys():
+                commented_map.ca.items[key] = self._comments[key]
+        if self._ha_mode:
+            commented_map = CommentedMap( { 'knx' : commented_map} )
+            knx_key = 'knx'
+            if knx_key in self._comments.keys():
+                commented_map.ca.items[knx_key] = self._comments[knx_key]
+        key='HAKNXLocation'
+        if key in self._comments.keys():
+            commented_map.ca.comment = self._comments[key]
+        output_node = representer.represent_mapping('tag:yaml.org,2002:map', commented_map)
         return output_node
+
+yaml=YAML()
+yaml.register_class(HAKNXLocation)
+yaml.representer.add_representer(HAKNXLocation, serializable_to_yaml)
