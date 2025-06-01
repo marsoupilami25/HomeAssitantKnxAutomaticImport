@@ -70,7 +70,7 @@ class HAKNXExpose(HAKNXDevice):
         key='type'
         if key in intermediate_mapping.ca.items:
             intermediate_mapping.ca.items.pop(key)
-        intermediate_mapping.yaml_add_eol_comment(f"{self.name}", key = key)
+        intermediate_mapping.yaml_add_eol_comment(f"!DO NOT REMOVE!{self.name}", key = key)
         output_node = representer.represent_mapping('tag:yaml.org,2002:map', intermediate_mapping)
         return output_node
 
@@ -84,7 +84,7 @@ class HAKNXExpose(HAKNXDevice):
                     comment_found = True
                     value = element.value
         if comment_found:
-            dict_obj['name'] = value.replace("# ","").strip()
+            dict_obj['name'] = value.replace("# !DO NOT REMOVE!","").strip()
         else:
             logging.warning(f"No name found in a comment for the object {self}. Default name used")
             dict_obj['name'] = self.__class__.__name__
