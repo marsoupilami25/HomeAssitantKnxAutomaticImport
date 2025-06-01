@@ -8,6 +8,7 @@ class KNXGroupAddressRef(ClassFromTypedDict):
     _class_ref = GroupAddressRef
 
     # for information, instance attributes
+    # warning: used ClassFromTypedDict below needs to be import otherwise the conversion does not work
     # address : str
 
     def __init__(self, data: dict):

@@ -8,6 +8,7 @@ class KNXDPTType(ClassFromTypedDict):
     _class_ref = DPTType
 
     # for information, instance attributes
+    # warning: used ClassFromTypedDict below needs to be import otherwise the conversion does not work
     # main: int
     # sub: int | None
 

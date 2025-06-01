@@ -9,6 +9,7 @@ class KNXGroupAddress(ClassFromTypedDict):
     _class_ref = GroupAddress
 
     # for information, instance attributes
+    # warning: used ClassFromTypedDict below needs to be import otherwise the conversion does not work
     # address : str
     # dpt : KNXDPTType
     # communication_object_ids: list[str]

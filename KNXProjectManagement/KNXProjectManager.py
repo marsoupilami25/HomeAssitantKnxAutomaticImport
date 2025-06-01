@@ -8,12 +8,15 @@ from xknxproject.models import KNXProject
 from KNXProjectManagement.KNXComObject import KNXComObject
 from KNXProjectManagement.KNXFunction import KNXFunction
 from KNXProjectManagement.KNXGroupAddress import KNXGroupAddress
+from KNXProjectManagement.KNXProjectInfo import KNXProjectInfo
+from KNXProjectManagement.KNXSpace import KNXSpace
 from ClassFromTypedDict import ClassFromTypedDict
 
 class KNXProjectManager(ClassFromTypedDict):
     _class_ref = KNXProject
 
     # for information, instance attributes
+    # warning: used ClassFromTypedDict below needs to be import otherwise the conversion does not work
     # info: KNXProjectInfo
     # functions: dict[str, KNXFunction]
     # group_addresses: dict[str, KNXGroupAddress]

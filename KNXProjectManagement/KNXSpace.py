@@ -10,6 +10,7 @@ class KNXSpace(ClassFromTypedDict):
     _class_ref = Space
 
     # for information, instance attributes
+    # warning: used ClassFromTypedDict below needs to be import otherwise the conversion does not work
     # spaces : dict[str, KNXSpace]
     # functions : list[str]
 
