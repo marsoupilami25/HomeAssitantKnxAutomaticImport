@@ -52,7 +52,11 @@ class HAKNXLocationsRepository:
     def __next__(self):
         return self._locations_list.__iter__().__next__()
 
-    def dump(self, output_path, create_output_path: bool = False, overwrite: bool = False):
+    def dump(self,
+             output_path,
+             create_output_path: bool = False,
+             overwrite: bool = False,
+             ha_mode: bool | None = None):
         if not os.path.exists(output_path):
             if create_output_path:
                 os.makedirs(output_path, exist_ok=True)
@@ -66,7 +70,7 @@ class HAKNXLocationsRepository:
                 raise PermissionError(f"File '{file_path}' already exists. Overwrite not authorized.")
             else:
                 with open(file_path, "w") as file:
-                    initial_dump = element.dump(ha_mode=True)
+                    initial_dump = element.dump(ha_mode=ha_mode)
                     file.write(initial_dump)
 
 
