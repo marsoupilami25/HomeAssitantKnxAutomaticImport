@@ -69,5 +69,3 @@ class HAKNXCover(HAKNXDevice):
         }
     ]
 
-
-

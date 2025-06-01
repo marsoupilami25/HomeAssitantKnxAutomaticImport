@@ -41,5 +41,3 @@ class HAKNXDate(HAKNXDevice):
             'param_class': bool
         }
     ]
-
-

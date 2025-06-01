@@ -1,4 +1,5 @@
 import inspect
+from typing import cast
 
 from ruamel.yaml import YAML, CommentedMap
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString

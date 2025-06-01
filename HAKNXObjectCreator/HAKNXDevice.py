@@ -1,3 +1,4 @@
+import inspect
 import logging
 from enum import Enum
 from typing import TypedDict, NamedTuple, Optional, Type
