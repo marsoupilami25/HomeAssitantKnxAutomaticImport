@@ -23,13 +23,12 @@ class HAKNXLocation(Serializable):
 
     _name: str # private attribute not to be serialized
     _objects: dict[str, list[HAKNXDevice]]
-    _ha_mode: bool #indicates if the yaml file should start with 'knx' to be compatible with home assistant
 
     def __init__(self):
         super().__init__()
         self._name = ""
         self._objects = {}
-        _ha_mode = False
+        self._ha_mode = False
 
     @classmethod
     def constructor_from_knx_space(cls, location: KNXSpace, knx_project_manager: KNXProjectManager):
@@ -94,11 +93,13 @@ class HAKNXLocation(Serializable):
         key_list = list(dict_obj.keys())
         key='knx'
         if (len(key_list) == 1) and (key_list[0] == key):
+            self._ha_mode=True
             final_dict = dict_obj[key]
             comment_pre = dict_obj.ca.items.get(key)
             if comment_pre:
                 self._comments[key] = comment_pre
         else:
+            self._ha_mode=False
             final_dict = dict_obj
         for key in final_dict.keys():
             comment_pre = final_dict.ca.items.get(key)
@@ -116,8 +117,9 @@ class HAKNXLocation(Serializable):
                     list_of_objects.append(ha_knx_object)
             self._objects[key] = list_of_objects
 
-    def dump(self, ha_mode : bool = False):
-        self._ha_mode = ha_mode
+    def dump(self, ha_mode : bool | None = None):
+        if not ha_mode is None:
+            self._ha_mode = ha_mode
         stream = StringIO()
         yaml.dump(self, stream)
         return stream.getvalue()

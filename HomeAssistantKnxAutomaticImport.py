@@ -41,6 +41,10 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                  help="Indicates to perform a roundtrip on the yaml configuration files.")] = False,
          overwrite: Annotated[bool, typer.Option("--overwrite", "-w",
                                                  help="Authorize to overwrite if files already exist.")] = False,
+         hamode: Annotated[bool, typer.Option("--hamode", "-h",
+                                                 help="Indicate if a 'knx' entry should be added at the beginning of the yaml file.\nIs complementary with the nhamode option. If none is indicated, the default mode is nhamode except in roundtrip mode where the mode is defined from the read yaml.")] = False,
+         nhamode: Annotated[bool, typer.Option("--nhamode", "-nh",
+                                                 help="Indicate that no 'knx' entry will be add at the beginning of the yaml file.\nIs complementary with the hamode option. If none is indicated, the default mode is nhamode except in roundtrip mode where the mode is defined from the read yaml.")] = False,
          log_level: Annotated[str, typer.Option("--log-level", "-l",
                                                 help="Logs level (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
                                                 metavar="[DEBUG|INFO|WARNING|ERROR|CRITICAL]",
@@ -50,6 +54,9 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
     """
     HomeAssistantKNXAutomaticImport is a script tool to create configuration file for the Home Assistant KNX integration.
     """
+    if hamode and nhamode:
+        logging.error("hamode and nhamode can't be activated simultaneously")
+        exit(1)
     setup_logging(log_level)
     my_locations_repository = HAKNXLocationsRepository()
     if roundtrip:
@@ -73,7 +80,11 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
         os.makedirs(target_path, exist_ok=True)
     if not os.path.isdir(target_path):
         raise NotADirectoryError(f"Output path '{target_path}' is not a directory.")
-    my_locations_repository.dump(target_path, create_output_path=True, overwrite=overwrite)
+    if (not hamode) and (not nhamode):
+        final_hamode = None
+    else:
+        final_hamode = hamode
+    my_locations_repository.dump(target_path, create_output_path=True, overwrite=overwrite, ha_mode=final_hamode)
 
 
 if __name__ == "__main__":
