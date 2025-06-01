@@ -8,8 +8,9 @@ class KNXComObject(ClassFromTypedDict):
     _class_ref = CommunicationObject
     _exception = { 'module_def': 'module' }
 
-    name: str
-    flags: KNXFlags
+    # for information, instance attributes
+    # name: str
+    # flags: KNXFlags
 
     def is_readable(self):
         return self.flags.read

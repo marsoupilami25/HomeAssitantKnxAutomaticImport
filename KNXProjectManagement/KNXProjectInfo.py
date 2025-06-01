@@ -7,7 +7,8 @@ from ClassFromTypedDict import ClassFromTypedDict
 class KNXProjectInfo(ClassFromTypedDict):
     _class_ref = ProjectInfo
 
-    _name : str
+    # for information, instance attributes
+    # _name : str
 
     @property
     def name(self):

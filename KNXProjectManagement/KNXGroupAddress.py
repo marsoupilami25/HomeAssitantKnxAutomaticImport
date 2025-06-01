@@ -8,10 +8,11 @@ from KNXProjectManagement.KNXDPTType import KNXDPTType
 class KNXGroupAddress(ClassFromTypedDict):
     _class_ref = GroupAddress
 
-    _name : str
-    address : str
-    dpt : KNXDPTType
-    communication_object_ids: list[str]
+    # for information, instance attributes
+    # _name : str
+    # address : str
+    # dpt : KNXDPTType
+    # communication_object_ids: list[str]
 
     @property
     def name(self):

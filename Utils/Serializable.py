@@ -1,7 +1,6 @@
 import inspect
-from typing import cast
 
-from ruamel.yaml import YAML, yaml_object, CommentedMap
+from ruamel.yaml import YAML, CommentedMap
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 
 
@@ -49,7 +48,7 @@ class Serializable:
                         final_value = attr_type(value)
                     except:
                         final_value = value
-                    setattr(self, key, value)
+                    setattr(self, key, final_value)
             else:
                 setattr(self, key, value)
             comment_pre = dict_obj.ca.items.get(key)

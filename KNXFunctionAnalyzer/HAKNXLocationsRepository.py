@@ -3,7 +3,6 @@ import os
 from HAKNXObjectCreator.HAKNXLocation import HAKNXLocation
 from KNXFunctionAnalyzer.KNXSpacesRepository import KNXSpacesRepository
 from KNXProjectManagement.KNXProjectManager import KNXProjectManager
-from Utils.Serializable import Quoted
 
 
 class HAKNXLocationsRepository:

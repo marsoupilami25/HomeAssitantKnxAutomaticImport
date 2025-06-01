@@ -7,8 +7,9 @@ from ClassFromTypedDict import ClassFromTypedDict
 class KNXGroupAddressRef(ClassFromTypedDict):
     _class_ref = GroupAddressRef
 
-    _name : str
-    address : str
+    # for information, instance attributes
+    # _name : str
+    # address : str
 
     @property
     def name(self):

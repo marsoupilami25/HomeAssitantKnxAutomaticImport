@@ -7,8 +7,9 @@ class KNXDPTType(ClassFromTypedDict):
 
     _class_ref = DPTType
 
-    main: int
-    sub: int | None
+    # for information, instance attributes
+    # main: int
+    # sub: int | None
 
     @classmethod
     def constructor_from_ints(cls,main: int, sub: int | None):

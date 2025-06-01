@@ -1,8 +1,5 @@
 import logging
 from io import StringIO
-from typing import cast
-
-# import yaml
 
 from ruamel.yaml import YAML, yaml_object, CommentedMap, CommentedSeq
 
@@ -20,9 +17,6 @@ yaml.default_tag = None
 
 
 class HAKNXLocation(Serializable):
-
-    _name: str # private attribute not to be serialized
-    _objects: dict[str, list[HAKNXDevice]]
 
     def __init__(self):
         super().__init__()

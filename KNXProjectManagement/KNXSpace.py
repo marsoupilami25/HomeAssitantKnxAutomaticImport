@@ -9,10 +9,10 @@ from ClassFromTypedDict import ClassFromTypedDict
 class KNXSpace(ClassFromTypedDict):
     _class_ref = Space
 
-    _name : str
-
-    spaces : dict[str, KNXSpace]
-    functions : list[str]
+    # for information, instance attributes
+    # _name : str
+    # spaces : dict[str, KNXSpace]
+    # functions : list[str]
 
     @property
     def name(self):

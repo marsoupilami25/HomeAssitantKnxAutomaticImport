@@ -8,8 +8,9 @@ from ClassFromTypedDict import ClassFromTypedDict
 class KNXFunction(ClassFromTypedDict):
     _class_ref = Function
 
-    _name : str
-    group_addresses: dict[str, KNXGroupAddressRef]
+    # for information, instance attributes
+    # _name : str
+    # group_addresses: dict[str, KNXGroupAddressRef]
 
     @property
     def name(self):

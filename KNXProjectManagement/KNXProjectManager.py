@@ -14,11 +14,13 @@ from ClassFromTypedDict import ClassFromTypedDict
 
 class KNXProjectManager(ClassFromTypedDict):
     _class_ref = KNXProject
-    info: KNXProjectInfo
-    functions: dict[str, KNXFunction]
-    group_addresses: dict[str, KNXGroupAddress]
-    locations: dict[str, KNXSpace]
-    communication_objects: dict[str, KNXComObject]
+
+    # for information, instance attributes
+    # info: KNXProjectInfo
+    # functions: dict[str, KNXFunction]
+    # group_addresses: dict[str, KNXGroupAddress]
+    # locations: dict[str, KNXSpace]
+    # communication_objects: dict[str, KNXComObject]
 
     @classmethod
     def init(cls, file: str):
