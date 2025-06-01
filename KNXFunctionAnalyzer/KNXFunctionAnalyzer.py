@@ -7,8 +7,10 @@ from KNXProjectManagement.KNXSpace import KNXSpace
 separator: str ="_"
 
 class KNXFunctionAnalyzer:
-    _knx_project: KNXProjectManager
-    _spaces_repository: KNXSpacesRepository
+
+    # for information, instance attributes
+    # _knx_project: KNXProjectManager
+    # _spaces_repository: KNXSpacesRepository
 
     def __init__(self, knx_project: KNXProjectManager):
         self._knx_project = knx_project

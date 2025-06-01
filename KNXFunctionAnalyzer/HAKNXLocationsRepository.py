@@ -6,7 +6,9 @@ from KNXProjectManagement.KNXProjectManager import KNXProjectManager
 
 
 class HAKNXLocationsRepository:
-    _locations_list: list[HAKNXLocation]
+
+    # for information, instance attributes
+    #_locations_list: list[HAKNXLocation]
 
 
     def __init__(self):

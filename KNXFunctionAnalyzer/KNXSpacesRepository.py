@@ -2,7 +2,9 @@ from KNXProjectManagement.KNXSpace import KNXSpace
 
 
 class KNXSpacesRepository:
-    _spaces_dict: dict[str, KNXSpace]
+
+    # for information, instance attributes
+    # _spaces_dict: dict[str, KNXSpace]
 
     def __init__(self):
         self._spaces_dict = {}
