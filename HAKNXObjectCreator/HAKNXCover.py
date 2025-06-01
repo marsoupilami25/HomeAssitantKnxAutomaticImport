@@ -16,7 +16,8 @@ class HAKNXCover(HAKNXDevice):
                 KNXDPTType.constructor_from_ints(1,None)
                 ],
                 'keywords': ['haut&bas', 'up&down', 'move_long', 'move long']
-            }
+            },
+            'param_class': Quoted
         },
         {
             'name': 'move_short_address',
@@ -27,7 +28,8 @@ class HAKNXCover(HAKNXDevice):
                 KNXDPTType.constructor_from_ints(1, None)
                 ],
                 'keywords': ['move_short', 'move short']
-            }
+            },
+            'param_class': Quoted
         },
         {
             'name': 'stop_address',
@@ -38,7 +40,8 @@ class HAKNXCover(HAKNXDevice):
                     KNXDPTType.constructor_from_ints(1, None)
                 ],
                 'keywords': ['stop', 'arret']
-            }
+            },
+            'param_class': Quoted
         },
         {
             'name': 'position_address',
@@ -49,7 +52,8 @@ class HAKNXCover(HAKNXDevice):
                     KNXDPTType.constructor_from_ints(5,1)
                 ],
                 'keywords': ['position (fixer)', 'position (set)']
-            }
+            },
+            'param_class': Quoted
         },
         {
             'name': 'position_state_address',
@@ -60,13 +64,10 @@ class HAKNXCover(HAKNXDevice):
                     KNXDPTType.constructor_from_ints(5, 1)
                 ],
                 'keywords': ['position (etat)', 'position state', 'position (state)']
-            }
+            },
+            'param_class': Quoted
         }
     ]
 
-    move_long_address: Quoted
-    move_short_address: Quoted
-    stop_address: Quoted
-    position_address: Quoted
-    position_state_address: Quoted
+
 

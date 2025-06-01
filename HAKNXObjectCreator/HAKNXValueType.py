@@ -1,13 +1,10 @@
-from typing import cast
-
 from ruamel.yaml import YAML, yaml_object
 
 from KNXProjectManagement.KNXDPTType import KNXDPTType
-from Utils.Serializable import Serializable
+from Utils.Serializable import Serializable, serializable_to_yaml
 
 yaml = YAML()
 
-@yaml_object(yaml)
 class HAKNXValueType(Serializable):
 
     _value_types: dict[str, KNXDPTType] = {
@@ -180,7 +177,9 @@ class HAKNXValueType(Serializable):
         'reactive_energy_8byte': KNXDPTType.constructor_from_ints(29, 12),
     }
 
-    _type: str | None
+    def __init__(self):
+        super().__init__()
+        self._type = None
 
     @property
     def dpt(self) -> KNXDPTType | None:
@@ -230,7 +229,6 @@ class HAKNXValueType(Serializable):
     def __eq__(self, other):
         if not isinstance(other, HAKNXValueType):
             return False
-        other = cast(other, HAKNXValueType)
         return self.type == other.type
 
     def to_dict(self):
@@ -242,8 +240,9 @@ class HAKNXValueType(Serializable):
         else:
             self.type = dict_obj
 
-    @classmethod
-    def to_yaml(cls, representer, node):
-        node = cast(HAKNXValueType, node)
-        output_node = representer.represent_str(node._type)
+    def to_yaml(self, representer):
+        output_node = representer.represent_str(self._type)
         return output_node
+
+yaml.register_class(HAKNXValueType)
+yaml.representer.add_representer(HAKNXValueType, serializable_to_yaml)

@@ -16,7 +16,8 @@ class HAKNXSwitch(HAKNXDevice):
                 KNXDPTType.constructor_from_ints(1,None)
                 ],
                 'keywords': ['on', 'off', 'switch', 'commutation']
-            }
+            },
+            'param_class': Quoted
         },
         {
             'name': 'state_address',
@@ -27,7 +28,8 @@ class HAKNXSwitch(HAKNXDevice):
                 KNXDPTType.constructor_from_ints(1,None)
                 ],
                 'keywords': ['etat', 'state', 'statut']
-            }
+            },
+            'param_class': Quoted
         },
         {
             'name': 'respond_to_read',
@@ -35,11 +37,9 @@ class HAKNXSwitch(HAKNXDevice):
             'type': KNXDeviceParameterType.RtR,
             'configuration': {
                 'param_for_address': 'address'
-            }
+            },
+            'param_class': bool
         }
     ]
 
-    address: Quoted
-    state_address: Quoted
-    respond_to_read: bool
 

@@ -39,7 +39,8 @@ class HAKNXExpose(HAKNXDevice):
                 KNXDPTType.constructor_from_ints(19,1)
                 ],
                 'keywords': []
-            }
+            },
+            'param_class': Quoted
         },
         {
             'name': 'type',
@@ -47,7 +48,8 @@ class HAKNXExpose(HAKNXDevice):
             'type': KNXDeviceParameterType.VT,
             'configuration': {
                 'param_for_state_address': 'address'
-            }
+            },
+            'param_class': HAKNXValueType
         },
         {
             'name': 'respond_to_read',
@@ -55,13 +57,10 @@ class HAKNXExpose(HAKNXDevice):
             'type': KNXDeviceParameterType.RtR,
             'configuration': {
                 'param_for_address': 'address'
-            }
+            },
+            'param_class': bool
         }
     ]
-
-    address: Quoted
-    type: HAKNXValueType
-    respond_to_read: bool
 
     def to_yaml(self, representer):
         if (self.name is None) or (self.name == ''):

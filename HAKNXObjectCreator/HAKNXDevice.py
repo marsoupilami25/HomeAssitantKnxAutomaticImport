@@ -1,7 +1,6 @@
-import inspect
 import logging
 from enum import Enum
-from typing import TypedDict, NamedTuple, Optional
+from typing import TypedDict, NamedTuple, Optional, Type
 
 from ruamel.yaml import YAML
 yaml = YAML()
@@ -41,6 +40,7 @@ class KNXDeviceParameter(TypedDict):
     required: bool
     type: KNXDeviceParameterType
     configuration: KNXDeviceParameterGA | KNXDeviceParameterRtR | KNXDeviceParameterVT
+    param_class: Type
 
 class HAKNXDevice(Serializable):
     """
@@ -54,9 +54,6 @@ class HAKNXDevice(Serializable):
     keyname: str
     keywords: list[str]
     parameters: list[KNXDeviceParameter]
-
-    name: Quoted
-    _extra: dict
 
     class _Result(NamedTuple):
         """
@@ -167,18 +164,11 @@ class HAKNXDevice(Serializable):
             param_found = result.found
             param_value = result.data
             if param_found: #if parameter has not been found
-                type_list = {}
-                for base in inspect.getmro(type(self)):
-                    new_list = inspect.get_annotations(base)
-                    type_list.update(new_list)
-                if param["name"] in type_list.keys():
-                    attr_type = type_list[param["name"]]
-                    try:
-                        final_value=attr_type(param_value)
-                    except:
-                        final_value=param_value
-                else:
-                    final_value = param_value
+                attr_type = param['param_class']
+                try:
+                    final_value=attr_type(param_value)
+                except:
+                    final_value=param_value
                 setattr(self, param["name"], final_value)  # set the attribute
             else:
                 if param["required"]:

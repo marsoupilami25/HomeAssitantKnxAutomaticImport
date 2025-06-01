@@ -16,7 +16,8 @@ class HAKNXLight(HAKNXDevice):
                 KNXDPTType.constructor_from_ints(1,1)
                 ],
                 'keywords': ['on', 'off', 'switch']
-            }
+            },
+            'param_class': Quoted
         },
         {
             'name': 'state_address',
@@ -27,10 +28,9 @@ class HAKNXLight(HAKNXDevice):
                 KNXDPTType.constructor_from_ints(1,1)
                 ],
                 'keywords': ['etat', 'state']
-            }
+            },
+            'param_class': Quoted
         }
     ]
 
-    address: Quoted
-    state_address: Quoted
 

@@ -27,7 +27,8 @@ class HAKNXSensor(HAKNXDevice):
                 KNXDPTType.constructor_from_ints(29,None)
                 ],
                 'keywords': []
-            }
+            },
+            'param_class': Quoted
         },
         {
             'name': 'type',
@@ -35,10 +36,9 @@ class HAKNXSensor(HAKNXDevice):
             'type': KNXDeviceParameterType.VT,
             'configuration': {
                 'param_for_state_address': 'state_address'
-            }
+            },
+            'param_class': HAKNXValueType
         }
     ]
 
-    state_address: Quoted
-    type: HAKNXValueType
 
