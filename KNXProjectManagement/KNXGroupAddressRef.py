@@ -8,8 +8,11 @@ class KNXGroupAddressRef(ClassFromTypedDict):
     _class_ref = GroupAddressRef
 
     # for information, instance attributes
-    # _name : str
     # address : str
+
+    def __init__(self, data: dict):
+        self._name = ""
+        super().__init__(data)
 
     @property
     def name(self):

@@ -10,6 +10,10 @@ class KNXProjectInfo(ClassFromTypedDict):
     # for information, instance attributes
     # _name : str
 
+    def __init__(self, data: dict):
+        self._name = ""
+        super().__init__(data)
+
     @property
     def name(self):
         return unidecode(self._name)

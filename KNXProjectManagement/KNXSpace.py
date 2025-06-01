@@ -10,9 +10,12 @@ class KNXSpace(ClassFromTypedDict):
     _class_ref = Space
 
     # for information, instance attributes
-    # _name : str
     # spaces : dict[str, KNXSpace]
     # functions : list[str]
+
+    def __init__(self, data: dict):
+        self._name = ""
+        super().__init__(data)
 
     @property
     def name(self):

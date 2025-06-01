@@ -9,10 +9,13 @@ class KNXGroupAddress(ClassFromTypedDict):
     _class_ref = GroupAddress
 
     # for information, instance attributes
-    # _name : str
     # address : str
     # dpt : KNXDPTType
     # communication_object_ids: list[str]
+
+    def __init__(self, data: dict):
+        self._name = ""
+        super().__init__(data)
 
     @property
     def name(self):

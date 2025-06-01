@@ -8,8 +8,6 @@ from xknxproject.models import KNXProject
 from KNXProjectManagement.KNXComObject import KNXComObject
 from KNXProjectManagement.KNXFunction import KNXFunction
 from KNXProjectManagement.KNXGroupAddress import KNXGroupAddress
-from KNXProjectManagement.KNXProjectInfo import KNXProjectInfo
-from KNXProjectManagement.KNXSpace import KNXSpace
 from ClassFromTypedDict import ClassFromTypedDict
 
 class KNXProjectManager(ClassFromTypedDict):

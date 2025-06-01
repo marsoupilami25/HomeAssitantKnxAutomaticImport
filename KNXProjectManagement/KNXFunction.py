@@ -9,8 +9,11 @@ class KNXFunction(ClassFromTypedDict):
     _class_ref = Function
 
     # for information, instance attributes
-    # _name : str
     # group_addresses: dict[str, KNXGroupAddressRef]
+
+    def __init__(self, data: dict):
+        self._name = ""
+        super().__init__(data)
 
     @property
     def name(self):
