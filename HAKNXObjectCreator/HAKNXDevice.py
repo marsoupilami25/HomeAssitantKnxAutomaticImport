@@ -18,6 +18,9 @@ class KNXDeviceParameterType(Enum):
     RtR = 2 # Response to Read Parameter type
     VT = 3 # value type parameter type
 
+    def __str__(self):
+        return self.name
+
 class KNXDeviceParameterGA(TypedDict):
     dpts: list[KNXDPTType]
     keywords: list[str]
