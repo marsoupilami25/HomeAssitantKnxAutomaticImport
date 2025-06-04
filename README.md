@@ -40,19 +40,19 @@ When the entity type is identified, HomeAssistantKNXAutomaticImport search for e
 Searched elements depends on the configuration variable and are described in the next chapters.
 When all entities have been generated, HomeAssistantKNXAutomaticImport generates the yaml files. One yaml files is generated per locations (building, room,...) containing functions.
 
-### Group Address configuration variable
+### Group Address configuration variable (GA)
 
 The Group Address is a configuration variable that identifies a group address to write or read on the bus.\
 When HomeAssistantKNXAutomaticImport searches for a group address it is browsing the group addresses contained in the function.
 The Group Address is identified when it contains a certain key.
 
-### Response to Read
+### Response to Read configuration variable (RtR)
 
 The Response to Read is a configuration variable that identifies if an entity will answer to a read request.\
 When HomeAssistantKNXAutomaticImport searches for a Response to Read, it is analyzing the read KNX flag of the objects associated to the group address associated to the Response to Read.
 If one is found to be active, the Response to Read configuration is set to True, False otherwise.
 
-### Value Type
+### Value Type configuration variable (VT)
 
 The Value Type is a configuration variable that identifies the value type managed by an entity.
 When HomeAssistantKNXAutomaticImport searches for a Value Type, it is analyzing the data type of the group address associated to the Value.
@@ -82,7 +82,317 @@ expose:
     address: "21/0/0"
 ```
 
-## Entities
 
+## Entities
 This section identifies the [Home Assistant KNX integration](https://www.home-assistant.io/integrations/knx/) entities that are currently managed by HomeAssistantKNXAutomaticImport.
 
+|Entity|keywords|managed configuration variables|
+|--|--|--|
+|Light|light<br>lumiere<br>|address (GA)<br>state_address (GA)<br>|
+|Switch|switch<br>commutateur<br>prise<br>interrupteur<br>socket<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+|Sensor|sensor<br>senseur<br>capteur<br>|state_address (GA)<br>type (VT)<br>|
+|Datetime|datetime<br>dateheure<br>fulltime<br>tempscomplet<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+|Date|date<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+|Time|time<br>heure<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+|Cover|cover<br>volet roulant<br>volet<br>|move_long_address (GA)<br>move_short_address (GA)<br>stop_address (GA)<br>position_address (GA)<br>position_state_address (GA)<br>|
+|Expose|expose<br>update<br>|address (GA)<br>type (VT)<br>respond_to_read (RtR)<br>|
+### Light
+|Entity|keywords|managed configuration variables|
+|--|--|--|
+|Light|light<br>lumiere<br>|address (GA)<br>state_address (GA)<br>|
+#### Group Address (GA) configuration variables
+|configuration variables|required|keywords|accepted DPT|
+|--|--|--|--|
+|address|True|on<br>off<br>switch<br>|DPT 1.001: switch<br>|
+|state_address|False|etat<br>state<br>|DPT 1.001: switch<br>|
+### Switch
+|Entity|keywords|managed configuration variables|
+|--|--|--|
+|Switch|switch<br>commutateur<br>prise<br>interrupteur<br>socket<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+#### Group Address (GA) configuration variables
+|configuration variables|required|keywords|accepted DPT|
+|--|--|--|--|
+|address|True|on<br>off<br>switch<br>commutation<br>|DPT 1: binary<br>|
+|state_address|False|etat<br>state<br>statut<br>|DPT 1: binary<br>|
+#### Response to Read (RtR) configuration variables
+|configuration variables|required|associated GA|
+|--|--|--|
+|respond_to_read|False|address|
+### Sensor
+|Entity|keywords|managed configuration variables|
+|--|--|--|
+|Sensor|sensor<br>senseur<br>capteur<br>|state_address (GA)<br>type (VT)<br>|
+#### Group Address (GA) configuration variables
+|configuration variables|required|keywords|accepted DPT|
+|--|--|--|--|
+|state_address|True||DPT 5: 1byte_unsigned<br>DPT 6: 1byte_signed<br>DPT 7: 2byte_unsigned<br>DPT 8: 2byte_signed<br>DPT 9: 2byte_float<br>DPT 12: 4byte_unsigned<br>DPT 13: 4byte_signed<br>DPT 14: 4byte_float<br>DPT 16: None<br>DPT 17: None<br>DPT 29: 8byte_signed<br>|
+#### Value Type (VT) configuration variables
+|configuration variables|required|associated GA|
+|--|--|--|
+|type|True|state_address|
+### Datetime
+|Entity|keywords|managed configuration variables|
+|--|--|--|
+|Datetime|datetime<br>dateheure<br>fulltime<br>tempscomplet<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+#### Group Address (GA) configuration variables
+|configuration variables|required|keywords|accepted DPT|
+|--|--|--|--|
+|address|True|datetime<br>dateheure<br>fulltime<br>tempscomplet<br>|DPT 19.001: datetime<br>|
+|state_address|False|etat<br>status<br>|DPT 19.001: datetime<br>|
+#### Response to Read (RtR) configuration variables
+|configuration variables|required|associated GA|
+|--|--|--|
+|respond_to_read|False|address|
+### Date
+|Entity|keywords|managed configuration variables|
+|--|--|--|
+|Date|date<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+#### Group Address (GA) configuration variables
+|configuration variables|required|keywords|accepted DPT|
+|--|--|--|--|
+|address|True|date<br>|DPT 19.001: datetime<br>|
+|state_address|False|etat<br>status<br>|DPT 19.001: datetime<br>|
+#### Response to Read (RtR) configuration variables
+|configuration variables|required|associated GA|
+|--|--|--|
+|respond_to_read|False|address|
+### Time
+|Entity|keywords|managed configuration variables|
+|--|--|--|
+|Time|time<br>heure<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+#### Group Address (GA) configuration variables
+|configuration variables|required|keywords|accepted DPT|
+|--|--|--|--|
+|address|True|time<br>heure<br>|DPT 19.001: datetime<br>|
+|state_address|False|etat<br>status<br>|DPT 19.001: datetime<br>|
+#### Response to Read (RtR) configuration variables
+|configuration variables|required|associated GA|
+|--|--|--|
+|respond_to_read|False|address|
+### Cover
+|Entity|keywords|managed configuration variables|
+|--|--|--|
+|Cover|cover<br>volet roulant<br>volet<br>|move_long_address (GA)<br>move_short_address (GA)<br>stop_address (GA)<br>position_address (GA)<br>position_state_address (GA)<br>|
+#### Group Address (GA) configuration variables
+|configuration variables|required|keywords|accepted DPT|
+|--|--|--|--|
+|move_long_address|False|haut&bas<br>up&down<br>move_long<br>move long<br>|DPT 1: binary<br>|
+|move_short_address|False|move_short<br>move short<br>|DPT 1: binary<br>|
+|stop_address|False|stop<br>arret<br>|DPT 1: binary<br>|
+|position_address|False|position (fixer)<br>position (set)<br>|DPT 5.001: percent<br>|
+|position_state_address|False|position (etat)<br>position state<br>position (state)<br>|DPT 5.001: percent<br>|
+### Expose
+|Entity|keywords|managed configuration variables|
+|--|--|--|
+|Expose|expose<br>update<br>|address (GA)<br>type (VT)<br>respond_to_read (RtR)<br>|
+#### Group Address (GA) configuration variables
+|configuration variables|required|keywords|accepted DPT|
+|--|--|--|--|
+|address|True||DPT 1: binary<br>DPT 5: 1byte_unsigned<br>DPT 6: 1byte_signed<br>DPT 7: 2byte_unsigned<br>DPT 8: 2byte_signed<br>DPT 9: 2byte_float<br>DPT 12: 4byte_unsigned<br>DPT 13: 4byte_signed<br>DPT 14: 4byte_float<br>DPT 16: None<br>DPT 17: None<br>DPT 29: 8byte_signed<br>DPT 10.001: time<br>DPT 11.001: date<br>DPT 19.001: datetime<br>|
+#### Response to Read (RtR) configuration variables
+|configuration variables|required|associated GA|
+|--|--|--|
+|respond_to_read|False|address|
+#### Value Type (VT) configuration variables
+|configuration variables|required|associated GA|
+|--|--|--|
+|type|True|address|
+
+## Data Point Types
+This section described the Data Point Types supported by the tool.
+
+|Data Points|Type|
+|--|--|
+|DPT 1|binary|
+|DPT 1.001|switch|
+|DPT 1.002|bool|
+|DPT 1.003|enable|
+|DPT 1.004|ramp|
+|DPT 1.005|alarm|
+|DPT 1.006|binary value|
+|DPT 1.007|step|
+|DPT 1.008|up down|
+|DPT 1.009|open close|
+|DPT 1.010|start|
+|DPT 1.011|state|
+|DPT 1.012|invert|
+|DPT 1.013|dim send style|
+|DPT 1.014|input source|
+|DPT 1.015|reset|
+|DPT 1.016|ack|
+|DPT 1.017|trigger|
+|DPT 1.018|occupancy|
+|DPT 1.019|window door|
+|DPT 1.021|logical function|
+|DPT 1.022|scene ab|
+|DPT 1.023|shutter blinds mode|
+|DPT 1.024|day night|
+|DPT 1.100|heat cool|
+|DPT 1.1200|consumer producer|
+|DPT 1.1201|energy direction|
+|DPT 5|1byte_unsigned|
+|DPT 5.001|percent|
+|DPT 5.003|angle|
+|DPT 5.004|percentU8|
+|DPT 5.005|decimal_factor|
+|DPT 5.006|tariff|
+|DPT 5.010|pulse|
+|DPT 6|1byte_signed|
+|DPT 6.001|percentV8|
+|DPT 6.010|counter_pulses|
+|DPT 7|2byte_unsigned|
+|DPT 7.001|pulse_2byte|
+|DPT 7.002|time_period_msec|
+|DPT 7.003|time_period_10msec|
+|DPT 7.004|time_period_100msec|
+|DPT 7.005|time_period_sec|
+|DPT 7.006|time_period_min|
+|DPT 7.007|time_period_hrs|
+|DPT 7.011|length_mm|
+|DPT 7.012|current|
+|DPT 7.013|brightness|
+|DPT 7.600|color_temperature|
+|DPT 8|2byte_signed|
+|DPT 8.001|pulse_2byte_signed|
+|DPT 8.002|delta_time_ms|
+|DPT 8.003|delta_time_10ms|
+|DPT 8.004|delta_time_100ms|
+|DPT 8.005|delta_time_sec|
+|DPT 8.006|delta_time_min|
+|DPT 8.007|delta_time_hrs|
+|DPT 8.010|percentV16|
+|DPT 8.011|rotation_angle|
+|DPT 8.012|length_m|
+|DPT 9|2byte_float|
+|DPT 9.001|temperature|
+|DPT 9.002|temperature_difference_2byte|
+|DPT 9.003|temperature_a|
+|DPT 9.004|illuminance|
+|DPT 9.005|wind_speed_ms|
+|DPT 9.006|pressure_2byte|
+|DPT 9.007|humidity|
+|DPT 9.008|ppm|
+|DPT 9.009|air_flow|
+|DPT 9.010|time_1|
+|DPT 9.011|time_2|
+|DPT 9.020|voltage|
+|DPT 9.021|curr|
+|DPT 9.022|power_density|
+|DPT 9.023|kelvin_per_percent|
+|DPT 9.024|power_2byte|
+|DPT 9.025|volume_flow|
+|DPT 9.026|rain_amount|
+|DPT 9.027|temperature_f|
+|DPT 9.028|wind_speed_kmh|
+|DPT 9.029|absolute_humidity|
+|DPT 9.030|concentration_ugm3|
+|DPT 10.001|time|
+|DPT 11.001|date|
+|DPT 12|4byte_unsigned|
+|DPT 12.001|pulse_4_ucount|
+|DPT 12.100|long_time_period_sec|
+|DPT 12.101|long_time_period_min|
+|DPT 12.102|long_time_period_hrs|
+|DPT 12.1200|volume_liquid_litre|
+|DPT 12.1201|volume_m3|
+|DPT 13|4byte_signed|
+|DPT 13.001|pulse_4byte|
+|DPT 13.002|flow_rate_m3h|
+|DPT 13.010|active_energy|
+|DPT 13.011|apparant_energy|
+|DPT 13.012|reactive_energy|
+|DPT 13.013|active_energy_kwh|
+|DPT 13.014|apparant_energy_kvah|
+|DPT 13.015|reactive_energy_kvarh|
+|DPT 13.016|active_energy_mwh|
+|DPT 13.100|long_delta_timesec|
+|DPT 14|4byte_float|
+|DPT 14.000|acceleration|
+|DPT 14.001|acceleration_angular|
+|DPT 14.002|activation_energy|
+|DPT 14.003|activity|
+|DPT 14.004|mol|
+|DPT 14.005|amplitude|
+|DPT 14.006|angle_rad|
+|DPT 14.007|angle_deg|
+|DPT 14.008|angular_momentum|
+|DPT 14.009|angular_velocity|
+|DPT 14.010|area|
+|DPT 14.011|capacitance|
+|DPT 14.012|charge_density_surface|
+|DPT 14.013|charge_density_volume|
+|DPT 14.014|compressibility|
+|DPT 14.015|conductance|
+|DPT 14.016|electrical_conductivity|
+|DPT 14.017|density|
+|DPT 14.018|electric_charge|
+|DPT 14.019|electric_current|
+|DPT 14.020|electric_current_density|
+|DPT 14.021|electric_dipole_moment|
+|DPT 14.022|electric_displacement|
+|DPT 14.023|electric_field_strength|
+|DPT 14.024|electric_flux|
+|DPT 14.025|electric_flux_density|
+|DPT 14.026|electric_polarization|
+|DPT 14.027|electric_potential|
+|DPT 14.028|electric_potential_difference|
+|DPT 14.029|electromagnetic_moment|
+|DPT 14.030|electromotive_force|
+|DPT 14.031|energy|
+|DPT 14.032|force|
+|DPT 14.033|frequency|
+|DPT 14.034|angular_frequency|
+|DPT 14.035|heatcapacity|
+|DPT 14.036|heatflowrate|
+|DPT 14.037|heat_quantity|
+|DPT 14.038|impedance|
+|DPT 14.039|length|
+|DPT 14.040|light_quantity|
+|DPT 14.041|luminance|
+|DPT 14.042|luminous_flux|
+|DPT 14.043|luminous_intensity|
+|DPT 14.044|magnetic_field_strength|
+|DPT 14.045|magnetic_flux|
+|DPT 14.046|magnetic_flux_density|
+|DPT 14.047|magnetic_moment|
+|DPT 14.048|magnetic_polarization|
+|DPT 14.049|magnetization|
+|DPT 14.050|magnetomotive_force|
+|DPT 14.051|mass|
+|DPT 14.052|mass_flux|
+|DPT 14.053|momentum|
+|DPT 14.054|phaseanglerad|
+|DPT 14.055|phaseangledeg|
+|DPT 14.056|power|
+|DPT 14.057|powerfactor|
+|DPT 14.058|pressure|
+|DPT 14.059|reactance|
+|DPT 14.060|resistance|
+|DPT 14.061|resistivity|
+|DPT 14.062|self_inductance|
+|DPT 14.063|solid_angle|
+|DPT 14.064|sound_intensity|
+|DPT 14.065|speed|
+|DPT 14.066|stress|
+|DPT 14.067|surface_tension|
+|DPT 14.068|common_temperature|
+|DPT 14.069|absolute_temperature|
+|DPT 14.070|temperature_difference|
+|DPT 14.071|thermal_capacity|
+|DPT 14.072|thermal_conductivity|
+|DPT 14.073|thermoelectric_power|
+|DPT 14.074|time_seconds|
+|DPT 14.075|torque|
+|DPT 14.076|volume|
+|DPT 14.077|volume_flux|
+|DPT 14.078|weight|
+|DPT 14.079|work|
+|DPT 14.080|apparent_power|
+|DPT 16.000|string|
+|DPT 16.001|latin_1|
+|DPT 17.001|scene_number|
+|DPT 19.001|datetime|
+|DPT 29|8byte_signed|
+|DPT 29.010|active_energy_8byte|
+|DPT 29.011|apparant_energy_8byte|
+|DPT 29.012|reactive_energy_8byte|
