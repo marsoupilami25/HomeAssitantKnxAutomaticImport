@@ -56,8 +56,10 @@ class HAKNXExpose(HAKNXDevice):
             'required': False,
             'type': KNXDeviceParameterType.RtR,
             'configuration': {
-                'param_for_address': 'address'
-            },
+                'param_for_address': 'address',
+                'param_for_state_address': None
+
+    },
             'param_class': bool
         }
     ]

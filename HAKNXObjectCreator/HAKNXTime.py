@@ -36,7 +36,8 @@ class HAKNXTime(HAKNXDevice):
             'required': False,
             'type': KNXDeviceParameterType.RtR,
             'configuration': {
-                'param_for_address': 'address'
+                'param_for_address': 'address',
+                'param_for_state_address': 'state_address'
             },
             'param_class': bool
         }
