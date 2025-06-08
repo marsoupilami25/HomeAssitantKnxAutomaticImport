@@ -62,14 +62,15 @@ for entity in HAKNXFactory.ha_knx_objects_list:
                 markdown += "|\n"
     if 'RtR' in types:
         markdown += "#### Response to Read (RtR) configuration variables\n"
-        markdown += "|configuration variables|required|associated GA|\n"
-        markdown += "|--|--|--|\n"
+        markdown += "|configuration variables|required|associated GA|state GA|\n"
+        markdown += "|--|--|--|--|\n"
         for var in entity.parameters:
             if var['type'] == KNXDeviceParameterType.RtR:
                 markdown += f"|{var['name']}"
                 markdown += f"|{var['required']}"
                 conf = var['configuration']
-                markdown += f"|{conf['param_for_address']}|\n"
+                markdown += f"|{conf['param_for_address']}"
+                markdown += f"|{conf['param_for_state_address']}|\n"
     if 'VT' in types:
         markdown += "#### Value Type (VT) configuration variables\n"
         markdown += "|configuration variables|required|associated GA|\n"
