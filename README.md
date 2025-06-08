@@ -48,9 +48,11 @@ The Group Address is identified when it contains a certain key.
 
 ### Response to Read configuration variable (RtR)
 
-The Response to Read is a configuration variable that identifies if an entity will answer to a read request.\
-When HomeAssistantKNXAutomaticImport searches for a Response to Read, it is analyzing the read KNX flag of the objects associated to the group address associated to the Response to Read.
-If one is found to be active, the Response to Read configuration is set to True, False otherwise.
+The Response to Read is a configuration variable that identifies if a KNX integration entity will answer to a read request.\
+When HomeAssistantKNXAutomaticImport searches for a Response to Read, it is:
+* checking if a state address exists
+* analyzing the read KNX flag of the objects associated to the group address associated to the Response to Read.
+If a state address exists or a read KNX flag is found, the Response to Read configuration is set to False, True otherwise.
 
 ### Value Type configuration variable (VT)
 
@@ -65,7 +67,7 @@ HomeAssistantKNXAutomaticImport is able to make roundtrip on the yaml files.\
 Indeed, as all configuration elements are not available in the knx project, the user will have to complete the generated yaml file with addition information.\
 In order not to lose the added configuration in case of an update,
 HomeAssistantKNXAutomaticImport can read the existing yaml configuration files,
-complete them and generate new configuration files preserving elements that are not part of the knx project.\
+complete them and generate new configuration files preserving elements that are not part of the knx project.
 
 ### Comments
 
@@ -75,7 +77,7 @@ Without these data, it will not be able to read correctly the yaml files and gen
 <span style="color:red">
 Private comments shall not be touched.\
 </span>
-They are identified by a `DO NOT REMOVE` as shown in the example below:\
+They are identified by a `DO NOT REMOVE` as shown in the example below:
 ```
 expose:
   - type: datetime  # !DO NOT REMOVE!Expose D&T
@@ -115,9 +117,9 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 |address|True|on<br>off<br>switch<br>commutation<br>|DPT 1: binary<br>|
 |state_address|False|etat<br>state<br>statut<br>|DPT 1: binary<br>|
 #### Response to Read (RtR) configuration variables
-|configuration variables|required|associated GA|
-|--|--|--|
-|respond_to_read|False|address|
+|configuration variables|required|associated GA|state GA|
+|--|--|--|--|
+|respond_to_read|False|address|state_address|
 ### Sensor
 |Entity|keywords|managed configuration variables|
 |--|--|--|
@@ -140,9 +142,9 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 |address|True|datetime<br>dateheure<br>fulltime<br>tempscomplet<br>|DPT 19.001: datetime<br>|
 |state_address|False|etat<br>status<br>|DPT 19.001: datetime<br>|
 #### Response to Read (RtR) configuration variables
-|configuration variables|required|associated GA|
-|--|--|--|
-|respond_to_read|False|address|
+|configuration variables|required|associated GA|state GA|
+|--|--|--|--|
+|respond_to_read|False|address|state_address|
 ### Date
 |Entity|keywords|managed configuration variables|
 |--|--|--|
@@ -153,9 +155,9 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 |address|True|date<br>|DPT 19.001: datetime<br>|
 |state_address|False|etat<br>status<br>|DPT 19.001: datetime<br>|
 #### Response to Read (RtR) configuration variables
-|configuration variables|required|associated GA|
-|--|--|--|
-|respond_to_read|False|address|
+|configuration variables|required|associated GA|state GA|
+|--|--|--|--|
+|respond_to_read|False|address|state_address|
 ### Time
 |Entity|keywords|managed configuration variables|
 |--|--|--|
@@ -166,9 +168,9 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 |address|True|time<br>heure<br>|DPT 19.001: datetime<br>|
 |state_address|False|etat<br>status<br>|DPT 19.001: datetime<br>|
 #### Response to Read (RtR) configuration variables
-|configuration variables|required|associated GA|
-|--|--|--|
-|respond_to_read|False|address|
+|configuration variables|required|associated GA|state GA|
+|--|--|--|--|
+|respond_to_read|False|address|state_address|
 ### Cover
 |Entity|keywords|managed configuration variables|
 |--|--|--|
@@ -190,9 +192,9 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 |--|--|--|--|
 |address|True||DPT 1: binary<br>DPT 5: 1byte_unsigned<br>DPT 6: 1byte_signed<br>DPT 7: 2byte_unsigned<br>DPT 8: 2byte_signed<br>DPT 9: 2byte_float<br>DPT 12: 4byte_unsigned<br>DPT 13: 4byte_signed<br>DPT 14: 4byte_float<br>DPT 16: None<br>DPT 17: None<br>DPT 29: 8byte_signed<br>DPT 10.001: time<br>DPT 11.001: date<br>DPT 19.001: datetime<br>|
 #### Response to Read (RtR) configuration variables
-|configuration variables|required|associated GA|
-|--|--|--|
-|respond_to_read|False|address|
+|configuration variables|required|associated GA|state GA|
+|--|--|--|--|
+|respond_to_read|False|address|None|
 #### Value Type (VT) configuration variables
 |configuration variables|required|associated GA|
 |--|--|--|

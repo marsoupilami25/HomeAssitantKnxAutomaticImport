@@ -48,9 +48,11 @@ The Group Address is identified when it contains a certain key.
 
 ### Response to Read configuration variable (RtR)
 
-The Response to Read is a configuration variable that identifies if an entity will answer to a read request.\
-When HomeAssistantKNXAutomaticImport searches for a Response to Read, it is analyzing the read KNX flag of the objects associated to the group address associated to the Response to Read.
-If one is found to be active, the Response to Read configuration is set to True, False otherwise.
+The Response to Read is a configuration variable that identifies if a KNX integration entity will answer to a read request.\
+When HomeAssistantKNXAutomaticImport searches for a Response to Read, it is:
+* checking if a state address exists
+* analyzing the read KNX flag of the objects associated to the group address associated to the Response to Read.
+If a state address exists or a read KNX flag is found, the Response to Read configuration is set to False, True otherwise.
 
 ### Value Type configuration variable (VT)
 
@@ -65,7 +67,7 @@ HomeAssistantKNXAutomaticImport is able to make roundtrip on the yaml files.\
 Indeed, as all configuration elements are not available in the knx project, the user will have to complete the generated yaml file with addition information.\
 In order not to lose the added configuration in case of an update,
 HomeAssistantKNXAutomaticImport can read the existing yaml configuration files,
-complete them and generate new configuration files preserving elements that are not part of the knx project.\
+complete them and generate new configuration files preserving elements that are not part of the knx project.
 
 ### Comments
 
@@ -75,7 +77,7 @@ Without these data, it will not be able to read correctly the yaml files and gen
 <span style="color:red">
 Private comments shall not be touched.\
 </span>
-They are identified by a `DO NOT REMOVE` as shown in the example below:\
+They are identified by a `DO NOT REMOVE` as shown in the example below:
 ```
 expose:
   - type: datetime  # !DO NOT REMOVE!Expose D&T
