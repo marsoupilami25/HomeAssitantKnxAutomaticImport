@@ -49,6 +49,7 @@ class HAKNXLocation(Serializable):
                 if ha_knx_object_type is None:
                     logging.warning(f"No class found for function {function.name}")
                 else:
+                    logging.info(f"Object of type {ha_knx_object_type.__name__}")
                     ha_knx_object: HAKNXDevice = ha_knx_object_type()
                     if ha_knx_object.set_from_function(function, knx_project_manager):
                         class_type = ha_knx_object.get_device_type_name()
@@ -57,6 +58,7 @@ class HAKNXLocation(Serializable):
                         else:
                             self._objects[class_type] = [ha_knx_object]
             elif len(existing_devices) == 1:
+                logging.info(f"Object of type {existing_devices[0].__class__.__name__}")
                 existing_devices[0].set_from_function(function, knx_project_manager)
             else:
                 raise ValueError(f"Several existing functions with name {function.name} in location {self._name}")

@@ -27,6 +27,7 @@ class KNXDeviceParameterGA(TypedDict):
 
 class KNXDeviceParameterRtR(TypedDict):
     param_for_address: str
+    param_for_state_address: str | None
 
 class KNXDeviceParameterVT(TypedDict):
     param_for_state_address: str
@@ -86,6 +87,7 @@ class HAKNXDevice(Serializable):
             else:
                 ga_ref = list(gas)[0]
                 ga: KNXGroupAddress = knx_project_manager.get_knx_group_address(ga_ref)  # get the detail group address
+                logging.info(f"Parameter {param_name} found in GA '{ga.name}'")
                 if (not config["dpts"]) or (ga.dpt in config["dpts"]):
                     param_found = True
                     param_value = ga.address
@@ -118,17 +120,35 @@ class HAKNXDevice(Serializable):
     def _get_param_for_rtr(self, param_name:str, config: KNXDeviceParameterRtR, function: KNXFunction, knx_project_manager: KNXProjectManager) -> _Result:
         param_found = False
         param_value = None
+        address_found = False
+        address_RtR = None # true if one device answer to a GroupvalueRead request
+        state_address_found = False
+        # search for address parameter
         if (hasattr(self,config["param_for_address"])) and (getattr(self, config["param_for_address"]) is not None):
-            param_found = True
-            param_value = False
-            ga_ref = getattr(self,config["param_for_address"])
+            address_found = True
+            address_RtR = False
+            ga_ref = getattr(self, config["param_for_address"])
             ga: KNXGroupAddress = knx_project_manager.get_knx_group_address(ga_ref)  # get the detail group address
+            logging.info(f"Address found {ga.name}")
             for com_obj in ga.communication_object_ids:
                 co = knx_project_manager.get_com_object(com_obj)
                 if co.is_readable():
-                    param_value = True
+                    logging.info("RtR identified")
+                    address_RtR = True
         else:
             logging.warning(f"No address parameter '{config["param_for_address"]}' found for parameter '{param_name}'")
+        if config["param_for_state_address"] is not None:
+            if (hasattr(self,config["param_for_state_address"])) and (getattr(self, config["param_for_state_address"]) is not None):
+                state_address_found = True
+                logging.info(f"State address found")
+        if address_found:
+            param_found = True
+            param_value = True
+            if (address_found and address_RtR) or state_address_found:
+                param_value = False
+            logging.info(f"Param for RtR is found and is {param_value}")
+        else:
+            logging.info(f"Param for RtR is not found")
         return HAKNXDevice._Result(param_found, param_value)
 
     def _get_param_for_vt(self, param_name:str, config: KNXDeviceParameterVT, function: KNXFunction, knx_project_manager: KNXProjectManager) -> _Result:
@@ -140,6 +160,7 @@ class HAKNXDevice(Serializable):
             ga: KNXGroupAddress = knx_project_manager.get_knx_group_address(ga_ref)  # get the detail group address
             param_value = HAKNXValueType()
             param_value.dpt = ga.dpt
+            logging.info(f"VT of type {param_value} found")
         return HAKNXDevice._Result(param_found, param_value)
 
     def set_from_function(self, function: KNXFunction, knx_project_manager: KNXProjectManager) -> bool:
@@ -154,7 +175,7 @@ class HAKNXDevice(Serializable):
         """
         self.name = Quoted(function.name) #the name of the device is the name of the KNX function
         for param in self.parameters: #go through all expected parameters in the class
-            logging.info(f"Search for parameter {param["name"]}")
+            logging.info(f"Search for parameter {param["name"]} of type {param["type"]}")
             result: HAKNXDevice._Result = HAKNXDevice._Result(False, None)
             if param["type"] == KNXDeviceParameterType.GA:
                 result = self._get_param_for_ga(param["name"], param["configuration"], function, knx_project_manager)
