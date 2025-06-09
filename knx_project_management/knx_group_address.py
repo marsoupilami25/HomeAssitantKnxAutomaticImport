@@ -2,7 +2,7 @@ from ClassFromTypedDict import ClassFromTypedDict
 from unidecode import unidecode
 from xknxproject.models import GroupAddress
 
-from KNXProjectManagement.KNXDPTType import KNXDPTType
+from knx_project_management.knx_dpt_type import KNXDPTType
 
 
 class KNXGroupAddress(ClassFromTypedDict):

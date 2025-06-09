@@ -1,4 +1,4 @@
-from KNXProjectManagement.KNXSpace import KNXSpace
+from knx_project_management.knx_space import KNXSpace
 
 
 class KNXSpacesRepository:

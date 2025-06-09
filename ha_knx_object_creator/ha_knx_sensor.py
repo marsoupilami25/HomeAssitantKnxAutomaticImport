@@ -1,7 +1,7 @@
-from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
-from HAKNXObjectCreator.HAKNXValueType import HAKNXValueType
-from KNXProjectManagement.KNXDPTType import KNXDPTType
-from Utils.Serializable import Quoted
+from ha_knx_object_creator.ha_knx_device import HAKNXDevice, KNXDeviceParameterType
+from ha_knx_object_creator.ha_knx_value_type import HAKNXValueType
+from knx_project_management.knx_dpt_type import KNXDPTType
+from utils.serializable import Quoted
 
 
 class HAKNXSensor(HAKNXDevice):
@@ -40,5 +40,3 @@ class HAKNXSensor(HAKNXDevice):
             'param_class': HAKNXValueType
         }
     ]
-
-

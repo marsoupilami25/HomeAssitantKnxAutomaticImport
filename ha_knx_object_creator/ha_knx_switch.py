@@ -1,11 +1,11 @@
-from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
-from KNXProjectManagement.KNXDPTType import KNXDPTType
-from Utils.Serializable import Quoted
+from ha_knx_object_creator.ha_knx_device import HAKNXDevice, KNXDeviceParameterType
+from knx_project_management.knx_dpt_type import KNXDPTType
+from utils.serializable import Quoted
 
 
-class HAKNXDate(HAKNXDevice):
-    keyname = 'date'
-    keywords = ['date']
+class HAKNXSwitch(HAKNXDevice):
+    keyname = 'switch'
+    keywords = ['switch', 'commutateur', 'prise', 'interrupteur', 'socket']
     parameters = [
         {
             'name': 'address',
@@ -13,9 +13,9 @@ class HAKNXDate(HAKNXDevice):
             'type': KNXDeviceParameterType.GA,
             'configuration': {
                 'dpts': [
-                KNXDPTType.constructor_from_ints(19,1)
+                KNXDPTType.constructor_from_ints(1,None)
                 ],
-                'keywords': keywords
+                'keywords': ['on', 'off', 'switch', 'commutation']
             },
             'param_class': Quoted
         },
@@ -25,22 +25,20 @@ class HAKNXDate(HAKNXDevice):
             'type': KNXDeviceParameterType.GA,
             'configuration': {
                 'dpts': [
-                KNXDPTType.constructor_from_ints(19,1)
+                KNXDPTType.constructor_from_ints(1,None)
                 ],
-                'keywords': ['etat', 'status']
+                'keywords': ['etat', 'state', 'statut']
             },
             'param_class': Quoted
         },
         {
             'name': 'respond_to_read',
             'required': False,
-            'type': KNXDeviceParameterType.RtR,
+            'type': KNXDeviceParameterType.RTR,
             'configuration': {
                 'param_for_address': 'address',
                 'param_for_state_address': 'state_address'
-    },
+            },
             'param_class': bool
         }
     ]
-
-

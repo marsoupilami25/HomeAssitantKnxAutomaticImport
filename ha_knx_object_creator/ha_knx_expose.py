@@ -1,15 +1,11 @@
 import logging
-from copyreg import constructor
-from typing import cast
 
-from ruamel.yaml import CommentedMap, SafeConstructor
-from ruamel.yaml.scalarbool import ScalarBoolean
-from ruamel.yaml.scalarstring import DoubleQuotedScalarString
+from ruamel.yaml import CommentedMap
 
-from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
-from HAKNXObjectCreator.HAKNXValueType import HAKNXValueType
-from KNXProjectManagement.KNXDPTType import KNXDPTType
-from Utils.Serializable import Quoted
+from ha_knx_object_creator.ha_knx_device import HAKNXDevice, KNXDeviceParameterType
+from ha_knx_object_creator.ha_knx_value_type import HAKNXValueType
+from knx_project_management.knx_dpt_type import KNXDPTType
+from utils.serializable import Quoted
 
 
 class HAKNXExpose(HAKNXDevice):
@@ -54,7 +50,7 @@ class HAKNXExpose(HAKNXDevice):
         {
             'name': 'respond_to_read',
             'required': False,
-            'type': KNXDeviceParameterType.RtR,
+            'type': KNXDeviceParameterType.RTR,
             'configuration': {
                 'param_for_address': 'address',
                 'param_for_state_address': None
@@ -88,6 +84,7 @@ class HAKNXExpose(HAKNXDevice):
         if comment_found:
             dict_obj['name'] = value.replace("# !DO NOT REMOVE!","").strip()
         else:
-            logging.warning(f"No name found in a comment for the object {self}. Default name used")
+            logging.warning("No name found in a comment for the object %s. Default name used",
+                            self)
             dict_obj['name'] = self.__class__.__name__
         super().from_dict(dict_obj)

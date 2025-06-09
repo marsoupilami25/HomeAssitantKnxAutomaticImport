@@ -5,11 +5,11 @@ import sys
 from xknxproject import XKNXProj
 from xknxproject.models import KNXProject
 
-from KNXProjectManagement.KNXComObject import KNXComObject
-from KNXProjectManagement.KNXFunction import KNXFunction
-from KNXProjectManagement.KNXGroupAddress import KNXGroupAddress
-from KNXProjectManagement.KNXProjectInfo import KNXProjectInfo
-from KNXProjectManagement.KNXSpace import KNXSpace
+from knx_project_management.knx_com_object import KNXComObject
+from knx_project_management.knx_function import KNXFunction
+from knx_project_management.knx_group_address import KNXGroupAddress
+from knx_project_management.knx_project_info import KNXProjectInfo
+from knx_project_management.knx_space import KNXSpace
 from ClassFromTypedDict import ClassFromTypedDict
 
 class KNXProjectManager(ClassFromTypedDict):
