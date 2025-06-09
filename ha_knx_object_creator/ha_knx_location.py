@@ -1,14 +1,14 @@
 import logging
 from io import StringIO
 
-from ruamel.yaml import YAML, yaml_object, CommentedMap, CommentedSeq
+from ruamel.yaml import YAML, CommentedMap
 
-from HAKNXObjectCreator.HAKNXFactory import HAKNXFactory
-from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice
-from KNXProjectManagement.KNXFunction import KNXFunction
-from KNXProjectManagement.KNXProjectManager import KNXProjectManager
-from KNXProjectManagement.KNXSpace import KNXSpace
-from Utils.Serializable import Serializable, serializable_to_yaml
+from ha_knx_object_creator.ha_knx_factory import HAKNXFactory
+from ha_knx_object_creator.ha_knx_device import HAKNXDevice
+from knx_project_management.knx_function import KNXFunction
+from knx_project_management.knx_project_manager import KNXProjectManager
+from knx_project_management.knx_space import KNXSpace
+from utils.serializable import Serializable, serializable_to_yaml
 
 yaml = YAML()
 yaml.default_style = None  # Pas de guillemets autour des scalaires
@@ -38,18 +38,21 @@ class HAKNXLocation(Serializable):
 
     def import_knx_space(self, location: KNXSpace, knx_project_manager: KNXProjectManager):
         self._name = location.name
-        logging.info(f"Update location {self._name}")
+        logging.info("Update location %s", self._name)
         for element in location.functions:
             function: KNXFunction = knx_project_manager.get_knx_function(element)
             #search if function already converted in device in _objects
             flat_list = [item for sublist in self._objects.values() for item in sublist]
-            existing_devices: list[HAKNXDevice] = list(filter(lambda obj: function.name == obj.name, flat_list))
+            existing_devices: list[HAKNXDevice] = list(
+                filter(lambda obj, f = function: f.name == obj.name,
+                       flat_list))
             if len(existing_devices) == 0:
                 ha_knx_object_type = HAKNXFactory.search_associated_class_from_function(function)
                 if ha_knx_object_type is None:
-                    logging.warning(f"No class found for function {function.name}")
+                    logging.warning("No class found for function %s",
+                                    function.name)
                 else:
-                    logging.info(f"Object of type {ha_knx_object_type.__name__}")
+                    logging.info("New object of type %s", ha_knx_object_type.__name__)
                     ha_knx_object: HAKNXDevice = ha_knx_object_type()
                     if ha_knx_object.set_from_function(function, knx_project_manager):
                         class_type = ha_knx_object.get_device_type_name()
@@ -58,17 +61,19 @@ class HAKNXLocation(Serializable):
                         else:
                             self._objects[class_type] = [ha_knx_object]
             elif len(existing_devices) == 1:
-                logging.info(f"Object of type {existing_devices[0].__class__.__name__}")
+                logging.info("Existing object of type %s",
+                             existing_devices[0].__class__.__name__)
                 existing_devices[0].set_from_function(function, knx_project_manager)
             else:
-                raise ValueError(f"Several existing functions with name {function.name} in location {self._name}")
+                raise ValueError(f"Several existing functions with name {function.name} "
+                                 f"in location {self._name}")
 
     def import_from_file(self, file: str):
-        with (open(file, 'r') as yaml_file):
-            logging.info(f"Read file {file}")
+        with open(file, 'r', encoding="utf-8") as yaml_file:
+            logging.info("Read file %s", file)
             imported_dict = yaml.load(yaml_file)
             if not imported_dict:
-                logging.info(f"No data found in file {yaml_file}")
+                logging.info("No data found in file %s", yaml_file)
                 return
             self.from_dict(imported_dict)
 
@@ -107,7 +112,7 @@ class HAKNXLocation(Serializable):
             for element in objects_to_import:
                 ha_knx_object = ha_knx_object_type()
                 if ha_knx_object is None:
-                    logging.warning(f"No class found for key {key}")
+                    logging.warning("No class found for key %s", key)
                 else:
                     ha_knx_object.from_dict(element)
                     list_of_objects.append(ha_knx_object)
@@ -122,16 +127,16 @@ class HAKNXLocation(Serializable):
 
     def to_yaml(self, representer):
         commented_map = CommentedMap(self._objects)
-        for key in self._objects.keys():
-            if key in self._comments.keys():
-                commented_map.ca.items[key] = self._comments[key]
+        for obj in self._objects:
+            if obj in self._comments:
+                commented_map.ca.items[obj] = self._comments[obj]
         if self._ha_mode:
             commented_map = CommentedMap( { 'knx' : commented_map} )
             knx_key = 'knx'
-            if knx_key in self._comments.keys():
+            if knx_key in self._comments:
                 commented_map.ca.items[knx_key] = self._comments[knx_key]
         key='HAKNXLocation'
-        if key in self._comments.keys():
+        if key in self._comments:
             commented_map.ca.comment = self._comments[key]
         output_node = representer.represent_mapping('tag:yaml.org,2002:map', commented_map)
         return output_node

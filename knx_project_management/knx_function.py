@@ -1,7 +1,7 @@
 from unidecode import unidecode
 from xknxproject.models import Function
 
-from KNXProjectManagement.KNXGroupAddressRef import KNXGroupAddressRef
+from knx_project_management.knx_group_address_ref import KNXGroupAddressRef
 from ClassFromTypedDict import ClassFromTypedDict
 
 

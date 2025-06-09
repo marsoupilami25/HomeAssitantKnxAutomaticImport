@@ -1,7 +1,7 @@
-from ruamel.yaml import YAML, yaml_object
+from ruamel.yaml import YAML
 
-from KNXProjectManagement.KNXDPTType import KNXDPTType
-from Utils.Serializable import Serializable, serializable_to_yaml
+from knx_project_management.knx_dpt_type import KNXDPTType
+from utils.serializable import Serializable, serializable_to_yaml
 
 yaml = YAML()
 
@@ -211,8 +211,7 @@ class HAKNXValueType(Serializable):
     def dpt(self) -> KNXDPTType | None:
         if self._type is None:
             return None
-        else:
-            return self._value_types[self._type]
+        return self._value_types[self._type]
 
     @dpt.setter
     def dpt(self, dpt: KNXDPTType | None):
@@ -241,7 +240,7 @@ class HAKNXValueType(Serializable):
         if value_type is None:
             self._type = None
             return
-        if value_type in self._value_types.keys():
+        if value_type in self._value_types:
             self._type = value_type
         else:
             self._type = None
@@ -261,10 +260,9 @@ class HAKNXValueType(Serializable):
         return self._type
 
     def from_dict(self, dict_obj: dict):
-        if type(dict_obj) != str:
+        if isinstance(dict_obj, str):
             raise ValueError(f"Unexpected type '{type(dict_obj)}', expecting a string")
-        else:
-            self.type = dict_obj
+        self.type = dict_obj
 
     def to_yaml(self, representer):
         output_node = representer.represent_str(self._type)

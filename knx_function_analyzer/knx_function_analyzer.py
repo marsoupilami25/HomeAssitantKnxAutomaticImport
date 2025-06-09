@@ -1,8 +1,8 @@
 import logging
 
-from KNXFunctionAnalyzer.KNXSpacesRepository import KNXSpacesRepository
-from KNXProjectManagement.KNXProjectManager import KNXProjectManager
-from KNXProjectManagement.KNXSpace import KNXSpace
+from knx_function_analyzer.knx_spaces_repository import KNXSpacesRepository
+from knx_project_management.knx_project_manager import KNXProjectManager
+from knx_project_management.knx_space import KNXSpace
 
 separator: str ="_"
 
@@ -17,16 +17,23 @@ class KNXFunctionAnalyzer:
         self._spaces_repository = KNXSpacesRepository()
 
     def star_analysis(self):
-        self.__recursive_function_searcher(1, self._knx_project.info.name, self._knx_project.locations)
+        self.__recursive_function_searcher(1,
+                                           self._knx_project.info.name,
+                                           self._knx_project.locations)
 
-    def __recursive_function_searcher(self, level : int, name: str, spaces: dict[str, KNXSpace]):
+    def __recursive_function_searcher(self,
+                                      level : int,
+                                      name: str,
+                                      spaces: dict[str, KNXSpace]):
         nb_elem = len(spaces)
-        logging.info(f"{nb_elem} level location has been found at level {level} in {name}")
+        logging.info("%s level location has been found at level %s in %s",
+                     nb_elem, level, name)
         space: KNXSpace
         for space in spaces.values():
             new_name = name + separator + space.name
             new_level=level+1
-            logging.info(f"Starting analysis at level {new_level} of {new_name}")
+            logging.info("Starting analysis at level %s of %s",
+                         new_level, new_name)
             self._spaces_repository.add_space(new_name,space)
             self.__recursive_function_searcher(new_level, new_name, space.spaces)
 

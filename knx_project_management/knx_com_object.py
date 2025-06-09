@@ -1,13 +1,13 @@
 from ClassFromTypedDict import ClassFromTypedDict
 from xknxproject.models import CommunicationObject
-from KNXProjectManagement.KNXFlags import KNXFlags
 
 class KNXComObject(ClassFromTypedDict):
     _class_ref = CommunicationObject
     _exception = { 'module_def': 'module' }
 
     # for information, instance attributes
-    # warning: used ClassFromTypedDict below needs to be import otherwise the conversion does not work
+    # warning: used ClassFromTypedDict below needs to be import
+    #   otherwise the conversion does not work
     # name: str
     # flags: KNXFlags
 

@@ -1,33 +1,35 @@
 from typing import List
 
-from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
-from HAKNXObjectCreator.HAKNXFactory import HAKNXFactory
-from HAKNXObjectCreator.HAKNXValueType import HAKNXValueType
+from ha_knx_object_creator.ha_knx_device import HAKNXDevice, KNXDeviceParameterType
+from ha_knx_object_creator.ha_knx_factory import HAKNXFactory
+from ha_knx_object_creator.ha_knx_value_type import HAKNXValueType
 
-markdown = ""
+markdown : str = ""
 
 def entity_header():
-    global markdown
+    global markdown # pylint: disable=global-statement
     markdown += "|Entity|keywords|managed configuration variables|\n"
     markdown += "|--|--|--|\n"
 
 def entity_line(ent: HAKNXDevice):
-    global markdown
+    global markdown # pylint: disable=global-statement
     markdown += f"|{ent.keyname.capitalize()}|"
-    for key in ent.keywords:
-        markdown += f"{key}<br>"
+    for loc_key in ent.keywords:
+        markdown += f"{loc_key}<br>"
     markdown += "|"
-    for var in ent.parameters:
-        markdown += f"{var['name']} ({var['type']})<br>"
+    for loc_var in ent.parameters:
+        markdown += f"{loc_var['name']} ({loc_var['type']})<br>"
     markdown += "|\n"
 
 
-with open("Docs/description.md", "r") as file:
+with open("docs/description.md", "r", encoding="utf-8") as file:
     markdown = file.read()
 
 markdown += "\n"
 markdown += "## Entities\n"
-markdown += "This section identifies the [Home Assistant KNX integration](https://www.home-assistant.io/integrations/knx/) entities that are currently managed by HomeAssistantKNXAutomaticImport.\n"
+markdown += ("This section identifies the "
+             "[Home Assistant KNX integration](https://www.home-assistant.io/integrations/knx/) "
+             "entities that are currently managed by HomeAssistantKNXAutomaticImport.\n")
 markdown += "\n"
 entity_header()
 for entity in HAKNXFactory.ha_knx_objects_list:
@@ -65,7 +67,7 @@ for entity in HAKNXFactory.ha_knx_objects_list:
         markdown += "|configuration variables|required|associated GA|state GA|\n"
         markdown += "|--|--|--|--|\n"
         for var in entity.parameters:
-            if var['type'] == KNXDeviceParameterType.RtR:
+            if var['type'] == KNXDeviceParameterType.RTR:
                 markdown += f"|{var['name']}"
                 markdown += f"|{var['required']}"
                 conf = var['configuration']
@@ -87,8 +89,8 @@ markdown += "This section described the Data Point Types supported by the tool.\
 markdown += "\n"
 markdown += "|Data Points|Type|\n"
 markdown += "|--|--|\n"
-for key in HAKNXValueType._value_types.keys():
-    markdown += f"|{HAKNXValueType._value_types[key]}"
+for key, value in HAKNXValueType._value_types.items(): # pylint: disable=protected-access
+    markdown += f"|{value}"
     markdown += f"|{key}|\n"
-with open("README.md", "w") as file:
+with open("README.md", "w", encoding="utf-8") as file:
     file.write(markdown)

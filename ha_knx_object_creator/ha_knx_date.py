@@ -1,11 +1,11 @@
-from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
-from KNXProjectManagement.KNXDPTType import KNXDPTType
-from Utils.Serializable import Quoted
+from ha_knx_object_creator.ha_knx_device import HAKNXDevice, KNXDeviceParameterType
+from knx_project_management.knx_dpt_type import KNXDPTType
+from utils.serializable import Quoted
 
 
-class HAKNXDateTime(HAKNXDevice):
-    keyname = 'datetime'
-    keywords = ['datetime', 'dateheure', 'fulltime', 'tempscomplet']
+class HAKNXDate(HAKNXDevice):
+    keyname = 'date'
+    keywords = ['date']
     parameters = [
         {
             'name': 'address',
@@ -34,13 +34,11 @@ class HAKNXDateTime(HAKNXDevice):
         {
             'name': 'respond_to_read',
             'required': False,
-            'type': KNXDeviceParameterType.RtR,
+            'type': KNXDeviceParameterType.RTR,
             'configuration': {
                 'param_for_address': 'address',
                 'param_for_state_address': 'state_address'
-            },
+    },
             'param_class': bool
         }
     ]
-
-

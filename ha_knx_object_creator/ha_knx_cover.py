@@ -1,6 +1,6 @@
-from HAKNXObjectCreator.HAKNXDevice import HAKNXDevice, KNXDeviceParameterType
-from KNXProjectManagement.KNXDPTType import KNXDPTType
-from Utils.Serializable import Quoted
+from ha_knx_object_creator.ha_knx_device import HAKNXDevice, KNXDeviceParameterType
+from knx_project_management.knx_dpt_type import KNXDPTType
+from utils.serializable import Quoted
 
 
 class HAKNXCover(HAKNXDevice):
@@ -68,6 +68,3 @@ class HAKNXCover(HAKNXDevice):
             'param_class': Quoted
         }
     ]
-
-
-

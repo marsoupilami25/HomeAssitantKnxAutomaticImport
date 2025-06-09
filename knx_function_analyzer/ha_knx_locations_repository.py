@@ -1,8 +1,8 @@
 import os
 
-from HAKNXObjectCreator.HAKNXLocation import HAKNXLocation
-from KNXFunctionAnalyzer.KNXSpacesRepository import KNXSpacesRepository
-from KNXProjectManagement.KNXProjectManager import KNXProjectManager
+from ha_knx_object_creator.ha_knx_location import HAKNXLocation
+from knx_function_analyzer.knx_spaces_repository import KNXSpacesRepository
+from knx_project_management.knx_project_manager import KNXProjectManager
 
 
 class HAKNXLocationsRepository:
@@ -14,18 +14,24 @@ class HAKNXLocationsRepository:
     def __init__(self):
         self._locations_list = []
 
-    def import_from_knx_spaces_repository(self, knx_spaces_repository: KNXSpacesRepository, knx_project_manager: KNXProjectManager):
+    def import_from_knx_spaces_repository(self,
+                                          knx_spaces_repository: KNXSpacesRepository,
+                                          knx_project_manager: KNXProjectManager):
         for name, element in knx_spaces_repository:
-            existing_locations: list[HAKNXLocation] = list(filter(lambda obj: name == obj.get_name(), self._locations_list))
+            existing_locations: list[HAKNXLocation] =\
+                list(filter(lambda obj, n = name: n == obj.get_name(),
+                            self._locations_list))
             if len(existing_locations) == 0:
                 location = HAKNXLocation.constructor_from_knx_space(element, knx_project_manager)
-                #force the name to a complete structured name to avoid duplication and limit confusion
+                # force the name to a complete structured name
+                # to avoid duplication and limit confusion
                 location.set_name(name)
                 if not location.is_empty():
                     self.add_location(location)
             elif len(existing_locations) == 1:
                 existing_locations[0].import_knx_space(element, knx_project_manager)
-                #force the name to a complete structured name to avoid duplication and limit confusion
+                # force the name to a complete structured name
+                # to avoid duplication and limit confusion
                 existing_locations[0].set_name(name)
             else:
                 raise ValueError(f"Several existing locations with name {name}")
@@ -36,7 +42,7 @@ class HAKNXLocationsRepository:
                 file_name = os.path.splitext(file)[0]
                 file_path = os.path.join(import_path, file)
                 location = HAKNXLocation.constructor_from_file(file_path)
-                location._name = file_name
+                location.set_name(file_name)
                 if not location.is_empty():
                     self.add_location(location)
 
@@ -68,10 +74,8 @@ class HAKNXLocationsRepository:
         for element in self._locations_list:
             file_path = os.path.join(output_path, f"{element.get_name()}.yaml")
             if os.path.exists(file_path) and not overwrite:
-                raise PermissionError(f"File '{file_path}' already exists. Overwrite not authorized.")
-            else:
-                with open(file_path, "w") as file:
-                    initial_dump = element.dump(ha_mode=ha_mode)
-                    file.write(initial_dump)
-
-
+                raise PermissionError(f"File '{file_path}' already exists. "
+                                      f"Overwrite not authorized.")
+            with open(file_path, "w", encoding="utf-8") as file:
+                initial_dump = element.dump(ha_mode=ha_mode)
+                file.write(initial_dump)
