@@ -1,4 +1,4 @@
-from ClassFromTypedDict import ClassFromTypedDict
+from classfromtypeddict import ClassFromTypedDict
 from xknxproject.models import Flags
 
 
@@ -13,5 +13,3 @@ class KNXFlags(ClassFromTypedDict):
     # transmit: bool
     # update: bool
     # read_on_init: bool
-
-

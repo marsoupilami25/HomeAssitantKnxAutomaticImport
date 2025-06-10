@@ -10,7 +10,7 @@ from knx_project_management.knx_function import KNXFunction
 from knx_project_management.knx_group_address import KNXGroupAddress
 from knx_project_management.knx_project_info import KNXProjectInfo
 from knx_project_management.knx_space import KNXSpace
-from ClassFromTypedDict import ClassFromTypedDict
+from classfromtypeddict import ClassFromTypedDict
 
 class KNXProjectManager(ClassFromTypedDict):
     _class_ref = KNXProject

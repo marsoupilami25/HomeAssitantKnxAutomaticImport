@@ -1,4 +1,4 @@
-from ClassFromTypedDict import ClassFromTypedDict
+from classfromtypeddict import ClassFromTypedDict
 from xknxproject.models import CommunicationObject
 
 class KNXComObject(ClassFromTypedDict):
