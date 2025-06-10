@@ -1,4 +1,4 @@
-from ClassFromTypedDict import ClassFromTypedDict
+from classfromtypeddict import ClassFromTypedDict
 from unidecode import unidecode
 from xknxproject.models import GroupAddress
 
