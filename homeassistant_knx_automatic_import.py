@@ -4,7 +4,7 @@ import sys
 from typing import Annotated
 import typer
 
-from classfromtypeddict import ClassFromTypedDict
+from classfromtypeddict_marsoupilami import ClassFromTypedDict
 
 import knx_project_management
 from knx_function_analyzer.ha_knx_locations_repository import HAKNXLocationsRepository

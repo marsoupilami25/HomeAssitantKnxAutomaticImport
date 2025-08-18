@@ -1,19 +1,20 @@
 from unidecode import unidecode
 from xknxproject.models import Function
 
+from classfromtypeddict_marsoupilami import ClassFromTypedDict
 from knx_project_management.knx_group_address_ref import KNXGroupAddressRef
-from classfromtypeddict import ClassFromTypedDict
-
 
 class KNXFunction(ClassFromTypedDict):
     _class_ref = Function
 
     # for information, instance attributes
-    # warning: used ClassFromTypedDict below needs to be import otherwise the conversion does not work
+    # warning: used ClassFromTypedDict below needs
+    #   to be import otherwise the conversion does not work
     # group_addresses: dict[str, KNXGroupAddressRef]
 
     def __init__(self, data: dict):
         self._name = ""
+        self.group_addresses : dict[str, KNXGroupAddressRef] | None = None #None only for init
         super().__init__(data)
 
     @property

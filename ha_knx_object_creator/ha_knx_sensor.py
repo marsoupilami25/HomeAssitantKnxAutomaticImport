@@ -3,6 +3,7 @@ from ha_knx_object_creator.ha_knx_value_type import HAKNXValueType
 from knx_project_management.knx_dpt_type import KNXDPTType
 from utils.serializable import Quoted
 
+# pylint: disable=R0801
 
 class HAKNXSensor(HAKNXDevice):
     keyname = 'sensor'

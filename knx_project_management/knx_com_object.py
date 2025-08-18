@@ -1,5 +1,9 @@
-from classfromtypeddict import ClassFromTypedDict
+from classfromtypeddict_marsoupilami import ClassFromTypedDict
 from xknxproject.models import CommunicationObject
+
+from knx_project_management.knx_flags import KNXFlags
+from utils.serializable import Quoted
+
 
 class KNXComObject(ClassFromTypedDict):
     _class_ref = CommunicationObject
@@ -10,6 +14,11 @@ class KNXComObject(ClassFromTypedDict):
     #   otherwise the conversion does not work
     # name: str
     # flags: KNXFlags
+
+    def __init__(self, data: dict):
+        self.name : Quoted
+        self.flags : KNXFlags | None = None #None only for init
+        super().__init__(data)
 
     def is_readable(self):
         return self.flags.read

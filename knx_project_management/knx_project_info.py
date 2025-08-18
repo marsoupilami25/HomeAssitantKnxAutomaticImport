@@ -1,14 +1,15 @@
 from unidecode import unidecode
 from xknxproject.models import ProjectInfo
 
-from classfromtypeddict import ClassFromTypedDict
+from classfromtypeddict_marsoupilami import ClassFromTypedDict
 
 
 class KNXProjectInfo(ClassFromTypedDict):
     _class_ref = ProjectInfo
 
     # for information, instance attributes
-    # warning: used ClassFromTypedDict below needs to be import otherwise the conversion does not work
+    # warning: used ClassFromTypedDict below needs
+    #   to be import otherwise the conversion does not work
     # _name : str
 
     def __init__(self, data: dict):

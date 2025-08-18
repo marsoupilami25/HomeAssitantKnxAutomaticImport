@@ -11,8 +11,8 @@ from knx_project_management.knx_space import KNXSpace
 from utils.serializable import Serializable, serializable_to_yaml
 
 yaml = YAML()
-yaml.default_style = None  # Pas de guillemets autour des scalaires
-yaml.default_flow_style = False  # Pas de format JSON pour les collections (listes, dictionnaires)
+yaml.default_style = None  # no quotes for scalar
+yaml.default_flow_style = False  # no JSON format for collections (lists, dictionaries)
 yaml.default_tag = None
 
 

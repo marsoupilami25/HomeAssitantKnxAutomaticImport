@@ -13,7 +13,7 @@ from utils.serializable import Serializable, Quoted
 yaml = YAML()
 
 class KNXDeviceParameterType(Enum):
-    GA = 1  # Group Adress parameter type
+    GA = 1  # Group Address parameter type
     RTR = 2 # Response to Read Parameter type
     VT = 3 # value type parameter type
 
@@ -139,7 +139,7 @@ class HAKNXDevice(Serializable):
         param_found = False
         param_value = None
         address_found = False
-        address_rtr = None # true if one device answer to a GroupvalueRead request
+        address_rtr = None # true if one device answer to a Group value Read request
         state_address_found = False
         # search for address parameter
         if ((hasattr(self,config["param_for_address"]))

@@ -1,4 +1,5 @@
 import inspect
+import logging
 
 from ruamel.yaml import YAML, CommentedMap
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString
@@ -27,7 +28,7 @@ class Serializable:
                 else:
                     if isinstance(value, Quoted):
                         commented_map[key] = DoubleQuotedScalarString(value)
-                    if key in self._comments.keys():
+                    if key in self._comments:
                         commented_map.ca.items[key] = self._comments[key]
         return commented_map
 
@@ -37,7 +38,7 @@ class Serializable:
             new_list = inspect.get_annotations(base)
             type_list.update(new_list)
         for key, value in dict_obj.items():
-            if key in type_list.keys():
+            if key in type_list:
                 attr_type = type_list[key]
                 if issubclass(attr_type, Serializable):
                     obj = attr_type()
@@ -46,7 +47,12 @@ class Serializable:
                 else:
                     try:
                         final_value = attr_type(value)
-                    except:
+                    except Exception as e: # pylint: disable=broad-except
+                        logging.info("Not possible to create an object of type '%s' "
+                                     "with value '%s'.\nException %s",
+                                     attr_type,
+                                     value,
+                                     e)
                         final_value = value
                     setattr(self, key, final_value)
             else:
