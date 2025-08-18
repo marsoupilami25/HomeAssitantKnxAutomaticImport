@@ -4,18 +4,21 @@ from unidecode import unidecode
 
 from xknxproject.models import Space
 
-from classfromtypeddict import ClassFromTypedDict
+from classfromtypeddict_marsoupilami import ClassFromTypedDict
 
 class KNXSpace(ClassFromTypedDict):
     _class_ref = Space
 
     # for information, instance attributes
-    # warning: used ClassFromTypedDict below needs to be import otherwise the conversion does not work
+    # warning: used ClassFromTypedDict below needs
+    #   to be import otherwise the conversion does not work
     # spaces : dict[str, KNXSpace]
     # functions : list[str]
 
     def __init__(self, data: dict):
         self._name = ""
+        self.spaces : dict[str, KNXSpace] = {}
+        self.functions : list[str] = []
         super().__init__(data)
 
     @property

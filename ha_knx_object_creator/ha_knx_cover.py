@@ -2,6 +2,7 @@ from ha_knx_object_creator.ha_knx_device import HAKNXDevice, KNXDeviceParameterT
 from knx_project_management.knx_dpt_type import KNXDPTType
 from utils.serializable import Quoted
 
+# pylint: disable=R0801
 
 class HAKNXCover(HAKNXDevice):
     keyname = 'cover'
