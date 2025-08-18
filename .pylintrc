@@ -1,4 +1,0 @@
-[MAIN]
-ignore = .venv, venv, env, .env, __pycache__
-ignore-patterns = (^|.*/)(\.venv|venv|env|\.env)/.*
-ignore-paths = ^\.?venv/.*, ^env/.*, ^\.env/.*, ^.*/__pycache__/.*
