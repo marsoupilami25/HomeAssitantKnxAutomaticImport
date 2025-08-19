@@ -2,7 +2,7 @@ import logging
 import os
 import sys
 
-from classfromtypeddict_marsoupilami import ClassFromTypedDict
+from classfromtypeddict import ClassFromTypedDict
 
 from xknxproject import XKNXProj
 from xknxproject.models import KNXProject

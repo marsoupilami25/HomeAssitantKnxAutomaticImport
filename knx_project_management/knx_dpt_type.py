@@ -1,6 +1,6 @@
 from xknxproject.models import DPTType
 
-from classfromtypeddict_marsoupilami import ClassFromTypedDict
+from classfromtypeddict import ClassFromTypedDict
 
 class KNXDPTType(ClassFromTypedDict):
 

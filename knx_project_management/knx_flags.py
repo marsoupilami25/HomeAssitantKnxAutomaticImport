@@ -1,4 +1,4 @@
-from classfromtypeddict_marsoupilami import ClassFromTypedDict
+from classfromtypeddict import ClassFromTypedDict
 from xknxproject.models import Flags
 
 
