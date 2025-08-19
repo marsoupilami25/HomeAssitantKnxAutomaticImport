@@ -62,7 +62,7 @@ for entity in HAKNXFactory.ha_knx_objects_list:
                     markdown += (f"{dpt}: ")
                     markdown += (f"{vt.type}<br>")
                 markdown += "|\n"
-    if 'RtR' in types:
+    if 'RTR' in types:
         markdown += "#### Response to Read (RtR) configuration variables\n"
         markdown += "|configuration variables|required|associated GA|state GA|\n"
         markdown += "|--|--|--|--|\n"
