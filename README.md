@@ -91,13 +91,13 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 |Entity|keywords|managed configuration variables|
 |--|--|--|
 |Light|light<br>lumiere<br>|address (GA)<br>state_address (GA)<br>|
-|Switch|switch<br>commutateur<br>prise<br>interrupteur<br>socket<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+|Switch|switch<br>commutateur<br>prise<br>interrupteur<br>socket<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RTR)<br>|
 |Sensor|sensor<br>senseur<br>capteur<br>|state_address (GA)<br>type (VT)<br>|
-|Datetime|datetime<br>dateheure<br>fulltime<br>tempscomplet<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
-|Date|date<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
-|Time|time<br>heure<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+|Datetime|datetime<br>dateheure<br>fulltime<br>tempscomplet<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RTR)<br>|
+|Date|date<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RTR)<br>|
+|Time|time<br>heure<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RTR)<br>|
 |Cover|cover<br>volet roulant<br>volet<br>|move_long_address (GA)<br>move_short_address (GA)<br>stop_address (GA)<br>position_address (GA)<br>position_state_address (GA)<br>|
-|Expose|expose<br>update<br>|address (GA)<br>type (VT)<br>respond_to_read (RtR)<br>|
+|Expose|expose<br>update<br>|address (GA)<br>type (VT)<br>respond_to_read (RTR)<br>|
 ### Light
 |Entity|keywords|managed configuration variables|
 |--|--|--|
@@ -110,7 +110,7 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 ### Switch
 |Entity|keywords|managed configuration variables|
 |--|--|--|
-|Switch|switch<br>commutateur<br>prise<br>interrupteur<br>socket<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+|Switch|switch<br>commutateur<br>prise<br>interrupteur<br>socket<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RTR)<br>|
 #### Group Address (GA) configuration variables
 |configuration variables|required|keywords|accepted DPT|
 |--|--|--|--|
@@ -135,7 +135,7 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 ### Datetime
 |Entity|keywords|managed configuration variables|
 |--|--|--|
-|Datetime|datetime<br>dateheure<br>fulltime<br>tempscomplet<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+|Datetime|datetime<br>dateheure<br>fulltime<br>tempscomplet<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RTR)<br>|
 #### Group Address (GA) configuration variables
 |configuration variables|required|keywords|accepted DPT|
 |--|--|--|--|
@@ -148,7 +148,7 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 ### Date
 |Entity|keywords|managed configuration variables|
 |--|--|--|
-|Date|date<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+|Date|date<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RTR)<br>|
 #### Group Address (GA) configuration variables
 |configuration variables|required|keywords|accepted DPT|
 |--|--|--|--|
@@ -161,7 +161,7 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 ### Time
 |Entity|keywords|managed configuration variables|
 |--|--|--|
-|Time|time<br>heure<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RtR)<br>|
+|Time|time<br>heure<br>|address (GA)<br>state_address (GA)<br>respond_to_read (RTR)<br>|
 #### Group Address (GA) configuration variables
 |configuration variables|required|keywords|accepted DPT|
 |--|--|--|--|
@@ -186,7 +186,7 @@ This section identifies the [Home Assistant KNX integration](https://www.home-as
 ### Expose
 |Entity|keywords|managed configuration variables|
 |--|--|--|
-|Expose|expose<br>update<br>|address (GA)<br>type (VT)<br>respond_to_read (RtR)<br>|
+|Expose|expose<br>update<br>|address (GA)<br>type (VT)<br>respond_to_read (RTR)<br>|
 #### Group Address (GA) configuration variables
 |configuration variables|required|keywords|accepted DPT|
 |--|--|--|--|
