@@ -4,7 +4,7 @@ from unidecode import unidecode
 
 from xknxproject.models import Space
 
-from classfromtypeddict_marsoupilami import ClassFromTypedDict
+from classfromtypeddict import ClassFromTypedDict
 
 class KNXSpace(ClassFromTypedDict):
     _class_ref = Space

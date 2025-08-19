@@ -1,7 +1,7 @@
 from unidecode import unidecode
 from xknxproject.models import Function
 
-from classfromtypeddict_marsoupilami import ClassFromTypedDict
+from classfromtypeddict import ClassFromTypedDict
 from knx_project_management.knx_group_address_ref import KNXGroupAddressRef
 
 class KNXFunction(ClassFromTypedDict):
