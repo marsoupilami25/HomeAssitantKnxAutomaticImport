@@ -2,6 +2,24 @@
 
 HomeAssistantKNXAutomaticImport is a script tool to create configuration file for the [Home Assistant KNX integration](https://www.home-assistant.io/integrations/knx/).
 
+## Installation
+
+### for current user
+```
+pip install HomeAssistantKNXAutomaticImport
+```
+Ensure that the current user PATH contains the user python script path.
+For example `%USERPROFILE%\AppData\Roaming\Python\Python3x\Scripts`
+
+### for all users
+Open a cmd or powershell with admin rights. Type
+```
+pip install HomeAssistantKNXAutomaticImport
+```
+Ensure that the system PATH contains the python script path.
+For example `C:\Program Files\Python3x\Scripts\`
+
+
 ## Warning
 
 To operate correctly, HomeAssistantKNXAutomaticImport requires your KNX project to respect certain rules:
@@ -26,7 +44,7 @@ homeassistant:
 
 ## Usage
 
-Type `HomeAssistantKnxAutomaticImport.py --help` for detail.
+Type `HomeAssistantKnxAutomaticImport.exe --help` for detail.
 
 ## Concepts
 
@@ -398,3 +416,7 @@ This section described the Data Point Types supported by the tool.
 |DPT 29.010|active_energy_8byte|
 |DPT 29.011|apparant_energy_8byte|
 |DPT 29.012|reactive_energy_8byte|
+## versions history
+
+### 1.0
+Initial release

@@ -92,5 +92,9 @@ markdown += "|--|--|\n"
 for key, value in HAKNXValueType._value_types.items(): # pylint: disable=protected-access
     markdown += f"|{value}"
     markdown += f"|{key}|\n"
+
+with open("docs/versions.md", "r", encoding="utf-8") as file:
+    markdown += file.read()
+
 with open("README.md", "w", encoding="utf-8") as file:
     file.write(markdown)

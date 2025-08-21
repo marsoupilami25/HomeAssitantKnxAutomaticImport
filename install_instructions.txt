@@ -1,0 +1,6 @@
+It's Manual :-)
+Following packages need to be installed: build, twine
+
+python -m build
+python -m twine upload --repository testpypi dist/* #for testpypi
+python -m twine upload dist/* #for pypi

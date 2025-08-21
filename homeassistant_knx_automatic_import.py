@@ -123,6 +123,8 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                  overwrite=overwrite,
                                  ha_mode=final_hamode)
 
+def main_typer():
+    typer.run(main)
 
 if __name__ == "__main__":
     typer.run(main)
