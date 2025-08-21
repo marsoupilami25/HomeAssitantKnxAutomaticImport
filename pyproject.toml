@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "HomeAssistantKNXAutomaticImport"
+version = "1.0.1"
+authors = [
+  { name="marsoupilami"},
+]
+description = "HomeAssistantKNXAutomaticImport is a script tool to create configuration file for the Home Assistant KNX integration"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "GPL-3.0"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+    "typer>=0.16",
+    "classfromtypeddict>=0.0.5",
+    "xknxproject>=3.8",
+    "ruamel-yaml>=0.18",
+    "unidecode>=1.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/marsoupilami25/HomeAssitantKnxAutomaticImport"
+Issues = "https://github.com/marsoupilami25/HomeAssitantKnxAutomaticImport/issues"
+
+[project.scripts]
+HomeAssistantKNXAutomaticImport = "homeassistant_knx_automatic_import:main_typer"
+
+[tool.setuptools]
+py-modules = ["homeassistant_knx_automatic_import"]
