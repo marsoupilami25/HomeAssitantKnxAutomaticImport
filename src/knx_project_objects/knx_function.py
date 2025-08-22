@@ -1,25 +1,20 @@
-from classfromtypeddict import ClassFromTypedDict
 from unidecode import unidecode
-from xknxproject.models import GroupAddress
+from xknxproject.models import Function
 
-from knx_project_management.knx_dpt_type import KNXDPTType
+from classfromtypeddict import ClassFromTypedDict
+from .knx_group_address_ref import KNXGroupAddressRef
 
-
-class KNXGroupAddress(ClassFromTypedDict):
-    _class_ref = GroupAddress
+class KNXFunction(ClassFromTypedDict):
+    _class_ref = Function
 
     # for information, instance attributes
     # warning: used ClassFromTypedDict below needs
     #   to be import otherwise the conversion does not work
-    # address : str
-    # dpt : KNXDPTType
-    # communication_object_ids: list[str]
+    # group_addresses: dict[str, KNXGroupAddressRef]
 
     def __init__(self, data: dict):
         self._name = ""
-        self.address : str = ""
-        self.dpt : KNXDPTType | None = None #None only for init
-        self.communication_object_ids : list[str] = []
+        self.group_addresses : dict[str, KNXGroupAddressRef] | None = None #None only for init
         super().__init__(data)
 
     @property

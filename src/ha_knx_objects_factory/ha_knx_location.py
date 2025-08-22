@@ -3,12 +3,12 @@ from io import StringIO
 
 from ruamel.yaml import YAML, CommentedMap
 
-from ha_knx_object_creator.ha_knx_factory import HAKNXFactory
-from ha_knx_object_creator.ha_knx_device import HAKNXDevice
-from knx_project_management.knx_function import KNXFunction
-from knx_project_management.knx_project_manager import KNXProjectManager
-from knx_project_management.knx_space import KNXSpace
-from utils.serializable import Serializable, serializable_to_yaml
+from .ha_knx_factory import HAKNXFactory
+from ha_knx_objects_common import HAKNXDevice
+from knx_project_objects import KNXFunction
+from knx_project import KNXProjectManager
+from knx_project_objects import KNXSpace
+from knx_utils import Serializable, serializable_to_yaml
 
 yaml = YAML()
 yaml.default_style = None  # no quotes for scalar

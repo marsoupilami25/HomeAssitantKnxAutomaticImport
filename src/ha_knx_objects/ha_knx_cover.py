@@ -1,6 +1,6 @@
-from ha_knx_object_creator.ha_knx_device import HAKNXDevice, KNXDeviceParameterType
-from knx_project_management.knx_dpt_type import KNXDPTType
-from utils.serializable import Quoted
+from ha_knx_objects_common import HAKNXDevice, KNXDeviceParameterType
+from knx_project_objects import KNXDPTType
+from knx_utils import Quoted
 
 # pylint: disable=R0801
 

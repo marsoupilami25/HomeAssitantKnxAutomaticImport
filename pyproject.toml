@@ -33,4 +33,5 @@ Issues = "https://github.com/marsoupilami25/HomeAssitantKnxAutomaticImport/issue
 HomeAssistantKNXAutomaticImport = "homeassistant_knx_automatic_import:main_typer"
 
 [tool.setuptools]
-py-modules = ["homeassistant_knx_automatic_import"]
+where = ["src"]
+py-modules = ["homeassistant_knx_automatic_import", "ha_knx_object_creator"]

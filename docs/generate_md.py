@@ -1,8 +1,8 @@
 from typing import List
 
-from ha_knx_object_creator.ha_knx_device import HAKNXDevice, KNXDeviceParameterType
-from ha_knx_object_creator.ha_knx_factory import HAKNXFactory
-from ha_knx_object_creator.ha_knx_value_type import HAKNXValueType
+from ha_knx_objects_common.ha_knx_device import HAKNXDevice, KNXDeviceParameterType
+from ha_knx_objects_factory.ha_knx_factory import HAKNXFactory
+from ha_knx_objects_common.ha_knx_value_type import HAKNXValueType
 
 markdown : str = ""
 

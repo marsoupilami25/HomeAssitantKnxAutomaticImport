@@ -1,8 +1,8 @@
 import logging
 
-from knx_function_analyzer.knx_spaces_repository import KNXSpacesRepository
-from knx_project_management.knx_project_manager import KNXProjectManager
-from knx_project_management.knx_space import KNXSpace
+from .knx_spaces_repository import KNXSpacesRepository
+from knx_project import KNXProjectManager
+from knx_project_objects import KNXSpace
 
 separator: str ="_"
 

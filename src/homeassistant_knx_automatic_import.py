@@ -6,10 +6,10 @@ import typer
 
 from classfromtypeddict import ClassFromTypedDict
 
-import knx_project_management
-from knx_function_analyzer.ha_knx_locations_repository import HAKNXLocationsRepository
-from knx_function_analyzer.knx_function_analyzer import KNXFunctionAnalyzer
-from knx_project_management.knx_project_manager import KNXProjectManager
+import knx_project_objects
+from knx_function_analyzer import HAKNXLocationsRepository
+from knx_function_analyzer import KNXFunctionAnalyzer
+from knx_project import KNXProjectManager
 
 # Create Typer application instance
 app = typer.Typer()
@@ -102,7 +102,7 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
         else:
             my_locations_repository.import_from_path(target_path)
     logging.info("Opening %s", file)
-    ClassFromTypedDict.import_package(knx_project_management)
+    ClassFromTypedDict.import_package(knx_project_objects)
     my_project = KNXProjectManager.init(file)
     my_project.print_knx_project_properties()
     my_analyzer = KNXFunctionAnalyzer(my_project)
