@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "HomeAssistantKNXAutomaticImport"
-version = "1.0.1"
+version = "1.0.2"
 authors = [
   { name="marsoupilami"},
 ]
@@ -33,5 +33,6 @@ Issues = "https://github.com/marsoupilami25/HomeAssitantKnxAutomaticImport/issue
 HomeAssistantKNXAutomaticImport = "homeassistant_knx_automatic_import:main_typer"
 
 [tool.setuptools]
-where = ["src"]
-py-modules = ["homeassistant_knx_automatic_import", "ha_knx_object_creator"]
+py-modules = ["homeassistant_knx_automatic_import"]
+package-dir = {"" = "src"}
+packages = { find = { where = ["src"], include = ["*"] } }
