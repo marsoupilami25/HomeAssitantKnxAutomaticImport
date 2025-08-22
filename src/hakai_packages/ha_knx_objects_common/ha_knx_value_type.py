@@ -1,7 +1,7 @@
 from ruamel.yaml import YAML
 
-from knx_project_objects import KNXDPTType
-from knx_utils import Serializable, serializable_to_yaml
+from hakai_packages.knx_project_objects import KNXDPTType
+from hakai_packages.knx_utils import Serializable, serializable_to_yaml
 
 # pylint: disable=R0801
 

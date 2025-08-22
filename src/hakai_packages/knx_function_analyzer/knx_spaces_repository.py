@@ -1,4 +1,4 @@
-from knx_project_objects import KNXSpace
+from hakai_packages.knx_project_objects import KNXSpace
 
 
 class KNXSpacesRepository:

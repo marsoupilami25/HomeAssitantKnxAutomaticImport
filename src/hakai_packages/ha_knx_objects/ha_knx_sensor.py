@@ -1,7 +1,7 @@
-from ha_knx_objects_common import HAKNXDevice, KNXDeviceParameterType
-from ha_knx_objects_common import HAKNXValueType
-from knx_project_objects import KNXDPTType
-from knx_utils import Quoted
+from hakai_packages.ha_knx_objects_common import HAKNXDevice, KNXDeviceParameterType
+from hakai_packages.ha_knx_objects_common import HAKNXValueType
+from hakai_packages.knx_project_objects import KNXDPTType
+from hakai_packages.knx_utils import Quoted
 
 # pylint: disable=R0801
 

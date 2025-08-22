@@ -14,3 +14,6 @@ Not functional. Do not use.\
 
 ### 1.0.2
 Correct internal packaging issue
+
+### 1.0.3
+Improve packaging to limit number of packages installed inn site-packages
