@@ -1,8 +1,8 @@
 import os
 
-from ha_knx_object_creator.ha_knx_location import HAKNXLocation
-from knx_function_analyzer.knx_spaces_repository import KNXSpacesRepository
-from knx_project_management.knx_project_manager import KNXProjectManager
+from ha_knx_objects_factory import HAKNXLocation
+from .knx_spaces_repository import KNXSpacesRepository
+from knx_project import KNXProjectManager
 
 
 class HAKNXLocationsRepository:

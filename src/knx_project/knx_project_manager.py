@@ -7,11 +7,11 @@ from classfromtypeddict import ClassFromTypedDict
 from xknxproject import XKNXProj
 from xknxproject.models import KNXProject
 
-from knx_project_management.knx_com_object import KNXComObject
-from knx_project_management.knx_function import KNXFunction
-from knx_project_management.knx_group_address import KNXGroupAddress
-from knx_project_management.knx_project_info import KNXProjectInfo
-from knx_project_management.knx_space import KNXSpace
+from knx_project_objects import KNXComObject
+from knx_project_objects import KNXFunction
+from knx_project_objects import KNXGroupAddress
+from knx_project_objects import KNXProjectInfo
+from knx_project_objects import KNXSpace
 
 class KNXProjectManager(ClassFromTypedDict):
     _class_ref = KNXProject

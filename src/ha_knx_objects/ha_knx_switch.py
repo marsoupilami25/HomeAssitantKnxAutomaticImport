@@ -1,12 +1,12 @@
-from ha_knx_object_creator.ha_knx_device import HAKNXDevice, KNXDeviceParameterType
-from knx_project_management.knx_dpt_type import KNXDPTType
-from utils.serializable import Quoted
+from ha_knx_objects_common import HAKNXDevice, KNXDeviceParameterType
+from knx_project_objects import KNXDPTType
+from knx_utils import Quoted
 
 # pylint: disable=R0801
 
-class HAKNXDateTime(HAKNXDevice):
-    keyname = 'datetime'
-    keywords = ['datetime', 'dateheure', 'fulltime', 'tempscomplet']
+class HAKNXSwitch(HAKNXDevice):
+    keyname = 'switch'
+    keywords = ['switch', 'commutateur', 'prise', 'interrupteur', 'socket']
     parameters = [
         {
             'name': 'address',
@@ -14,9 +14,9 @@ class HAKNXDateTime(HAKNXDevice):
             'type': KNXDeviceParameterType.GA,
             'configuration': {
                 'dpts': [
-                KNXDPTType.constructor_from_ints(19,1)
+                KNXDPTType.constructor_from_ints(1,None)
                 ],
-                'keywords': keywords
+                'keywords': ['on', 'off', 'switch', 'commutation']
             },
             'param_class': Quoted
         },
@@ -26,9 +26,9 @@ class HAKNXDateTime(HAKNXDevice):
             'type': KNXDeviceParameterType.GA,
             'configuration': {
                 'dpts': [
-                KNXDPTType.constructor_from_ints(19,1)
+                KNXDPTType.constructor_from_ints(1,None)
                 ],
-                'keywords': ['etat', 'status']
+                'keywords': ['etat', 'state', 'statut']
             },
             'param_class': Quoted
         },

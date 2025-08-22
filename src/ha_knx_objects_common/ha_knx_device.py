@@ -3,12 +3,12 @@ from enum import Enum
 from typing import TypedDict, NamedTuple, Optional, Type
 from ruamel.yaml import YAML
 
-from ha_knx_object_creator.ha_knx_value_type import HAKNXValueType
-from knx_project_management.knx_dpt_type import KNXDPTType
-from knx_project_management.knx_function import KNXFunction
-from knx_project_management.knx_group_address import KNXGroupAddress
-from knx_project_management.knx_project_manager import KNXProjectManager
-from utils.serializable import Serializable, Quoted
+from .ha_knx_value_type import HAKNXValueType
+from knx_project_objects import KNXDPTType
+from knx_project_objects import KNXFunction
+from knx_project_objects import KNXGroupAddress
+from knx_project import KNXProjectManager
+from knx_utils import Serializable, Quoted
 
 yaml = YAML()
 

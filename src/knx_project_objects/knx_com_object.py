@@ -1,8 +1,8 @@
 from classfromtypeddict import ClassFromTypedDict
 from xknxproject.models import CommunicationObject
 
-from knx_project_management.knx_flags import KNXFlags
-from utils.serializable import Quoted
+from .knx_flags import KNXFlags
+from knx_utils import Quoted
 
 
 class KNXComObject(ClassFromTypedDict):
