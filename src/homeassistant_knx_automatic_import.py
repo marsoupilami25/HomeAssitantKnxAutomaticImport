@@ -6,10 +6,10 @@ import typer
 
 from classfromtypeddict import ClassFromTypedDict
 
-import knx_project_objects
-from knx_function_analyzer import HAKNXLocationsRepository
-from knx_function_analyzer import KNXFunctionAnalyzer
-from knx_project import KNXProjectManager
+from hakai_packages import knx_project_objects
+from hakai_packages import HAKNXLocationsRepository
+from hakai_packages import KNXFunctionAnalyzer
+from hakai_packages import KNXProjectManager
 
 # Create Typer application instance
 app = typer.Typer()

@@ -2,7 +2,7 @@ from classfromtypeddict import ClassFromTypedDict
 from xknxproject.models import CommunicationObject
 
 from .knx_flags import KNXFlags
-from knx_utils import Quoted
+from hakai_packages.knx_utils import Quoted
 
 
 class KNXComObject(ClassFromTypedDict):

@@ -4,11 +4,11 @@ from io import StringIO
 from ruamel.yaml import YAML, CommentedMap
 
 from .ha_knx_factory import HAKNXFactory
-from ha_knx_objects_common import HAKNXDevice
-from knx_project_objects import KNXFunction
-from knx_project import KNXProjectManager
-from knx_project_objects import KNXSpace
-from knx_utils import Serializable, serializable_to_yaml
+from hakai_packages.ha_knx_objects_common import HAKNXDevice
+from hakai_packages.knx_project_objects import KNXFunction
+from hakai_packages.knx_project import KNXProjectManager
+from hakai_packages.knx_project_objects import KNXSpace
+from hakai_packages.knx_utils import Serializable, serializable_to_yaml
 
 yaml = YAML()
 yaml.default_style = None  # no quotes for scalar

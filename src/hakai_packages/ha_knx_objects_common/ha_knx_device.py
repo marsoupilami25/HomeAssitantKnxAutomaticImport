@@ -4,11 +4,11 @@ from typing import TypedDict, NamedTuple, Optional, Type
 from ruamel.yaml import YAML
 
 from .ha_knx_value_type import HAKNXValueType
-from knx_project_objects import KNXDPTType
-from knx_project_objects import KNXFunction
-from knx_project_objects import KNXGroupAddress
-from knx_project import KNXProjectManager
-from knx_utils import Serializable, Quoted
+from hakai_packages.knx_project_objects import KNXDPTType
+from hakai_packages.knx_project_objects import KNXFunction
+from hakai_packages.knx_project_objects import KNXGroupAddress
+from hakai_packages.knx_project import KNXProjectManager
+from hakai_packages.knx_utils import Serializable, Quoted
 
 yaml = YAML()
 

@@ -1,12 +1,12 @@
-from ha_knx_objects_common import HAKNXDevice, KNXDeviceParameterType
-from knx_project_objects import KNXDPTType
-from knx_utils import Quoted
+from hakai_packages.ha_knx_objects_common import HAKNXDevice, KNXDeviceParameterType
+from hakai_packages.knx_project_objects import KNXDPTType
+from hakai_packages.knx_utils import Quoted
 
 # pylint: disable=R0801
 
-class HAKNXDateTime(HAKNXDevice):
-    keyname = 'datetime'
-    keywords = ['datetime', 'dateheure', 'fulltime', 'tempscomplet']
+class HAKNXDate(HAKNXDevice):
+    keyname = 'date'
+    keywords = ['date']
     parameters = [
         {
             'name': 'address',
@@ -39,7 +39,7 @@ class HAKNXDateTime(HAKNXDevice):
             'configuration': {
                 'param_for_address': 'address',
                 'param_for_state_address': 'state_address'
-            },
+    },
             'param_class': bool
         }
     ]
