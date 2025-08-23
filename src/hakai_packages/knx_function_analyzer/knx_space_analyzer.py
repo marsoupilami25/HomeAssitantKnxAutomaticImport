@@ -1,32 +1,31 @@
 import logging
 
 from .knx_spaces_repository import KNXSpacesRepository
-from hakai_packages.knx_project import KNXProjectManager
 from hakai_packages.knx_project_objects import KNXSpace
+from hakai_packages.hakai_conf import HAKAIConfiguration
 
 separator: str ="_"
 
-class KNXFunctionAnalyzer:
+class KNXSpaceAnalyzer:
 
     # for information, instance attributes
-    # _knx_project: KNXProjectManager
     # _spaces_repository: KNXSpacesRepository
 
-    def __init__(self, knx_project: KNXProjectManager):
-        self._knx_project = knx_project
+    def __init__(self):
         self._spaces_repository = KNXSpacesRepository()
+        self.__star_analysis()
 
-    def star_analysis(self):
-        self.__recursive_function_searcher(1,
-                                           self._knx_project.info.name,
-                                           self._knx_project.locations)
+    def __star_analysis(self):
+        self.__recursive_space_searcher(1,
+                                        HAKAIConfiguration.get_instance().project.info.name,
+                                        HAKAIConfiguration.get_instance().project.locations)
 
-    def __recursive_function_searcher(self,
-                                      level : int,
-                                      name: str,
-                                      spaces: dict[str, KNXSpace]):
+    def __recursive_space_searcher(self,
+                                   level : int,
+                                   name: str,
+                                   spaces: dict[str, KNXSpace]):
         nb_elem = len(spaces)
-        logging.info("%s level location has been found at level %s in %s",
+        logging.info("%s location(s) has been found at level %s in %s",
                      nb_elem, level, name)
         space: KNXSpace
         for space in spaces.values():
@@ -35,10 +34,10 @@ class KNXFunctionAnalyzer:
             logging.info("Starting analysis at level %s of %s",
                          new_level, new_name)
             self._spaces_repository.add_space(new_name,space)
-            self.__recursive_function_searcher(new_level, new_name, space.spaces)
+            self.__recursive_space_searcher(new_level, new_name, space.spaces)
 
     @property
-    def locations(self):
+    def repository(self):
         return self._spaces_repository
 
     def __iter__(self):

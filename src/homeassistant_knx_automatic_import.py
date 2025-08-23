@@ -8,9 +8,10 @@ from classfromtypeddict import ClassFromTypedDict
 
 from hakai_packages import knx_project_objects
 from hakai_packages import HAKNXLocationsRepository
-from hakai_packages import KNXFunctionAnalyzer
+from hakai_packages import KNXSpaceAnalyzer
 from hakai_packages import KNXProjectManager
 from hakai_packages import __version__
+from hakai_packages import HAKAIConfiguration
 
 # Create Typer application instance
 app = typer.Typer()
@@ -97,10 +98,29 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
     HomeAssistantKNXAutomaticImport is a script tool to create configuration
     file for the Home Assistant KNX integration.
     """
+
+    # manage logging
+    setup_logging(log_level)
+
+    # manage the configuration
+    logging.info("")
+    logging.info("=====Setup Configuration=====")
     if hamode and nhamode:
         logging.error("hamode and nhamode can't be activated simultaneously")
         sys.exit(1)
-    setup_logging(log_level)
+    if (not hamode) and (not nhamode):
+        final_hamode = None
+    else:
+        final_hamode = hamode
+    logging.info("Opening %s", file)
+    ClassFromTypedDict.import_package(knx_project_objects)
+    my_project = KNXProjectManager.init(file)
+    my_project.print_knx_project_properties()
+    configuration = HAKAIConfiguration(my_project, final_hamode, overwrite)
+
+    # initialize locations repository
+    logging.info("")
+    logging.info("=====Initialize locations repository=====")
     my_locations_repository = HAKNXLocationsRepository()
     if roundtrip:
         logging.info("RoundTrip activated")
@@ -109,24 +129,27 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
         if not os.path.exists(target_path):
             logging.warning("Path %s does not exists, roundtrip is skipped.", target_path)
         else:
+            logging.info("Read Files for roundtrip")
             my_locations_repository.import_from_path(target_path)
-    logging.info("Opening %s", file)
-    ClassFromTypedDict.import_package(knx_project_objects)
-    my_project = KNXProjectManager.init(file)
-    my_project.print_knx_project_properties()
-    my_analyzer = KNXFunctionAnalyzer(my_project)
-    my_analyzer.star_analysis()
-    logging.info("Start locations analysis")
-    my_locations_repository.import_from_knx_spaces_repository(my_analyzer.locations, my_project)
+
+    # Search locations
+    logging.info("")
+    logging.info("=====Search locations=====")
+    locations = KNXSpaceAnalyzer()
+
+    # Create entities in locations
+    logging.info("")
+    logging.info("=====Start locations analysis=====")
+    my_locations_repository.import_from_knx_spaces_repository(locations.repository, my_project)
+
+    # write the output files
+    logging.info("")
+    logging.info("=====Generate output files=====")
     target_path = os.path.join(output_path, "knx")  #path where files are stored
     if not os.path.exists(target_path):
         os.makedirs(target_path, exist_ok=True)
     if not os.path.isdir(target_path):
         raise NotADirectoryError(f"Output path '{target_path}' is not a directory.")
-    if (not hamode) and (not nhamode):
-        final_hamode = None
-    else:
-        final_hamode = hamode
     my_locations_repository.dump(target_path,
                                  create_output_path=True,
                                  overwrite=overwrite,
