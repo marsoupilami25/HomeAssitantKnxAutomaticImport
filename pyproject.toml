@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "HomeAssistantKNXAutomaticImport"
-version = "1.0.3"
+dynamic = ["version"]
 authors = [
   { name="marsoupilami"},
 ]
@@ -36,3 +36,6 @@ HomeAssistantKNXAutomaticImport = "homeassistant_knx_automatic_import:main_typer
 py-modules = ["homeassistant_knx_automatic_import"]
 package-dir = {"" = "src"}
 packages = { find = { where = ["src"], include = ["*"] } }
+
+[tool.setuptools.dynamic]
+version = { attr = "hakai_packages.__version__" }

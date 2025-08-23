@@ -10,6 +10,7 @@ from hakai_packages import knx_project_objects
 from hakai_packages import HAKNXLocationsRepository
 from hakai_packages import KNXFunctionAnalyzer
 from hakai_packages import KNXProjectManager
+from hakai_packages import __version__
 
 # Create Typer application instance
 app = typer.Typer()
@@ -32,8 +33,16 @@ def validate_log_level(value: str):
                                  f"Options are : {', '.join(VALID_LOG_LEVELS)}")
     return value.upper()
 
+def version_callback(value: bool):
+    if value:
+        typer.echo(f"HomeAssistantKNXAutomaticImport {__version__}")
+        raise typer.Exit()
+
 # pylint: disable=too-many-arguments, too-many-positional-arguments
 def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_default=False)],
+         version: Annotated[bool|None, typer.Option("--version",
+                                                    callback=version_callback,
+                                                    is_eager=True)] = None,
          input_path: Annotated[str, typer.Option("--input-path",
                                                  "-i",
                                                  show_default="Current directory",
