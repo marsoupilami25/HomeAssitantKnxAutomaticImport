@@ -140,7 +140,7 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
     # Create entities in locations
     logging.info("")
     logging.info("=====Start locations analysis=====")
-    my_locations_repository.import_from_knx_spaces_repository(locations.repository, my_project)
+    my_locations_repository.import_from_knx_spaces_repository(locations.repository)
 
     # write the output files
     logging.info("")
