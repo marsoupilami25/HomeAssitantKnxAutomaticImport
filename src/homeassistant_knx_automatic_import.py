@@ -92,6 +92,11 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                  help="Separator (character) used to separate"
                                                       "location level names in a location name."
                                                  )] = '_',
+         suppress_project_name: Annotated[bool, typer.Option("--suppress-project-name",
+                                               "-spn",
+                                               help="Remove the project name in the full"
+                                                    "location name."
+                                               )] = False,
          log_level: Annotated[str, typer.Option("--log-level",
                                                 "-l",
                                                 help="Logs level (DEBUG, INFO, WARNING, "
@@ -122,7 +127,11 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
     ClassFromTypedDict.import_package(knx_project_objects)
     my_project = KNXProjectManager.init(file)
     my_project.print_knx_project_properties()
-    configuration = HAKAIConfiguration(my_project, final_hamode, overwrite, location_separator)
+    configuration = HAKAIConfiguration(my_project,
+                                       final_hamode,
+                                       overwrite,
+                                       location_separator,
+                                       suppress_project_name)
 
     # initialize locations repository
     logging.info("")

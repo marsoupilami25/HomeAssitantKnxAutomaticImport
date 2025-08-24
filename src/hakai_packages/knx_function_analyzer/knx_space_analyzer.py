@@ -14,8 +14,13 @@ class KNXSpaceAnalyzer:
         self.__star_analysis()
 
     def __star_analysis(self):
+        root_name : str
+        if HAKAIConfiguration.get_instance().suppress_project_name:
+            root_name = ""
+        else:
+            root_name = HAKAIConfiguration.get_instance().project.info.name
         self.__recursive_space_searcher(1,
-                                        HAKAIConfiguration.get_instance().project.info.name,
+                                        root_name,
                                         HAKAIConfiguration.get_instance().project.locations)
 
     def __recursive_space_searcher(self,
@@ -28,7 +33,11 @@ class KNXSpaceAnalyzer:
         space: KNXSpace
         separator = HAKAIConfiguration.get_instance().location_separator
         for space in spaces.values():
-            new_name = name + separator + space.name
+            new_name : str
+            if name == "":
+                new_name = space.name
+            else:
+                new_name = name + separator + space.name
             new_level=level+1
             logging.info("Starting analysis at level %s of %s",
                          new_level, new_name)
