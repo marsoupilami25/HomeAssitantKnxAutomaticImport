@@ -8,6 +8,7 @@ class HAKAIConfiguration:
     project : KNXProjectManager
     hamode : bool | None
     overwrite : bool
+    location_separator : str
 
     # singleton storage
     _instance = None

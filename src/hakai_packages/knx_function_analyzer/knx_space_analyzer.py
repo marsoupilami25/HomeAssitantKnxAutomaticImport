@@ -4,8 +4,6 @@ from .knx_spaces_repository import KNXSpacesRepository
 from hakai_packages.knx_project_objects import KNXSpace
 from hakai_packages.hakai_conf import HAKAIConfiguration
 
-separator: str ="_"
-
 class KNXSpaceAnalyzer:
 
     # for information, instance attributes
@@ -28,6 +26,7 @@ class KNXSpaceAnalyzer:
         logging.info("%s location(s) has been found at level %s in %s",
                      nb_elem, level, name)
         space: KNXSpace
+        separator = HAKAIConfiguration.get_instance().location_separator
         for space in spaces.values():
             new_name = name + separator + space.name
             new_level=level+1
