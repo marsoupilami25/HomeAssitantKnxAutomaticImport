@@ -10,6 +10,7 @@ class HAKAIConfiguration:
     overwrite : bool
     location_separator : str
     suppress_project_name : bool
+    replace_spaces : str
 
     # singleton storage
     _instance = None

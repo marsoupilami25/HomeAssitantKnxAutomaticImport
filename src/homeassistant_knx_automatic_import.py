@@ -91,7 +91,7 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                  show_default="_",
                                                  help="Separator (character) used to separate"
                                                       "location level names in a location name.\n"
-                                                      "Use only letters, numbers, and underscores."
+                                                      "Use only letters, numbers, and underscores. "
                                                       "'/' indicates no separator."
                                                  )] = '_',
          suppress_project_name: Annotated[bool, typer.Option("--suppress-project-name",
@@ -99,6 +99,14 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                help="Remove the project name in the full"
                                                     "location name."
                                                )] = False,
+         replace_spaces: Annotated[str, typer.Option("--replace-spaces",
+                                                             "-rs",
+                                                     show_default=" ",
+                                                     help="Replace spaces in location and "
+                                                          "function names.\n"
+                                                          "Use only letters, numbers, and underscores. "
+                                                          "'/' indicates no separator."
+                                                     )] = ' ',
          log_level: Annotated[str, typer.Option("--log-level",
                                                 "-l",
                                                 help="Logs level (DEBUG, INFO, WARNING, "
@@ -135,7 +143,8 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                        final_hamode,
                                        overwrite,
                                        location_separator,
-                                       suppress_project_name)
+                                       suppress_project_name,
+                                       replace_spaces)
 
     # initialize locations repository
     logging.info("")
