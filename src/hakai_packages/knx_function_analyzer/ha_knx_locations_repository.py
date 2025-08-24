@@ -20,13 +20,13 @@ class HAKNXLocationsRepository:
                                           knx_spaces_repository: KNXSpacesRepository):
         for name, element in knx_spaces_repository:
             existing_locations: list[HAKNXLocation] =\
-                list(filter(lambda obj, n = name: n == obj.get_name(),
+                list(filter(lambda obj, n = name: n == obj.name,
                             self._locations_list))
             if len(existing_locations) == 0:
                 location = HAKNXLocation.constructor_from_knx_space(element)
                 # force the name to a complete structured name
                 # to avoid duplication and limit confusion
-                location.set_name(name)
+                location.name = name
                 if not location.is_empty():
                     location.touched()
                     self.add_location(location)
@@ -34,7 +34,7 @@ class HAKNXLocationsRepository:
                 existing_locations[0].import_knx_space(element)
                 # force the name to a complete structured name
                 # to avoid duplication and limit confusion
-                existing_locations[0].set_name(name)
+                existing_locations[0].name(name)
                 existing_locations[0].touched()
             else:
                 raise ValueError(f"Several existing locations with name {name}")
@@ -45,7 +45,7 @@ class HAKNXLocationsRepository:
                 file_name = os.path.splitext(file)[0]
                 file_path = os.path.join(import_path, file)
                 location = HAKNXLocation.constructor_from_file(file_path)
-                location.set_name(file_name)
+                location.name = file_name
                 if not location.is_empty():
                     self.add_location(location)
 
@@ -56,7 +56,7 @@ class HAKNXLocationsRepository:
         try:
             self._locations_list.remove(location)
         except ValueError:
-            logging.critical("Exception: %s is not a location present in the locations repository", location.get_name())
+            logging.critical("Exception: %s is not a location present in the locations repository", location.name())
             sys.exit(1)
 
     def check(self):
@@ -65,7 +65,7 @@ class HAKNXLocationsRepository:
             if not element.is_touched():
                 list_to_remove.append(element)
         for element in list_to_remove:
-            logging.info("%s does not exist anymore in the project. File will not be generated.", element.get_name())
+            logging.info("%s does not exist anymore in the project. File will not be generated.", element.name)
             self.remove_location(element)
 
 
@@ -91,7 +91,7 @@ class HAKNXLocationsRepository:
         if not os.path.isdir(output_path):
             raise NotADirectoryError(f"Output path '{output_path}' is not a directory.")
         for element in self._locations_list:
-            file_path = os.path.join(output_path, f"{element.get_name()}.yaml")
+            file_path = os.path.join(output_path, f"{element.flat_name}.yaml")
             if os.path.exists(file_path) and not overwrite:
                 raise PermissionError(f"File '{file_path}' already exists. "
                                       f"Overwrite not authorized.")

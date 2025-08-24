@@ -13,7 +13,7 @@ class KNXSpacesRepository:
         #name for yaml in HA has several constraints:
         #   . no space
         #   . lower case
-        self._spaces_dict[name.lower().replace(" ","")] = space
+        self._spaces_dict[name] = space
 
     @property
     def list(self):

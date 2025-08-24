@@ -85,11 +85,17 @@ class HAKNXLocation(Serializable):
                 return
             self.from_dict(imported_dict)
 
-    def get_name(self):
+    @property
+    def name(self):
         return self._name
 
-    def set_name(self, name: str):
+    @name.setter
+    def name(self, name: str):
         self._name = name
+
+    @property
+    def flat_name(self):
+        return self.name.lower()
 
     def is_empty(self):
         return len(self._objects) == 0
