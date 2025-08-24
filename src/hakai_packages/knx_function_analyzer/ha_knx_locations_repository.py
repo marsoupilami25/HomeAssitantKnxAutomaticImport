@@ -3,9 +3,8 @@ import os
 import sys
 
 from hakai_packages.ha_knx_objects_factory import HAKNXLocation
-from .knx_spaces_repository import KNXSpacesRepository
 from hakai_packages.hakai_conf import HAKAIConfiguration
-
+from .knx_spaces_repository import KNXSpacesRepository
 
 class HAKNXLocationsRepository:
 
@@ -56,7 +55,8 @@ class HAKNXLocationsRepository:
         try:
             self._locations_list.remove(location)
         except ValueError:
-            logging.critical("Exception: %s is not a location present in the locations repository", location.name())
+            logging.critical("Exception: %s is not a location present"
+                             " in the locations repository", location.name())
             sys.exit(1)
 
     def check(self):
@@ -65,7 +65,8 @@ class HAKNXLocationsRepository:
             if not element.is_touched():
                 list_to_remove.append(element)
         for element in list_to_remove:
-            logging.info("%s does not exist anymore in the project. File will not be generated.", element.name)
+            logging.info("%s does not exist anymore in the project."
+                         " File will not be generated.", element.name)
             self.remove_location(element)
 
 

@@ -1,8 +1,8 @@
 import logging
 
-from .knx_spaces_repository import KNXSpacesRepository
 from hakai_packages.knx_project_objects import KNXSpace
 from hakai_packages.hakai_conf import HAKAIConfiguration
+from .knx_spaces_repository import KNXSpacesRepository
 
 class KNXSpaceAnalyzer:
 
