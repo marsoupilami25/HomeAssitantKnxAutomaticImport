@@ -86,6 +86,12 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                       "nhamode except in roundtrip mode where "
                                                       "the mode is defined from the read yaml."
                                                )] = False,
+         location_separator: Annotated[str, typer.Option("--location-separator",
+                                                 "-ls",
+                                                 show_default="_",
+                                                 help="Separator (character) used to separate"
+                                                      "location level names in a location name."
+                                                 )] = '_',
          log_level: Annotated[str, typer.Option("--log-level",
                                                 "-l",
                                                 help="Logs level (DEBUG, INFO, WARNING, "
@@ -116,7 +122,7 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
     ClassFromTypedDict.import_package(knx_project_objects)
     my_project = KNXProjectManager.init(file)
     my_project.print_knx_project_properties()
-    configuration = HAKAIConfiguration(my_project, final_hamode, overwrite)
+    configuration = HAKAIConfiguration(my_project, final_hamode, overwrite, location_separator)
 
     # initialize locations repository
     logging.info("")
