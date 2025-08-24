@@ -9,6 +9,7 @@ class HAKAIConfiguration:
     hamode : bool | None
     overwrite : bool
     location_separator : str
+    suppress_project_name : bool
 
     # singleton storage
     _instance = None
