@@ -6,9 +6,9 @@ from ruamel.yaml import YAML, CommentedMap
 from .ha_knx_factory import HAKNXFactory
 from hakai_packages.ha_knx_objects_common import HAKNXDevice
 from hakai_packages.knx_project_objects import KNXFunction
-from hakai_packages.knx_project import KNXProjectManager
 from hakai_packages.knx_project_objects import KNXSpace
 from hakai_packages.knx_utils import Serializable, serializable_to_yaml
+from hakai_packages.hakai_conf import HAKAIConfiguration
 
 yaml = YAML()
 yaml.default_style = None  # no quotes for scalar
@@ -25,9 +25,9 @@ class HAKNXLocation(Serializable):
         self._ha_mode = False
 
     @classmethod
-    def constructor_from_knx_space(cls, location: KNXSpace, knx_project_manager: KNXProjectManager):
+    def constructor_from_knx_space(cls, location: KNXSpace):
         instance = cls()
-        instance.import_knx_space(location, knx_project_manager)
+        instance.import_knx_space(location)
         return instance
 
     @classmethod
@@ -36,7 +36,8 @@ class HAKNXLocation(Serializable):
         instance.import_from_file(file)
         return instance
 
-    def import_knx_space(self, location: KNXSpace, knx_project_manager: KNXProjectManager):
+    def import_knx_space(self, location: KNXSpace):
+        knx_project_manager = HAKAIConfiguration.get_instance().project
         self._name = location.name
         logging.info("Update location %s", self._name)
         for element in location.functions:

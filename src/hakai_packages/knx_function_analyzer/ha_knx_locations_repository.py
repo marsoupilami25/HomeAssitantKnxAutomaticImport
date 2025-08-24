@@ -2,8 +2,6 @@ import os
 
 from hakai_packages.ha_knx_objects_factory import HAKNXLocation
 from .knx_spaces_repository import KNXSpacesRepository
-from hakai_packages.knx_project import KNXProjectManager
-
 
 class HAKNXLocationsRepository:
 
@@ -15,21 +13,20 @@ class HAKNXLocationsRepository:
         self._locations_list = []
 
     def import_from_knx_spaces_repository(self,
-                                          knx_spaces_repository: KNXSpacesRepository,
-                                          knx_project_manager: KNXProjectManager):
+                                          knx_spaces_repository: KNXSpacesRepository):
         for name, element in knx_spaces_repository:
             existing_locations: list[HAKNXLocation] =\
                 list(filter(lambda obj, n = name: n == obj.get_name(),
                             self._locations_list))
             if len(existing_locations) == 0:
-                location = HAKNXLocation.constructor_from_knx_space(element, knx_project_manager)
+                location = HAKNXLocation.constructor_from_knx_space(element)
                 # force the name to a complete structured name
                 # to avoid duplication and limit confusion
                 location.set_name(name)
                 if not location.is_empty():
                     self.add_location(location)
             elif len(existing_locations) == 1:
-                existing_locations[0].import_knx_space(element, knx_project_manager)
+                existing_locations[0].import_knx_space(element)
                 # force the name to a complete structured name
                 # to avoid duplication and limit confusion
                 existing_locations[0].set_name(name)
