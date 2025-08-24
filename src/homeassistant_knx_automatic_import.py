@@ -90,7 +90,9 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                  "-ls",
                                                  show_default="_",
                                                  help="Separator (character) used to separate"
-                                                      "location level names in a location name."
+                                                      "location level names in a location name.\n"
+                                                      "Use only letters, numbers, and underscores."
+                                                      "'/' indicates no separator."
                                                  )] = '_',
          suppress_project_name: Annotated[bool, typer.Option("--suppress-project-name",
                                                "-spn",
@@ -127,6 +129,8 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
     ClassFromTypedDict.import_package(knx_project_objects)
     my_project = KNXProjectManager.init(file)
     my_project.print_knx_project_properties()
+    if location_separator == '/':
+        location_separator = ""
     configuration = HAKAIConfiguration(my_project,
                                        final_hamode,
                                        overwrite,
