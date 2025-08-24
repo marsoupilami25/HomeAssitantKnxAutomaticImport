@@ -5,12 +5,13 @@ import sys
 from hakai_packages.ha_knx_objects_factory import HAKNXLocation
 from hakai_packages.hakai_conf import HAKAIConfiguration
 from .knx_spaces_repository import KNXSpacesRepository
+from ..knx_utils import knx_transformed_string
+
 
 class HAKNXLocationsRepository:
 
     # for information, instance attributes
     #_locations_list: list[HAKNXLocation]
-
 
     def __init__(self):
         self._locations_list = []
@@ -18,8 +19,10 @@ class HAKNXLocationsRepository:
     def import_from_knx_spaces_repository(self,
                                           knx_spaces_repository: KNXSpacesRepository):
         for name, element in knx_spaces_repository:
+            # warning: after an import from path, the name of the location is the transformed
+            searched_name = knx_transformed_string(name)
             existing_locations: list[HAKNXLocation] =\
-                list(filter(lambda obj, n = name: n == obj.name,
+                list(filter(lambda obj, n = searched_name: n == obj.name,
                             self._locations_list))
             if len(existing_locations) == 0:
                 location = HAKNXLocation.constructor_from_knx_space(element)
@@ -33,7 +36,7 @@ class HAKNXLocationsRepository:
                 existing_locations[0].import_knx_space(element)
                 # force the name to a complete structured name
                 # to avoid duplication and limit confusion
-                existing_locations[0].name(name)
+                existing_locations[0].name = name
                 existing_locations[0].touched()
             else:
                 raise ValueError(f"Several existing locations with name {name}")

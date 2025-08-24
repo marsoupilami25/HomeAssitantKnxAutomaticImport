@@ -3,6 +3,8 @@ from xknxproject.models import GroupAddressRef
 
 from classfromtypeddict import ClassFromTypedDict
 
+from hakai_packages.knx_utils import knx_flat_string
+
 
 class KNXGroupAddressRef(ClassFromTypedDict):
     _class_ref = GroupAddressRef
@@ -27,4 +29,4 @@ class KNXGroupAddressRef(ClassFromTypedDict):
 
     @property
     def flat_name(self):
-        return self.name.lower()
+        return knx_flat_string(self.name)

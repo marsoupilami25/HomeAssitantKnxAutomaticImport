@@ -3,6 +3,8 @@ from xknxproject.models import ProjectInfo
 
 from classfromtypeddict import ClassFromTypedDict
 
+from hakai_packages.knx_utils import knx_flat_string
+
 
 class KNXProjectInfo(ClassFromTypedDict):
     _class_ref = ProjectInfo
@@ -26,4 +28,4 @@ class KNXProjectInfo(ClassFromTypedDict):
 
     @property
     def flat_name(self):
-        return self.name.lower()
+        return knx_flat_string(self.name)
