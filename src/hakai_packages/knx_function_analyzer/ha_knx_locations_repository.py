@@ -91,7 +91,7 @@ class HAKNXLocationsRepository:
         if not os.path.isdir(output_path):
             raise NotADirectoryError(f"Output path '{output_path}' is not a directory.")
         for element in self._locations_list:
-            file_path = os.path.join(output_path, f"{element.flat_name}.yaml")
+            file_path = os.path.join(output_path, f"{element.transformed_name}.yaml")
             if os.path.exists(file_path) and not overwrite:
                 raise PermissionError(f"File '{file_path}' already exists. "
                                       f"Overwrite not authorized.")

@@ -97,6 +97,15 @@ class HAKNXLocation(Serializable):
     def flat_name(self):
         return self.name.lower()
 
+    @property
+    def transformed_name(self):
+        new_char = HAKAIConfiguration.get_instance().replace_spaces
+        if new_char == ' ':
+            return self.flat_name
+        if new_char == '/':
+            return self.flat_name.replace(' ','')
+        return self.flat_name.replace(' ',new_char)
+
     def is_empty(self):
         return len(self._objects) == 0
 
