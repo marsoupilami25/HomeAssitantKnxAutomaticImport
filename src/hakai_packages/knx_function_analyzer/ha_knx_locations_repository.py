@@ -59,8 +59,7 @@ class HAKNXLocationsRepository:
     def dump(self,
              output_path,
              create_output_path: bool = False,
-             overwrite: bool = False,
-             ha_mode: bool | None = None):
+             overwrite: bool = False):
         if not os.path.exists(output_path):
             if create_output_path:
                 os.makedirs(output_path, exist_ok=True)
@@ -74,5 +73,5 @@ class HAKNXLocationsRepository:
                 raise PermissionError(f"File '{file_path}' already exists. "
                                       f"Overwrite not authorized.")
             with open(file_path, "w", encoding="utf-8") as file:
-                initial_dump = element.dump(ha_mode=ha_mode)
+                initial_dump = element.dump()
                 file.write(initial_dump)
