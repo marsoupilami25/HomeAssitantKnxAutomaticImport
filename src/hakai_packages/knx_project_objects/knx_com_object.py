@@ -1,9 +1,8 @@
 from classfromtypeddict import ClassFromTypedDict
 from xknxproject.models import CommunicationObject
 
-from .knx_flags import KNXFlags
 from hakai_packages.knx_utils import Quoted
-
+from .knx_flags import KNXFlags
 
 class KNXComObject(ClassFromTypedDict):
     _class_ref = CommunicationObject

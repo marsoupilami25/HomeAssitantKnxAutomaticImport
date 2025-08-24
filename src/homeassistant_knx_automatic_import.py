@@ -41,9 +41,9 @@ def version_callback(value: bool):
 
 # pylint: disable=too-many-arguments, too-many-positional-arguments
 def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_default=False)],
-         version: Annotated[bool|None, typer.Option("--version",
-                                                    callback=version_callback,
-                                                    is_eager=True)] = None,
+         _version: Annotated[bool | None, typer.Option("--version",
+                                                       callback=version_callback,
+                                                       is_eager=True)] = None,
          input_path: Annotated[str, typer.Option("--input-path",
                                                  "-i",
                                                  show_default="Current directory",
@@ -104,7 +104,8 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                      show_default=" ",
                                                      help="Replace spaces in location and "
                                                           "function names.\n"
-                                                          "Use only letters, numbers, and underscores. "
+                                                          "Use only letters, numbers, "
+                                                          "and underscores. "
                                                           "'/' indicates no separator."
                                                      )] = ' ',
          log_level: Annotated[str, typer.Option("--log-level",
@@ -114,7 +115,7 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                 metavar="[DEBUG|INFO|WARNING|ERROR|CRITICAL]",
                                                 show_default=True,
                                                 callback=validate_log_level)] = "WARNING"
-                                                ):
+         ): # pylint: disable=too-many-locals
     """
     HomeAssistantKNXAutomaticImport is a script tool to create configuration
     file for the Home Assistant KNX integration.
@@ -135,16 +136,15 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
         final_hamode = hamode
     logging.info("Opening %s", file)
     ClassFromTypedDict.import_package(knx_project_objects)
-    my_project = KNXProjectManager.init(file)
-    my_project.print_knx_project_properties()
     if location_separator == '/':
         location_separator = ""
-    configuration = HAKAIConfiguration(my_project,
+    configuration = HAKAIConfiguration(KNXProjectManager.init(file),
                                        final_hamode,
                                        overwrite,
                                        location_separator,
                                        suppress_project_name,
                                        replace_spaces)
+    configuration.project.print_knx_project_properties()
 
     # initialize locations repository
     logging.info("")
