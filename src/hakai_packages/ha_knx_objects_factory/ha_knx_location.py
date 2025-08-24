@@ -6,7 +6,8 @@ from ruamel.yaml import YAML, CommentedMap
 from hakai_packages.ha_knx_objects_common import HAKNXDevice
 from hakai_packages.knx_project_objects import KNXFunction
 from hakai_packages.knx_project_objects import KNXSpace
-from hakai_packages.knx_utils import Serializable, serializable_to_yaml
+from hakai_packages.knx_utils import (Serializable, serializable_to_yaml,
+                                      knx_transformed_string, knx_flat_string)
 from hakai_packages.hakai_conf import HAKAIConfiguration
 from .ha_knx_factory import HAKNXFactory
 
@@ -95,16 +96,11 @@ class HAKNXLocation(Serializable):
 
     @property
     def flat_name(self):
-        return self.name.lower()
+        return knx_flat_string(self.name)
 
     @property
     def transformed_name(self):
-        new_char = HAKAIConfiguration.get_instance().replace_spaces
-        if new_char == ' ':
-            return self.flat_name
-        if new_char == '/':
-            return self.flat_name.replace(' ','')
-        return self.flat_name.replace(' ',new_char)
+        return knx_transformed_string(self.name)
 
     def is_empty(self):
         return len(self._objects) == 0

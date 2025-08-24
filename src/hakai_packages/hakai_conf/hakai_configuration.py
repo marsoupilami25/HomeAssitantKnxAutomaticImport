@@ -1,11 +1,9 @@
 from dataclasses import dataclass
 
-from hakai_packages.knx_project import KNXProjectManager
-
 @dataclass(frozen=True)
 class HAKAIConfiguration:
 
-    project : KNXProjectManager
+    project : object #it's a KNXProjectManager but is declared as an object to avoid circular import
     hamode : bool | None
     overwrite : bool
     location_separator : str

@@ -2,8 +2,8 @@ from classfromtypeddict import ClassFromTypedDict
 from unidecode import unidecode
 from xknxproject.models import GroupAddress
 
+from hakai_packages.knx_utils import knx_flat_string
 from .knx_dpt_type import KNXDPTType
-
 
 class KNXGroupAddress(ClassFromTypedDict):
     _class_ref = GroupAddress
@@ -32,4 +32,4 @@ class KNXGroupAddress(ClassFromTypedDict):
 
     @property
     def flat_name(self):
-        return self.name.lower()
+        return knx_flat_string(self.name)
