@@ -23,6 +23,7 @@ class HAKNXLocation(Serializable):
         self._name = ""
         self._objects = {}
         self._ha_mode = False
+        self._touched = False
 
     @classmethod
     def constructor_from_knx_space(cls, location: KNXSpace):
@@ -35,6 +36,12 @@ class HAKNXLocation(Serializable):
         instance = cls()
         instance.import_from_file(file)
         return instance
+
+    def is_touched(self) -> bool:
+        return self._touched
+
+    def touched(self):
+        self._touched = True
 
     def import_knx_space(self, location: KNXSpace):
         knx_project_manager = HAKAIConfiguration.get_instance().project

@@ -1,4 +1,6 @@
+import logging
 import os
+import sys
 
 from hakai_packages.ha_knx_objects_factory import HAKNXLocation
 from .knx_spaces_repository import KNXSpacesRepository
@@ -26,12 +28,14 @@ class HAKNXLocationsRepository:
                 # to avoid duplication and limit confusion
                 location.set_name(name)
                 if not location.is_empty():
+                    location.touched()
                     self.add_location(location)
             elif len(existing_locations) == 1:
                 existing_locations[0].import_knx_space(element)
                 # force the name to a complete structured name
                 # to avoid duplication and limit confusion
                 existing_locations[0].set_name(name)
+                existing_locations[0].touched()
             else:
                 raise ValueError(f"Several existing locations with name {name}")
 
@@ -47,6 +51,23 @@ class HAKNXLocationsRepository:
 
     def add_location(self, location: HAKNXLocation):
         self._locations_list.append(location)
+
+    def remove_location(self, location: HAKNXLocation):
+        try:
+            self._locations_list.remove(location)
+        except ValueError:
+            logging.critical("Exception: %s is not a location present in the locations repository", location.get_name())
+            sys.exit(1)
+
+    def check(self):
+        list_to_remove : list[HAKNXLocation] = []
+        for element in self._locations_list:
+            if not element.is_touched():
+                list_to_remove.append(element)
+        for element in list_to_remove:
+            logging.info("%s does not exist anymore in the project. File will not be generated.", element.get_name())
+            self.remove_location(element)
+
 
     @property
     def list(self):

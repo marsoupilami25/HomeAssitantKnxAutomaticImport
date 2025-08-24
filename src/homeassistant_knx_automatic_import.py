@@ -148,6 +148,12 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
     logging.info("=====Start locations analysis=====")
     my_locations_repository.import_from_knx_spaces_repository(locations.repository)
 
+    # Check roundtrip coherency
+    if roundtrip:
+        logging.info("")
+        logging.info("=====Check roundtrip coherency=====")
+        my_locations_repository.check()
+
     # write the output files
     logging.info("")
     logging.info("=====Generate output files=====")
