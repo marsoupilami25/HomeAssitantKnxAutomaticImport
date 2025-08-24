@@ -151,8 +151,7 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
     if not os.path.isdir(target_path):
         raise NotADirectoryError(f"Output path '{target_path}' is not a directory.")
     my_locations_repository.dump(target_path,
-                                 create_output_path=True,
-                                 overwrite=overwrite)
+                                 create_output_path=True)
 
 def main_typer():
     typer.run(main)

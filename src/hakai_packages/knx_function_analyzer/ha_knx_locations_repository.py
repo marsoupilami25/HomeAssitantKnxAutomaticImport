@@ -2,6 +2,8 @@ import os
 
 from hakai_packages.ha_knx_objects_factory import HAKNXLocation
 from .knx_spaces_repository import KNXSpacesRepository
+from hakai_packages.hakai_conf import HAKAIConfiguration
+
 
 class HAKNXLocationsRepository:
 
@@ -58,8 +60,8 @@ class HAKNXLocationsRepository:
 
     def dump(self,
              output_path,
-             create_output_path: bool = False,
-             overwrite: bool = False):
+             create_output_path: bool = False):
+        overwrite = HAKAIConfiguration.get_instance().overwrite
         if not os.path.exists(output_path):
             if create_output_path:
                 os.makedirs(output_path, exist_ok=True)
