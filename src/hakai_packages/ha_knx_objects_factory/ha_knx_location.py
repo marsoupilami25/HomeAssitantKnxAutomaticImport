@@ -119,7 +119,8 @@ class HAKNXLocation(Serializable):
                     list_of_objects.append(ha_knx_object)
             self._objects[key] = list_of_objects
 
-    def dump(self, ha_mode : bool | None = None):
+    def dump(self):
+        ha_mode = HAKAIConfiguration.get_instance().hamode
         if not ha_mode is None:
             self._ha_mode = ha_mode
         stream = StringIO()
