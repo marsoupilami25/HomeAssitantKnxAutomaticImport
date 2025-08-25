@@ -2,7 +2,7 @@ from unidecode import unidecode
 from xknxproject.models import Function
 
 from classfromtypeddict import ClassFromTypedDict
-from hakai_packages.knx_utils import knx_flat_string
+from hakai_packages.knx_utils import knx_flat_string, knx_transformed_string
 from .knx_group_address_ref import KNXGroupAddressRef
 
 class KNXFunction(ClassFromTypedDict):
@@ -29,3 +29,7 @@ class KNXFunction(ClassFromTypedDict):
     @property
     def flat_name(self):
         return knx_flat_string(self.name)
+
+    @property
+    def transformed_name(self):
+        return knx_transformed_string(self.name)
