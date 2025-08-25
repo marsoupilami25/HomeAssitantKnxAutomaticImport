@@ -204,7 +204,7 @@ class HAKNXDevice(Serializable):
         :return: instance of the class
         :rtype: subclass of HAKNXDevice
         """
-        self.name = Quoted(function.name) #the name of the device is the name of the KNX function
+        self.name = Quoted(function.transformed_name) #the name of the device is the name of the KNX function
         for param in self.parameters: #go through all expected parameters in the class
             logging.info("Search for parameter %s of type %s",
                          param["name"], param["type"])

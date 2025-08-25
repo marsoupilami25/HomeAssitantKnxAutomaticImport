@@ -5,9 +5,7 @@ from unidecode import unidecode
 from xknxproject.models import Space
 
 from classfromtypeddict import ClassFromTypedDict
-from hakai_packages.hakai_conf import HAKAIConfiguration
-from hakai_packages.knx_utils import knx_flat_string
-
+from hakai_packages.knx_utils import knx_flat_string, knx_transformed_string
 
 class KNXSpace(ClassFromTypedDict):
     _class_ref = Space
@@ -38,9 +36,4 @@ class KNXSpace(ClassFromTypedDict):
 
     @property
     def transformed_name(self):
-        new_char = HAKAIConfiguration.get_instance().replace_spaces
-        if new_char == ' ':
-            return self.flat_name
-        if new_char == '/':
-            return self.flat_name.replace(' ','')
-        return self.flat_name.replace(' ',new_char)
+        return knx_transformed_string(self.name)
