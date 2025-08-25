@@ -1,9 +1,13 @@
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from hakai_packages.knx_project import KNXProjectManager
 
 @dataclass(frozen=True)
 class HAKAIConfiguration:
 
-    project : object #it's a KNXProjectManager but is declared as an object to avoid circular import
+    project : "KNXProjectManager"
     hamode : bool | None
     overwrite : bool
     location_separator : str
