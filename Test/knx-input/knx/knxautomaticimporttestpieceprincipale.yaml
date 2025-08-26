@@ -1,0 +1,25 @@
+knx:
+  cover:
+  - name: "Volet Roulant"
+    move_long_address: "22/2/0"
+    stop_address: "22/2/1"
+    position_address: "22/2/2"
+    position_state_address: "22/7/2"
+  light:
+  - name: "Lumiere Bureau1"
+    address: "22/1/0"
+    state_address: "22/6/0"
+  - name: "Lumiere Bureau2"
+    address: "22/1/10"
+    state_address: "22/6/10"
+  - name: "Lumiere Bureau3"
+    address: "22/1/20"
+    state_address: "22/6/20"
+  - name: "Lumiere Principal"
+    address: "22/1/30"
+    state_address: "22/6/30"
+  switch:
+  - name: "Prise Commandees"
+    address: "22/1/40"
+    state_address: "22/6/40"
+    respond_to_read: false
