@@ -89,6 +89,8 @@ class HAKNXLocation(Serializable):
             self.from_dict(imported_dict)
 
     def check(self):
+        if HAKAIConfiguration.get_instance().not_remove_device:
+            return
         for device_type in self._objects:
             list_to_remove: list[HAKNXDevice] = []
             for element in self._objects[device_type]:

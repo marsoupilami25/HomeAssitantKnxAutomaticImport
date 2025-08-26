@@ -108,6 +108,18 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                           "and underscores. "
                                                           "'/' indicates no separator."
                                                      )] = ' ',
+         not_remove_location: Annotated[bool, typer.Option("--not-remove-location",
+                                               "-nrl",
+                                               help="During a roundtrip, do not remove"
+                                                    "existing locations not more present"
+                                                    "in the project."
+                                               )] = False,
+         not_remove_device: Annotated[bool, typer.Option("--not-remove-device",
+                                               "-nrd",
+                                               help="During a roundtrip, do not remove"
+                                                    "existing devices not more present"
+                                                    "in the project."
+                                               )] = False,
          log_level: Annotated[str, typer.Option("--log-level",
                                                 "-l",
                                                 help="Logs level (DEBUG, INFO, WARNING, "
@@ -143,7 +155,9 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                        overwrite,
                                        location_separator,
                                        suppress_project_name,
-                                       replace_spaces)
+                                       replace_spaces,
+                                       not_remove_location,
+                                       not_remove_device)
     configuration.project.print_knx_project_properties()
 
     # initialize locations repository

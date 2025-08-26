@@ -4,8 +4,8 @@ import sys
 
 from hakai_packages.ha_knx_objects_factory import HAKNXLocation
 from hakai_packages.hakai_conf import HAKAIConfiguration
+from hakai_packages.knx_utils import knx_transformed_string
 from .knx_spaces_repository import KNXSpacesRepository
-from ..knx_utils import knx_transformed_string
 
 
 class HAKNXLocationsRepository:
@@ -64,6 +64,8 @@ class HAKNXLocationsRepository:
             sys.exit(1)
 
     def check(self):
+        if HAKAIConfiguration.get_instance().not_remove_location:
+            return
         list_to_remove : list[HAKNXLocation] = []
         for element in self._locations_list:
             if not element.is_touched():
