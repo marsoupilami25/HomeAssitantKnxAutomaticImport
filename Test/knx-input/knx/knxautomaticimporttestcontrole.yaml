@@ -1,0 +1,22 @@
+#bien avant
+knx: # ici
+# peut-etre la
+  switch: #et ici
+  # et là
+  - name: "Switch Ventilation Petite Vitesse" # test après
+    # test avant
+    address: "23/5/1"
+    state_address: "23/5/3"
+    respond_to_read: false
+    invert: true
+  - name: "Switch Ventilation Grande Vitesse"
+    address: "23/5/2"
+    state_address: "23" # et ailleurs
+    respond_to_read: false
+  expose:
+  - type: datetime  # !DO NOT REMOVE!exposed&t
+    address: "21/0/0"
+    respond_to_read: false
+    entity_id: cover.office
+    attribute: current_position
+    value_template: "{{ 100 - value }}"  # invert the value

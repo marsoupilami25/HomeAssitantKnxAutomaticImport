@@ -2,3 +2,5 @@
 /dist/
 /HomeAssistantKNXAutomaticImport.egg-info/
 /src/HomeAssistantKNXAutomaticImport.egg-info/
+/Test/knx/
+desktop.ini

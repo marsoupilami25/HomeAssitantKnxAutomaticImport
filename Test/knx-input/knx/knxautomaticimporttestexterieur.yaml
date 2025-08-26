@@ -1,0 +1,8 @@
+knx:
+  light:
+  - name: "Lumiere Porte"
+    address: "24/1/0"
+    state_address: "24/6/0"
+  - name: "Lumiere Baie"
+    address: "24/1/10"
+    state_address: "24/6/10"

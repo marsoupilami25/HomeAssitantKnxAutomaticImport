@@ -1,0 +1,23 @@
+knx:
+  light:
+  - name: "Lumiere Lavabo"
+    address: "23/1/0"
+    state_address: "23/6/0"
+  - name: "Lumiere Spots"
+    address: "23/1/10"
+    state_address: "23/6/10"
+  switch:
+  - name: "Commutateur Chauffe Eau"
+    address: "23/3/0"
+    state_address: "23/3/1"
+    respond_to_read: false
+  sensor:
+  - name: "Capteur temperature"
+    state_address: "23/3/10"
+    type: temperature
+  - name: "Capteur Humidite"
+    state_address: "23/3/11"
+    type: humidity
+  - name: "Capteur Point de rosee"
+    state_address: "23/3/12"
+    type: temperature
