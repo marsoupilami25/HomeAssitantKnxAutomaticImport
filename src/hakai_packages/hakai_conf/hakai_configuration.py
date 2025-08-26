@@ -13,6 +13,8 @@ class HAKAIConfiguration:
     location_separator : str
     suppress_project_name : bool
     replace_spaces : str
+    not_remove_location : bool
+    not_remove_device : bool
 
     # singleton storage
     _instance = None
