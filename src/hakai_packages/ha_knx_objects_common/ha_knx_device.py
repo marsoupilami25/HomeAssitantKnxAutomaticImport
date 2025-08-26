@@ -8,6 +8,7 @@ from hakai_packages.knx_project_objects import KNXFunction
 from hakai_packages.knx_project_objects import KNXGroupAddress
 from hakai_packages.knx_project import KNXProjectManager
 from hakai_packages.knx_utils import Serializable, Quoted
+from hakai_packages.hakai_conf import HAKAIConfiguration
 from .ha_knx_value_type import HAKNXValueType
 
 yaml = YAML()
@@ -75,6 +76,13 @@ class HAKNXDevice(Serializable):
         super().__init__()
         self.name = Quoted("")
         self._extra = {}
+        self._touched = False
+
+    def is_touched(self) -> bool:
+        return self._touched
+
+    def touched(self):
+        self._touched = True
 
     @staticmethod
     def _get_param_for_ga(param_name:str,
@@ -193,17 +201,15 @@ class HAKNXDevice(Serializable):
         return HAKNXDevice._Result(param_found, param_value)
 
     def set_from_function(self,
-                          function: KNXFunction,
-                          knx_project_manager: KNXProjectManager) -> bool:
+                          function: KNXFunction) -> bool:
         """
         Constructor of the class based on a function.
         :param function: function to create
         :type function: KNXFunction
-        :param knx_project_manager: KNX Project Manager containing the list of GAs
-        :type knx_project_manager: KNXProjectManager
         :return: instance of the class
         :rtype: subclass of HAKNXDevice
         """
+        knx_project_manager = HAKAIConfiguration.get_instance().project
         self.name = Quoted(function.transformed_name) #the name of the device is the name of the KNX function
         for param in self.parameters: #go through all expected parameters in the class
             logging.info("Search for parameter %s of type %s",

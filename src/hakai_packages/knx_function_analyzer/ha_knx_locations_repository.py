@@ -37,6 +37,7 @@ class HAKNXLocationsRepository:
                 # force the name to a complete structured name
                 # to avoid duplication and limit confusion
                 existing_locations[0].name = name
+                existing_locations[0].check()
                 existing_locations[0].touched()
             else:
                 raise ValueError(f"Several existing locations with name {name}")
@@ -71,7 +72,6 @@ class HAKNXLocationsRepository:
             logging.info("%s does not exist anymore in the project."
                          " File will not be generated.", element.name)
             self.remove_location(element)
-
 
     @property
     def list(self):

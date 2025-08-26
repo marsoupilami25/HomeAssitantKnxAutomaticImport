@@ -63,7 +63,8 @@ class HAKNXLocation(Serializable):
                 else:
                     logging.info("New object of type %s", ha_knx_object_type.__name__)
                     ha_knx_object: HAKNXDevice = ha_knx_object_type()
-                    if ha_knx_object.set_from_function(function, knx_project_manager):
+                    if ha_knx_object.set_from_function(function):
+                        ha_knx_object.touched()
                         class_type = ha_knx_object.get_device_type_name()
                         if class_type in self._objects:
                             self._objects[class_type].append(ha_knx_object)
@@ -72,7 +73,8 @@ class HAKNXLocation(Serializable):
             elif len(existing_devices) == 1:
                 logging.info("Existing object of type %s",
                              existing_devices[0].__class__.__name__)
-                existing_devices[0].set_from_function(function, knx_project_manager)
+                existing_devices[0].set_from_function(function)
+                existing_devices[0].touched()
             else:
                 raise ValueError(f"Several existing functions with name {function.name} "
                                  f"in location {self._name}")
@@ -85,6 +87,18 @@ class HAKNXLocation(Serializable):
                 logging.info("No data found in file %s", yaml_file)
                 return
             self.from_dict(imported_dict)
+
+    def check(self):
+        for device_type in self._objects:
+            list_to_remove: list[HAKNXDevice] = []
+            for element in self._objects[device_type]:
+                if not element.is_touched():
+                    list_to_remove.append(element)
+            for element in list_to_remove:
+                logging.info("Device %s does not exist anymore in the location %s."
+                             " Device is removed.", element.name, self.transformed_name)
+                self._objects[device_type].remove(element)
+
 
     @property
     def name(self):
