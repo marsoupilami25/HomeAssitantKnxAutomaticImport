@@ -54,7 +54,8 @@ class HAKNXLocation(Serializable):
             #search if function already converted in device in _objects
             flat_list = [item for sublist in self._objects.values() for item in sublist]
             existing_devices: list[HAKNXDevice] = list(
-                filter(lambda obj, f = function: obj.get_converted_name(f.transformed_name) == obj.name,
+                filter(lambda obj,
+                       f = function: obj.get_converted_name(f.transformed_name) == obj.name,
                        flat_list))
             if len(existing_devices) == 0:
                 ha_knx_object_type = HAKNXFactory.search_associated_class_from_function(function)
@@ -90,22 +91,22 @@ class HAKNXLocation(Serializable):
                 logging.info("No data found in file %s", yaml_file)
                 return
             self.from_dict(imported_dict)
-            for type in self._objects:
-                for element in self._objects[type]:
+            for device_list in self._objects.values():
+                for element in device_list:
                     element.parent = self.transformed_name
 
     def check(self):
         if HAKAIConfiguration.get_instance().not_remove_device:
             return
-        for device_type in self._objects:
+        for device_list in self._objects.values():
             list_to_remove: list[HAKNXDevice] = []
-            for element in self._objects[device_type]:
+            for element in device_list:
                 if not element.is_touched():
                     list_to_remove.append(element)
             for element in list_to_remove:
                 logging.info("Device %s does not exist anymore in the location %s."
                              " Device is removed.", element.name, self.transformed_name)
-                self._objects[device_type].remove(element)
+                device_list.remove(element)
 
 
     @property

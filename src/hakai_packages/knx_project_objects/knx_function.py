@@ -1,11 +1,10 @@
-from unidecode import unidecode
 from xknxproject.models import Function
 
 from classfromtypeddict import ClassFromTypedDict
-from hakai_packages.knx_utils import knx_flat_string, knx_transformed_string, Quoted
+from hakai_packages.knx_utils import KNXNamedClass
 from .knx_group_address_ref import KNXGroupAddressRef
 
-class KNXFunction(ClassFromTypedDict):
+class KNXFunction(ClassFromTypedDict, KNXNamedClass):
     _class_ref = Function
 
     # for information, instance attributes
@@ -14,22 +13,6 @@ class KNXFunction(ClassFromTypedDict):
     # group_addresses: dict[str, KNXGroupAddressRef]
 
     def __init__(self, data: dict):
-        self._name = ""
         self.group_addresses : dict[str, KNXGroupAddressRef] | None = None #None only for init
-        super().__init__(data)
-
-    @property
-    def name(self):
-        return unidecode(self._name)
-
-    @name.setter
-    def name(self, string: str):
-        self._name = string
-
-    @property
-    def flat_name(self):
-        return knx_flat_string(self.name)
-
-    @property
-    def transformed_name(self):
-        return knx_transformed_string(self.name)
+        KNXNamedClass.__init__(self)
+        ClassFromTypedDict.__init__(self,data)

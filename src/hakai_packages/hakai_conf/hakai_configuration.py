@@ -5,7 +5,7 @@ if TYPE_CHECKING:
     from hakai_packages.knx_project import KNXProjectManager
 
 @dataclass(frozen=True)
-class HAKAIConfiguration:
+class HAKAIConfiguration: # pylint: disable=too-many-instance-attributes
 
     project : "KNXProjectManager"
     hamode : bool | None
