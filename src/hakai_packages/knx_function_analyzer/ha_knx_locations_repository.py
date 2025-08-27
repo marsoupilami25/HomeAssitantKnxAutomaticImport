@@ -24,11 +24,14 @@ class HAKNXLocationsRepository:
             existing_locations: list[HAKNXLocation] =\
                 list(filter(lambda obj, n = searched_name: n == obj.name,
                             self._locations_list))
+            # force the name to a complete structured name
+            # to avoid duplication and limit confusion
+            element.name = name
             if len(existing_locations) == 0:
                 location = HAKNXLocation.constructor_from_knx_space(element)
                 # force the name to a complete structured name
                 # to avoid duplication and limit confusion
-                location.name = name
+                # location.name = name
                 if not location.is_empty():
                     location.touched()
                     self.add_location(location)
@@ -36,7 +39,7 @@ class HAKNXLocationsRepository:
                 existing_locations[0].import_knx_space(element)
                 # force the name to a complete structured name
                 # to avoid duplication and limit confusion
-                existing_locations[0].name = name
+                # existing_locations[0].name = name
                 existing_locations[0].check()
                 existing_locations[0].touched()
             else:
@@ -47,8 +50,7 @@ class HAKNXLocationsRepository:
             if file.endswith(".yaml"):
                 file_name = os.path.splitext(file)[0]
                 file_path = os.path.join(import_path, file)
-                location = HAKNXLocation.constructor_from_file(file_path)
-                location.name = file_name
+                location = HAKNXLocation.constructor_from_file(file_path, file_name)
                 if not location.is_empty():
                     self.add_location(location)
 

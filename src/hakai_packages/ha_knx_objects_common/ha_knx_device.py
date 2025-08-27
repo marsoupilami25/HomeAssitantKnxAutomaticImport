@@ -77,12 +77,45 @@ class HAKNXDevice(Serializable):
         self.name = Quoted("")
         self._extra = {}
         self._touched = False
+        self._parent = None
 
     def is_touched(self) -> bool:
         return self._touched
 
     def touched(self):
         self._touched = True
+
+    @property
+    def parent(self):
+        return self._parent
+
+    @parent.setter
+    def parent(self, string:str):
+        self._parent = string
+
+    def get_converted_name(self, string : str) -> str:
+        new_name = string
+        if HAKAIConfiguration.get_instance().remove_keyword:
+            for kw in self.keywords:
+                # apply transformation to the keyword
+                tkw = knx_transformed_string(kw)
+                # remove all occurrences
+                new_name = new_name.replace(tkw, "")
+            new_name = new_name.strip()
+            if new_name == '':
+                new_name = string
+
+        # get name pattern
+        pattern = HAKAIConfiguration.get_instance().name_pattern
+        # Parameters
+        params = {
+            "localisation": self.parent,
+            "type": self.get_device_type_name(),
+            "name": new_name
+        }
+        # Build string using format_map (works with dict)
+        built_string = pattern.format_map(params)
+        return Quoted(built_string)
 
     @staticmethod
     def _get_param_for_ga(param_name:str,
@@ -210,7 +243,7 @@ class HAKNXDevice(Serializable):
         :rtype: subclass of HAKNXDevice
         """
         knx_project_manager = HAKAIConfiguration.get_instance().project
-        self.name = Quoted(function.transformed_name(self.keywords)) #the name of the device is the name of the KNX function
+        self.name = self.get_converted_name(function.transformed_name) #the name of the device is the name of the KNX function
         for param in self.parameters: #go through all expected parameters in the class
             logging.info("Search for parameter %s of type %s",
                          param["name"], param["type"])
