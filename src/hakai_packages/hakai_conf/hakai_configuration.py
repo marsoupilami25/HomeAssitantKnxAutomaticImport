@@ -15,6 +15,7 @@ class HAKAIConfiguration:
     replace_spaces : str
     not_remove_location : bool
     not_remove_device : bool
+    remove_keyword : bool
 
     # singleton storage
     _instance = None
