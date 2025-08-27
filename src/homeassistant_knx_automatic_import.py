@@ -128,8 +128,8 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                 "-np",
                                                 help="Pattern for the device name.\n"
                                                      "In the pattern {location} will be replaced "
-                                                     "by the location name, {type} by the device type "
-                                                     "and {name} by the device name.",
+                                                     "by the location name, {type} by the device "
+                                                     "type and {name} by the device name.",
                                                 show_default=True)] = "{name}",
          log_level: Annotated[str, typer.Option("--log-level",
                                                 "-l",

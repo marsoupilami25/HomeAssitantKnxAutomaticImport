@@ -243,7 +243,8 @@ class HAKNXDevice(Serializable):
         :rtype: subclass of HAKNXDevice
         """
         knx_project_manager = HAKAIConfiguration.get_instance().project
-        self.name = self.get_converted_name(function.transformed_name) #the name of the device is the name of the KNX function
+        #the name of the device is the name of the KNX function
+        self.name = self.get_converted_name(function.transformed_name)
         for param in self.parameters: #go through all expected parameters in the class
             logging.info("Search for parameter %s of type %s",
                          param["name"], param["type"])
