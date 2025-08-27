@@ -33,8 +33,9 @@ class HAKNXLocation(Serializable):
         return instance
 
     @classmethod
-    def constructor_from_file(cls, file: str):
+    def constructor_from_file(cls, file: str, name: str):
         instance = cls()
+        instance.name = name
         instance.import_from_file(file)
         return instance
 
@@ -53,7 +54,7 @@ class HAKNXLocation(Serializable):
             #search if function already converted in device in _objects
             flat_list = [item for sublist in self._objects.values() for item in sublist]
             existing_devices: list[HAKNXDevice] = list(
-                filter(lambda obj, f = function: f.transformed_name(obj.keywords) == obj.name,
+                filter(lambda obj, f = function: obj.get_converted_name(f.transformed_name) == obj.name,
                        flat_list))
             if len(existing_devices) == 0:
                 ha_knx_object_type = HAKNXFactory.search_associated_class_from_function(function)
@@ -63,6 +64,7 @@ class HAKNXLocation(Serializable):
                 else:
                     logging.info("New object of type %s", ha_knx_object_type.__name__)
                     ha_knx_object: HAKNXDevice = ha_knx_object_type()
+                    ha_knx_object.parent = self.transformed_name
                     if ha_knx_object.set_from_function(function):
                         ha_knx_object.touched()
                         class_type = ha_knx_object.get_device_type_name()
@@ -73,6 +75,7 @@ class HAKNXLocation(Serializable):
             elif len(existing_devices) == 1:
                 logging.info("Existing object of type %s",
                              existing_devices[0].__class__.__name__)
+                existing_devices[0].parent = self.transformed_name
                 existing_devices[0].set_from_function(function)
                 existing_devices[0].touched()
             else:
@@ -87,6 +90,9 @@ class HAKNXLocation(Serializable):
                 logging.info("No data found in file %s", yaml_file)
                 return
             self.from_dict(imported_dict)
+            for type in self._objects:
+                for element in self._objects[type]:
+                    element.parent = self.transformed_name
 
     def check(self):
         if HAKAIConfiguration.get_instance().not_remove_device:

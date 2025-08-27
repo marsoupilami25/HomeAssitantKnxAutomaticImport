@@ -88,7 +88,7 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                )] = False,
          location_separator: Annotated[str, typer.Option("--location-separator",
                                                  "-ls",
-                                                 show_default="_",
+                                                 show_default = True,
                                                  help="Separator (character) used to separate"
                                                       "location level names in a location name.\n"
                                                       "Use only letters, numbers, and underscores. "
@@ -101,7 +101,7 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                )] = False,
          replace_spaces: Annotated[str, typer.Option("--replace-spaces",
                                                              "-rs",
-                                                     show_default=" ",
+                                                     show_default = ' ',
                                                      help="Replace spaces in location and "
                                                           "function names.\n"
                                                           "Use only letters, numbers, "
@@ -110,20 +110,27 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                      )] = ' ',
          not_remove_location: Annotated[bool, typer.Option("--not-remove-location",
                                                "-nrl",
-                                               help="During a roundtrip, do not remove"
-                                                    "existing locations not more present"
+                                               help="During a roundtrip, do not remove "
+                                                    "existing locations no more present "
                                                     "in the project."
                                                )] = False,
          not_remove_device: Annotated[bool, typer.Option("--not-remove-device",
                                                "-nrd",
-                                               help="During a roundtrip, do not remove"
-                                                    "existing devices not more present"
+                                               help="During a roundtrip, do not remove "
+                                                    "existing devices no more present "
                                                     "in the project."
                                                )] = False,
          remove_keyword: Annotated[bool, typer.Option("--remove-keyword",
                                                "-rk",
                                                help="Remove the keyword from the device name."
                                                )] = False,
+         name_pattern: Annotated[str, typer.Option("--name-pattern",
+                                                "-np",
+                                                help="Pattern for the device name.\n"
+                                                     "In the pattern {location} will be replaced "
+                                                     "by the location name, {type} by the device type "
+                                                     "and {name} by the device name.",
+                                                show_default=True)] = "{name}",
          log_level: Annotated[str, typer.Option("--log-level",
                                                 "-l",
                                                 help="Logs level (DEBUG, INFO, WARNING, "
@@ -162,7 +169,8 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                        replace_spaces,
                                        not_remove_location,
                                        not_remove_device,
-                                       remove_keyword)
+                                       remove_keyword,
+                                       name_pattern)
     configuration.project.print_knx_project_properties()
 
     # initialize locations repository

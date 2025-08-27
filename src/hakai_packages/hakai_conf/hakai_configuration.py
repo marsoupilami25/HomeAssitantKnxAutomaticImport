@@ -16,6 +16,7 @@ class HAKAIConfiguration:
     not_remove_location : bool
     not_remove_device : bool
     remove_keyword : bool
+    name_pattern : str
 
     # singleton storage
     _instance = None

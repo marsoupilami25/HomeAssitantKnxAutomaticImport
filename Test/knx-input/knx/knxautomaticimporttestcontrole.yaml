@@ -3,13 +3,13 @@ knx: # ici
 # peut-etre la
   switch: #et ici
   # et là
-  - name: "ventilationpetitevitesse" # test après
+  - name: "knxautomaticimporttestcontrole_switch_ventilationpetitevitesse" # test après
     # test avant
     address: "23/5/1"
     state_address: "23/5/3"
     respond_to_read: false
     invert: true
-  - name: "ventilationgrandevitesse"
+  - name: "knxautomaticimporttestcontrole_switch_ventilationgrandevitesse"
     address: "23/5/2"
     state_address: "23" # et ailleurs
     respond_to_read: false
@@ -18,7 +18,7 @@ knx: # ici
     state_address: "23" # et ailleurs
     respond_to_read: false
   expose:
-  - type: datetime  # !DO NOT REMOVE!d&t
+  - type: datetime  # !DO NOT REMOVE!knxautomaticimporttestcontrole_expose_d&t
     address: "21/0/0"
     respond_to_read: false
     entity_id: cover.office
