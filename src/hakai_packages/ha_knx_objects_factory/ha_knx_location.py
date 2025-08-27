@@ -53,7 +53,7 @@ class HAKNXLocation(Serializable):
             #search if function already converted in device in _objects
             flat_list = [item for sublist in self._objects.values() for item in sublist]
             existing_devices: list[HAKNXDevice] = list(
-                filter(lambda obj, f = function: f.transformed_name == obj.name,
+                filter(lambda obj, f = function: f.transformed_name(obj.keywords) == obj.name,
                        flat_list))
             if len(existing_devices) == 0:
                 ha_knx_object_type = HAKNXFactory.search_associated_class_from_function(function)

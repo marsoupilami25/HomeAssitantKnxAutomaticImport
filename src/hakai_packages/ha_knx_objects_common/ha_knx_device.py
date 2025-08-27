@@ -7,7 +7,7 @@ from hakai_packages.knx_project_objects import KNXDPTType
 from hakai_packages.knx_project_objects import KNXFunction
 from hakai_packages.knx_project_objects import KNXGroupAddress
 from hakai_packages.knx_project import KNXProjectManager
-from hakai_packages.knx_utils import Serializable, Quoted
+from hakai_packages.knx_utils import Serializable, Quoted, knx_transformed_string
 from hakai_packages.hakai_conf import HAKAIConfiguration
 from .ha_knx_value_type import HAKNXValueType
 
@@ -210,7 +210,7 @@ class HAKNXDevice(Serializable):
         :rtype: subclass of HAKNXDevice
         """
         knx_project_manager = HAKAIConfiguration.get_instance().project
-        self.name = Quoted(function.transformed_name) #the name of the device is the name of the KNX function
+        self.name = Quoted(function.transformed_name(self.keywords)) #the name of the device is the name of the KNX function
         for param in self.parameters: #go through all expected parameters in the class
             logging.info("Search for parameter %s of type %s",
                          param["name"], param["type"])

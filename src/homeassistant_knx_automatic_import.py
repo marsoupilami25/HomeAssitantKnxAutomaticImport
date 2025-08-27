@@ -120,6 +120,10 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                     "existing devices not more present"
                                                     "in the project."
                                                )] = False,
+         remove_keyword: Annotated[bool, typer.Option("--remove-keyword",
+                                               "-rk",
+                                               help="Remove the keyword from the device name."
+                                               )] = False,
          log_level: Annotated[str, typer.Option("--log-level",
                                                 "-l",
                                                 help="Logs level (DEBUG, INFO, WARNING, "
@@ -157,7 +161,8 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                        suppress_project_name,
                                        replace_spaces,
                                        not_remove_location,
-                                       not_remove_device)
+                                       not_remove_device,
+                                       remove_keyword)
     configuration.project.print_knx_project_properties()
 
     # initialize locations repository
