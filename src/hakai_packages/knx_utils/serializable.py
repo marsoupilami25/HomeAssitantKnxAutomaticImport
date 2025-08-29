@@ -4,6 +4,7 @@ import logging
 from ruamel.yaml import YAML, CommentedMap
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 
+from .knx_tools import knx_update_comment_list
 
 class Quoted(str):
     pass
@@ -58,7 +59,7 @@ class Serializable:
             else:
                 setattr(self, key, value)
             comment_pre = dict_obj.ca.items.get(key)
-            if comment_pre:
+            if knx_update_comment_list(comment_pre):
                 self._comments[key] = comment_pre
 
     def to_yaml(self, representer):

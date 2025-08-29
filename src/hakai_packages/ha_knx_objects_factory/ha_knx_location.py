@@ -1,13 +1,14 @@
 import logging
 from io import StringIO
 
-from ruamel.yaml import YAML, CommentedMap
+from ruamel.yaml import YAML, CommentedMap, CommentToken
 
 from hakai_packages.ha_knx_objects_common import HAKNXDevice
 from hakai_packages.knx_project_objects import KNXFunction
 from hakai_packages.knx_project_objects import KNXSpace
 from hakai_packages.knx_utils import (Serializable, serializable_to_yaml,
-                                      knx_transformed_string, knx_flat_string)
+                                      knx_transformed_string, knx_flat_string,
+                                      knx_update_comment_list)
 from hakai_packages.hakai_conf import HAKAIConfiguration
 from .ha_knx_factory import HAKNXFactory
 
@@ -129,24 +130,24 @@ class HAKNXLocation(Serializable):
         return len(self._objects) == 0
 
     def from_dict(self, dict_obj: CommentedMap):
-        # detect if it is a ha yaml file and remove useless values
         comment_pre = dict_obj.ca.comment
-        if comment_pre:
+        if knx_update_comment_list(comment_pre):
             self._comments['HAKNXLocation'] = comment_pre
+        # detect if it is a ha yaml file and remove useless values
         key_list = list(dict_obj.keys())
         key='knx'
         if (len(key_list) == 1) and (key_list[0] == key):
             self._ha_mode=True
             final_dict = dict_obj[key]
             comment_pre = dict_obj.ca.items.get(key)
-            if comment_pre:
+            if knx_update_comment_list(comment_pre):
                 self._comments[key] = comment_pre
         else:
             self._ha_mode=False
             final_dict = dict_obj
         for key in final_dict.keys():
             comment_pre = final_dict.ca.items.get(key)
-            if comment_pre:
+            if knx_update_comment_list(comment_pre):
                 self._comments[key] = comment_pre
             ha_knx_object_type = HAKNXFactory.search_associated_class_from_key_name(key)
             objects_to_import = final_dict[key]

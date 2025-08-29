@@ -1,12 +1,17 @@
+# test avec beaucoup de commentaires
+#& et notamment des escape
+# ou pas
+#& ou oui
 #bien avant
 knx: # ici
 # peut-etre la
   switch: #et ici
   # et là
+  #& mais pas vraiment
   - name: "knxautomaticimporttestcontrole_switch_ventilationpetitevitesse" # test après
     # test avant
     address: "23/5/1"
-    state_address: "23/5/3"
+    state_address: "23/5/3" #& et pas celui là
     respond_to_read: false
     invert: true
   - name: "knxautomaticimporttestcontrole_switch_ventilationgrandevitesse"
