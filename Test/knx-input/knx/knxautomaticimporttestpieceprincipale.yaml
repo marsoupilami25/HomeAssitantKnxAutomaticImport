@@ -1,4 +1,4 @@
-knx:
+knx: #& un seul aussi ici
   cover:
   - name: "Volet Roulant"
     move_long_address: "22/2/0"
