@@ -90,6 +90,9 @@ complete them and generate new configuration files preserving elements that are 
 ### Comments
 
 HomeAssistantKNXAutomaticImport manages comments in yaml for the roundtrip. Meaning comments are preserved.\
+A comment starting with `#&` is nevertheless discarded. This option is used by HomeAssistantKNXAutomaticImport itself to generate a header which is discarded at each roundtrip.
+
+### Private Comments
 HomeAssistantKNXAutomaticImport also generates private comments used to stored data that will be useful for a roundtrip.
 Without these data, it will not be able to read correctly the yaml files and generating them again.\
 <span style="color:red">
@@ -106,7 +109,8 @@ expose:
 
 Options that have been used to generate the files used as an input shall be the same as those used for the current generation.
 If not, generated name could be different and HomeAssistantKNXAutomaticImport will not be able to make the link,
-losing the elements that are not part of the knx project
+losing the elements that are not part of the knx project.\
+Key options for roundtrip are identified in the file header.
 ## Entities
 This section identifies the [Home Assistant KNX integration](https://www.home-assistant.io/integrations/knx/) entities that are currently managed by HomeAssistantKNXAutomaticImport.
 
@@ -422,8 +426,15 @@ This section described the Data Point Types supported by the tool.
 |DPT 29.012|reactive_energy_8byte|
 ## versions history
 
-### 1.1
+### 1.2
 #### evolutions
+* manage escape `#&` for comments
+* generate a header in files
+
+#### known issues
+/
+
+### 1.1
 * add --version option
 * add --location-separator option to customize location level separator
 * manage suppression of location and device during the roundtrip
@@ -432,9 +443,6 @@ and add --not-remove-location and --not-remove-device option
 * add --replace-spaces option to replace or suppress space in location and device name
 * add --remove-keyword option to remove keyword from device name
 * add --name-pattern option to define a pattern for the device name
-
-#### known issues
-/
 
 ### 1.0.3
 Improve packaging to limit number of packages installed inn site-packages
