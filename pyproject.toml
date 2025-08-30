@@ -38,4 +38,4 @@ package-dir = {"" = "src"}
 packages = { find = { where = ["src"], include = ["*"] } }
 
 [tool.setuptools.dynamic]
-version = { attr = "hakai_packages.__version__" }
+version = { attr = "hakai_packages.knx_utils.__version__" }
