@@ -1,7 +1,7 @@
 import logging
 from io import StringIO
 
-from ruamel.yaml import YAML, CommentedMap, CommentToken
+from ruamel.yaml import YAML, CommentedMap
 
 from hakai_packages.ha_knx_objects_common import HAKNXDevice
 from hakai_packages.knx_project_objects import KNXFunction
