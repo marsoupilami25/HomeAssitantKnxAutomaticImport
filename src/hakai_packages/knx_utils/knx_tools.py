@@ -59,3 +59,11 @@ def knx_update_comment_list(comment_list : list) -> bool:
     if is_empty_or_none_list(comment_list):
         return False
     return True
+
+def knx_build_string(content: str, fill_char: str = " ", final_char: str = "#", total_length: int = 100) -> str:
+    # Trim content if it's too long
+    trimmed = content[:total_length - 1]
+    # Pad with chosen character so the length is consistent
+    padded = trimmed.ljust(total_length - 1, fill_char)
+    # Append final char at fixed position
+    return padded + final_char + "\n"
