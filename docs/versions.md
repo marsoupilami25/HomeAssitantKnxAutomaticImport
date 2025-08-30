@@ -1,7 +1,14 @@
 ## versions history
 
-### 1.1
+### 1.2
 #### evolutions
+* manage escape `#&` for comments
+* generate a header in files
+
+#### known issues
+/
+
+### 1.1
 * add --version option
 * add --location-separator option to customize location level separator
 * manage suppression of location and device during the roundtrip
@@ -10,9 +17,6 @@ and add --not-remove-location and --not-remove-device option
 * add --replace-spaces option to replace or suppress space in location and device name
 * add --remove-keyword option to remove keyword from device name
 * add --name-pattern option to define a pattern for the device name
-
-#### known issues
-/
 
 ### 1.0.3
 Improve packaging to limit number of packages installed inn site-packages
