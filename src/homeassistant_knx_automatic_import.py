@@ -130,9 +130,10 @@ def main(file: Annotated[str, typer.Argument(help="KNX Project file", show_defau
                                                      "In the pattern {location} will be replaced "
                                                      "by the location name, {type} by the device "
                                                      "type and {name} by the device name.\n"
-                                                     "Certain execution environment requires to declare "
+                                                     "Certain execution environment requires "
+                                                     "to declare "
                                                      "the pattern between \". \" and \' will be "
-                                                     "suppressed at the begining and the end of "
+                                                     "suppressed at the beginning and the end of "
                                                      "the pattern",
                                                 show_default=True)] = "{name}",
          log_level: Annotated[str, typer.Option("--log-level",

@@ -3,7 +3,7 @@ from unidecode import unidecode
 from hakai_packages.knx_utils import knx_transformed_string, knx_flat_string
 
 
-class KNXNamedClass():
+class KNXNamedClass:
 
     def __init__(self):
         self._name = ""
