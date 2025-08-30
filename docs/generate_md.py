@@ -23,7 +23,7 @@ def entity_line(ent: HAKNXDevice):
 
 
 with open("docs/description.md", "r", encoding="utf-8") as file:
-    markdown = file.read()
+    markdown += file.read()
 
 markdown += "\n"
 markdown += "## Entities\n"
@@ -59,8 +59,8 @@ for entity in HAKNXFactory.ha_knx_objects_list:
                 for dpt in conf['dpts']:
                     vt = HAKNXValueType()
                     vt.dpt = dpt
-                    markdown += (f"{dpt}: ")
-                    markdown += (f"{vt.type}<br>")
+                    markdown += f"{dpt}: "
+                    markdown += f"{vt.type}<br>"
                 markdown += "|\n"
     if 'RTR' in types:
         markdown += "#### Response to Read (RtR) configuration variables\n"

@@ -42,7 +42,7 @@ def is_empty_or_none_list(lst):
     )
 
 def knx_update_comment_list(comment_list : list) -> bool:
-    if comment_list:
+    if comment_list: # pylint: disable=too-many-nested-blocks
         for index, comment_sublist in enumerate(comment_list):
             if comment_sublist:
                 elements_to_remove = []
@@ -60,7 +60,10 @@ def knx_update_comment_list(comment_list : list) -> bool:
         return False
     return True
 
-def knx_build_string(content: str, fill_char: str = " ", final_char: str = "#", total_length: int = 100) -> str:
+def knx_build_string(content: str,
+                     fill_char: str = " ",
+                     final_char: str = "#",
+                     total_length: int = 100) -> str:
     # Trim content if it's too long
     trimmed = content[:total_length - 1]
     # Pad with chosen character so the length is consistent
